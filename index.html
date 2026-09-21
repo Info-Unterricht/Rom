@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#12355B">
+<title>Rom – vom Dorf zum Weltreich</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== Tokens ===== */
+:root{
+  --bg:#EEF2F6; --surface:#FFFFFF; --surface2:#F5F7FA; --ink:#16212E; --muted:#54627A; --line:#D5DDE8;
+  --mare:#12355B; --mare2:#1D4E84; --rot:#C4382C; --gold:#F1B434; --oliv:#4F7B4A;
+  --ok:#1B8A4B; --okbg:#E3F5EA; --bad:#B4281E; --badbg:#FDE8E6; --focus:#1D4E84;
+  --sea:#BFDFF3; --landc:#EDE6D3; --mapink:#25303F; --halo:#ffffff;
+  --paper:#FFFDF6; --paperline:#CFE0F2; --margin:#E58B84;
+  --shadow:0 1px 2px rgba(18,53,91,.08),0 6px 20px rgba(18,53,91,.07);
+  --r:18px; --hdr:0px;
+  --font:'Lexend',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D1622; --surface:#152336; --surface2:#1B2C43; --ink:#EAF0F8; --muted:#A5B4C9; --line:#2A3D57;
+    --mare:#0A2440; --mare2:#5B9BE0; --okbg:#123524; --ok:#63D68F; --badbg:#3A1714; --bad:#FF8C82; --focus:#8FBEF2;
+    --sea:#17324D; --landc:#2C3644; --mapink:#E3EAF4; --halo:#0D1622; --paper:#1A2637; --paperline:#26405F; --margin:#8B4A45;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D1622; --surface:#152336; --surface2:#1B2C43; --ink:#EAF0F8; --muted:#A5B4C9; --line:#2A3D57;
+  --mare:#0A2440; --mare2:#5B9BE0; --okbg:#123524; --ok:#63D68F; --badbg:#3A1714; --bad:#FF8C82; --focus:#8FBEF2;
+  --sea:#17324D; --landc:#2C3644; --mapink:#E3EAF4; --halo:#0D1622; --paper:#1A2637; --paperline:#26405F; --margin:#8B4A45;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
+}
+
+/* ===== Basis ===== */
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--hdr) + 12px);-webkit-text-size-adjust:100%}
+html,body{height:auto}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.6;letter-spacing:.005em}
+@media (min-width:900px){body{font-size:18px}}
+h1,h2,h3,h4{line-height:1.2;margin:0 0 .5em;font-weight:700;letter-spacing:-.005em}
+h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:800}
+h2{font-size:clamp(1.45rem,3.4vw,2rem)}
+h3{font-size:1.2rem}
+p{margin:0 0 .8em}
+a{color:var(--mare2)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1140px;margin:0 auto;padding:0 16px}
+
+/* ===== Kopfbereich + Zeitstrahl (klebt oben) ===== */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--mare);color:#fff;box-shadow:0 4px 18px rgba(0,0,0,.25)}
+.hdr::after{content:"";display:block;height:6px;background:repeating-linear-gradient(90deg,#F1B434 0 10px,#C4382C 10px 20px,#1D4E84 20px 30px,#EDE6D3 30px 40px)}
+.top{display:flex;align-items:center;gap:12px;padding:8px 16px;max-width:1140px;margin:0 auto}
+.brand{font-weight:800;font-size:1.05rem;color:#fff;text-decoration:none;white-space:nowrap;display:flex;gap:8px;align-items:center}
+.pills{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px;margin-left:auto}
+.pills::-webkit-scrollbar{display:none}
+.pills a{color:#fff;text-decoration:none;font-weight:600;font-size:.9rem;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.12);white-space:nowrap;min-height:34px;display:inline-flex;align-items:center}
+.pills a[aria-current="page"]{background:var(--gold);color:#1a1a1a}
+.tl{max-width:1140px;margin:0 auto;padding:0 16px 8px}
+.tl-line{display:flex;align-items:baseline;gap:10px;font-size:.85rem;min-height:1.4em;margin-bottom:22px}
+.tl-year{font-weight:800;color:var(--gold);white-space:nowrap}
+.tl-what{opacity:.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-bar{position:relative;height:22px;border-radius:8px;background:rgba(255,255,255,.14);margin:0 4px}
+.tl-zone{position:absolute;top:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:600;overflow:hidden;white-space:nowrap;color:#fff}
+.tl-zone.z1{background:#8E2A22;border-radius:8px 0 0 8px}
+.tl-zone.z2{background:#1D6F86}
+.tl-zone.z3{background:#5B3FA6}
+.tl-zone.z4{background:#4A5568;border-radius:0 8px 8px 0}
+.tl-zero{position:absolute;top:-4px;bottom:-4px;width:2px;background:#fff;opacity:.9}
+.tl-zero span{position:absolute;top:100%;left:50%;transform:translateX(-50%);font-size:.62rem;white-space:nowrap;margin-top:1px}
+.tl-dot{position:absolute;top:50%;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;background:#fff;opacity:.55;border:0;padding:0;cursor:pointer}
+.tl-dot.on{opacity:1;background:var(--gold);width:9px;height:9px;margin:-4.5px 0 0 -4.5px}
+.tl-dot::after{content:"";position:absolute;inset:-9px}
+.tl-pin{position:absolute;top:-9px;width:0;height:40px;transition:left .6s cubic-bezier(.2,.8,.2,1);pointer-events:none;z-index:3}
+.tl-pin::before{content:"";position:absolute;left:-7px;top:0;width:14px;height:14px;border-radius:50%;background:var(--gold);border:3px solid #fff;box-shadow:0 0 0 0 rgba(241,180,52,.7);animation:ping 2s infinite}
+.tl-pin::after{content:"";position:absolute;left:-1px;top:14px;width:2px;height:16px;background:var(--gold)}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(241,180,52,.7)}70%{box-shadow:0 0 0 10px rgba(241,180,52,0)}100%{box-shadow:0 0 0 0 rgba(241,180,52,0)}}
+@media (prefers-reduced-motion:reduce){.tl-pin,.tl-pin::before{transition:none;animation:none}}
+.tl-scale{position:relative;height:14px;margin:6px 4px 0;font-size:.62rem;opacity:.8}
+.tl-scale span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+@media (max-width:600px){.brand span.t{display:none}.tl-what{font-size:.78rem}.tl-zone{font-size:.6rem}}
+
+/* ===== Startseite ===== */
+.hero{padding:28px 0 8px}
+.hero-grid{display:grid;gap:22px;align-items:center}
+@media (min-width:920px){.hero-grid{grid-template-columns:5fr 7fr}}
+.hero p.lead{font-size:1.15rem;color:var(--muted);max-width:34em}
+.hero h1{color:var(--mare);}
+:root:not([data-theme="light"]) .hero h1{color:var(--ink)}
+.machine{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:12px;border:2px solid var(--mare)}
+.mach-ctrl{display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.mach-ctrl input[type=range]{flex:1;min-width:140px;accent-color:var(--rot);height:32px}
+.mach-txt{margin-top:8px;min-height:3.2em;font-size:.98rem}
+.lessons{display:grid;gap:14px;margin:22px 0}
+@media (min-width:700px){.lessons{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1000px){.lessons{grid-template-columns:repeat(3,1fr)}}
+.lcard{display:flex;flex-direction:column;gap:6px;background:var(--surface);border-radius:var(--r);padding:16px 18px 14px;text-decoration:none;color:inherit;box-shadow:var(--shadow);border-top:8px solid var(--c,var(--mare));transition:transform .15s}
+.lcard:hover{transform:translateY(-2px)}
+.lcard .n{font-size:.85rem;font-weight:700;color:var(--muted)}
+.lcard h3{margin:0;font-size:1.15rem}
+.lcard p{margin:0;font-size:.95rem;color:var(--muted)}
+.lcard .em{font-size:2rem;line-height:1}
+.prog{height:10px;border-radius:99px;background:var(--surface2);overflow:hidden;margin-top:auto}
+.prog i{display:block;height:100%;background:var(--c,var(--oliv));border-radius:99px;width:0;transition:width .4s}
+.lcard small{color:var(--muted)}
+.how{display:grid;gap:12px;margin:8px 0 28px}
+@media (min-width:800px){.how{grid-template-columns:repeat(3,1fr)}}
+.how>div{background:var(--surface);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow)}
+.how b{display:block;margin-bottom:4px}
+
+/* ===== Buttons ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 18px;border-radius:12px;border:2px solid var(--mare);background:var(--mare);color:#fff;font-weight:600;text-decoration:none}
+.btn:hover{filter:brightness(1.1)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--mare2)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#1a1a1a}
+.btn.sm{min-height:36px;padding:4px 12px;font-size:.92rem}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.right{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.wrong{background:var(--bad);border-color:var(--bad);color:#fff;animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+/* ===== Stundenseite ===== */
+.lesson-head{padding:26px 0 6px}
+.lesson-head .kicker{font-weight:700;color:var(--muted);font-size:.95rem}
+.lesson-head h1{margin-bottom:.2em}
+.jump{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0}
+.chapter{margin:26px 0 44px}
+.ch-head{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+.ch-ico{width:58px;height:58px;flex:none;border-radius:16px;background:var(--c);display:grid;place-items:center;font-size:1.9rem;box-shadow:var(--shadow)}
+.ch-head h2{margin:0}
+.ch-head .k{font-size:.9rem;font-weight:700;color:var(--muted)}
+.goals{background:var(--surface);border-radius:var(--r);padding:12px 18px;box-shadow:var(--shadow);border-left:8px solid var(--c);margin-bottom:16px}
+.goals b{display:block;margin-bottom:2px}
+.goals ul{margin:0;padding-left:1.2em}
+.sec-title{display:flex;align-items:center;gap:10px;margin:30px 0 12px}
+.sec-title::after{content:"";flex:1;height:6px;border-radius:3px;background:repeating-linear-gradient(90deg,var(--c) 0 10px,transparent 10px 16px);opacity:.5}
+
+/* ===== Zeitreise (Karte + Text) ===== */
+.zr{display:grid;gap:14px}
+@media (min-width:980px){.zr{grid-template-columns:7fr 5fr;align-items:start}.zr-map{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--hdr) + 12px)}}
+.map-wrap{position:relative;background:var(--sea);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);border:2px solid var(--line)}
+.map-svg{display:block;width:100%;height:auto;aspect-ratio:3/2;user-select:none}
+.m-sea{fill:var(--sea)}
+.m-landp{fill:var(--landc)}
+.m-reg{stroke:#fff;stroke-opacity:.75;stroke-width:1.2px;vector-effect:non-scaling-stroke;fill-opacity:.94;transition:fill .5s}
+.m-reg.new,.m-kp.new{stroke:#111;stroke-opacity:1;stroke-width:3px;animation:glow 1.3s ease-in-out infinite alternate}
+:root[data-theme="dark"] .m-reg.new{stroke:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .m-reg.new,:root:not([data-theme="light"]) .m-kp.new{stroke:#fff}}
+@keyframes glow{from{fill-opacity:.6}to{fill-opacity:1}}
+@media (prefers-reduced-motion:reduce){.m-reg.new,.m-kp.new{animation:none}}
+.m-kp{stroke:#fff;stroke-opacity:.75;stroke-width:1.2px;vector-effect:non-scaling-stroke;fill-opacity:.94}
+.m-limes{fill:none;stroke:#1e3a8a;stroke-width:3px;stroke-dasharray:2 5;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.m-lab{fill:var(--mapink);opacity:.55;font-family:var(--font);font-weight:500;paint-order:stroke;stroke:var(--halo);stroke-linejoin:round}
+.m-lab.sea{font-style:italic;fill:#2f6fa0;opacity:.8}
+.m-city text{fill:var(--mapink);font-family:var(--font);font-weight:700;paint-order:stroke;stroke:var(--halo);stroke-linejoin:round}
+.m-city circle{fill:#fff;stroke:#111;stroke-width:2px;vector-effect:non-scaling-stroke}
+.m-route{fill:none;stroke-width:3.5px;stroke-dasharray:9 7;stroke-linecap:round;vector-effect:non-scaling-stroke;animation:dash 1.4s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-32}}
+@media (prefers-reduced-motion:reduce){.m-route{animation:none}}
+.m-rlab{font-family:var(--font);font-weight:700;paint-order:stroke;stroke:var(--halo);stroke-linejoin:round}
+.m-pick{cursor:pointer}
+.m-pick circle{fill:var(--gold);stroke:#111;stroke-width:2px;vector-effect:non-scaling-stroke}
+.m-pick text{font-family:var(--font);font-weight:800;fill:#111;text-anchor:middle;dominant-baseline:central}
+.m-pick:hover circle,.m-pick:focus circle{fill:#fff}
+.m-pick.right circle{fill:#4ade80}.m-pick.wrong circle{fill:#f87171}
+.map-badge{position:absolute;left:10px;top:10px;background:rgba(18,53,91,.92);color:#fff;border-radius:12px;padding:4px 12px;font-weight:800;font-size:1.05rem;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.map-tools{position:absolute;right:10px;top:10px;display:flex;gap:6px}
+.map-tools button{border:0;background:rgba(255,255,255,.94);color:#111;border-radius:10px;min-height:34px;padding:0 10px;font-size:.85rem;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:10px 4px 0;font-size:.85rem}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:16px;height:16px;border-radius:5px;border:1px solid rgba(0,0,0,.25);flex:none}
+.legend b.neu{background:#111;color:#fff;border-radius:6px;padding:0 6px;font-size:.7rem}
+:root[data-theme="dark"] .legend b.neu{background:#fff;color:#111}
+.step-card{background:var(--surface);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);border-top:8px solid var(--c)}
+.pins{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.pin{width:38px;height:38px;border-radius:50%;border:2px solid var(--line);background:var(--surface2);font-weight:700;font-size:.9rem;display:grid;place-items:center}
+.pin.seen{border-color:var(--c);background:color-mix(in srgb,var(--c) 18%,var(--surface))}
+.pin.on{background:var(--c);border-color:var(--c);color:#fff;transform:scale(1.12)}
+.year-pill{display:inline-block;background:var(--mare);color:#fff;font-weight:800;padding:2px 14px;border-radius:999px;font-size:1.05rem;margin-bottom:6px}
+.step-card h3{margin-bottom:.35em}
+.step-body p{margin:0 0 .7em}
+.step-body ul{margin:0 0 .8em;padding-left:1.2em}
+.step-body li{margin-bottom:.25em}
+.fact{background:color-mix(in srgb,var(--gold) 22%,var(--surface));border-radius:12px;padding:8px 12px;font-size:.95rem;margin:8px 0}
+.step-nav{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.step-nav .sp{flex:1}
+.term{border-bottom:2px dotted var(--rot);cursor:help;font-weight:600}
+.pop{position:absolute;z-index:200;max-width:min(300px,calc(100vw - 16px));background:#111;color:#fff;padding:8px 12px;border-radius:10px;font-size:.9rem;line-height:1.4;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+
+/* ===== Material ===== */
+.mat{display:grid;gap:14px;margin-top:16px}
+@media (min-width:900px){.mat.two{grid-template-columns:1fr 1fr}}
+.info{background:var(--surface);border-radius:var(--r);padding:14px 18px;box-shadow:var(--shadow);border-left:8px solid var(--gold)}
+.info h4{margin:0 0 .3em;font-size:1.05rem}
+.info p:last-child,.info ul:last-child{margin-bottom:0}
+.source{background:var(--surface2);border-radius:var(--r);padding:14px 18px 12px 22px;border:2px dashed var(--line);position:relative}
+.source::before{content:"“";position:absolute;left:8px;top:-4px;font-size:3rem;color:var(--rot);font-weight:800}
+.source cite{display:block;font-size:.88rem;color:var(--muted);font-style:normal;margin-top:6px}
+.compare{display:grid;gap:12px}
+@media (min-width:700px){.compare{grid-template-columns:1fr 1fr}}
+.compare>div{background:var(--surface);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow)}
+.compare>div:first-child{border-top:8px solid var(--rot)}
+.compare>div:last-child{border-top:8px solid var(--mare2)}
+.compare h4{margin:0 0 .4em}.compare ul{margin:0;padding-left:1.2em}
+.chain{background:var(--surface);border-radius:var(--r);padding:14px 18px;box-shadow:var(--shadow)}
+.chain-list{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.chain-item{display:flex;gap:12px;align-items:center;background:var(--surface2);border-radius:14px;padding:8px 14px;animation:pop .35s}
+.chain-item .ic{font-size:1.6rem}
+.chain-arrow{text-align:center;color:var(--rot);font-weight:800;line-height:1}
+@keyframes pop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.story{background:var(--paper);border-radius:var(--r);padding:16px 20px;box-shadow:var(--shadow);border:2px solid var(--line)}
+.story p{margin-bottom:.6em}
+.figure{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;background:var(--surface);border-radius:var(--r);padding:14px;box-shadow:var(--shadow)}
+.figure .fig{flex:1 1 130px;text-align:center;background:var(--surface2);border-radius:14px;padding:10px 8px;font-size:.92rem}
+.figure .fig .big{font-size:2.2rem;line-height:1.1;display:block}
+
+/* ===== Aufgaben ===== */
+.tasks{display:grid;gap:16px}
+.task{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;border:2px solid transparent}
+.task.solved{border-color:var(--ok)}
+.t-head{display:flex;align-items:center;gap:10px;padding:8px 16px;background:var(--surface2);font-size:.9rem}
+.t-num{font-weight:800}
+.t-type{color:var(--muted);flex:1}
+.t-star{filter:grayscale(1);opacity:.35;font-size:1.3rem;transition:all .3s}
+.t-star.on{filter:none;opacity:1;transform:scale(1.2)}
+.t-body{padding:14px 16px 8px}
+.q{font-weight:600;margin-bottom:.7em}
+.fb{margin:10px 16px 14px;padding:8px 12px;border-radius:12px;font-size:.98rem;display:none}
+.fb.ok{display:block;background:var(--okbg);color:var(--ok)}
+.fb.bad{display:block;background:var(--badbg);color:var(--bad)}
+.fb.info{display:block;background:var(--surface2);color:var(--ink)}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;padding:10px 14px;border-radius:12px;border:2px solid var(--line);background:var(--surface);min-height:46px}
+.opt:hover:not([disabled]){border-color:var(--mare2)}
+.opt.right{background:var(--okbg);border-color:var(--ok)}
+.opt.wrong{background:var(--badbg);border-color:var(--bad);opacity:.7}
+.opts.locked .opt:not(.right){opacity:.55;pointer-events:none}
+.tf-row{display:grid;gap:8px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.tf-row:last-child{border:0}
+.tf-btns{display:flex;gap:8px;flex-wrap:wrap}
+.tf-note{font-size:.92rem;color:var(--ok);min-height:1em}
+.tf-row.done .tf-q{color:var(--ok);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chip{padding:8px 14px;border-radius:12px;border:2px solid var(--mare2);background:var(--surface);min-height:42px;text-align:left}
+.chip:hover{background:var(--surface2)}
+.chip.sel{background:var(--gold);border-color:var(--gold);color:#111}
+.slots{list-style:none;margin:8px 0;padding:0;display:grid;gap:8px;counter-reset:s}
+.slot{counter-increment:s;display:flex;align-items:center;gap:10px;min-height:48px;border:2px dashed var(--line);border-radius:12px;padding:4px 8px}
+.slot::before{content:counter(s);width:28px;height:28px;border-radius:50%;background:var(--mare);color:#fff;display:grid;place-items:center;font-weight:700;flex:none;font-size:.9rem}
+.slot.ok{border:2px solid var(--ok);background:var(--okbg)}
+.slot.no{border:2px solid var(--bad);background:var(--badbg)}
+.slot .chip{border-color:transparent;background:transparent;padding:4px 6px;flex:1}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 10px}
+.mcols{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px}
+@media (max-width:520px){.mcols{gap:8px 8px}}
+.mbtn{padding:8px 10px;border-radius:12px;border:2px solid var(--line);background:var(--surface);text-align:left;min-height:46px;font-size:.95rem;position:relative}
+.mbtn.sel{border-color:var(--gold);box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 45%,transparent)}
+.mbtn[data-m]{border-width:3px}
+.mbtn[data-m="0"]{border-color:#e5484d}.mbtn[data-m="1"]{border-color:#f97316}.mbtn[data-m="2"]{border-color:#14b8a6}
+.mbtn[data-m="3"]{border-color:#8b5cf6}.mbtn[data-m="4"]{border-color:#3b82f6}.mbtn[data-m="5"]{border-color:#ca8a04}
+.mbtn[data-m="6"]{border-color:#db2777}.mbtn[data-m="7"]{border-color:#65a30d}
+.mbtn.ok{background:var(--okbg)}.mbtn.no{background:var(--badbg)}
+.gaptext{line-height:2.4}
+.gap{display:inline-block;min-width:90px;min-height:38px;padding:2px 10px;margin:0 2px;border-radius:10px;border:2px dashed var(--mare2);background:var(--surface2);vertical-align:middle;line-height:1.5}
+.gap.filled{border-style:solid;background:var(--surface);font-weight:600}
+.gap.ok{border-color:var(--ok);background:var(--okbg)}.gap.no{border-color:var(--bad);background:var(--badbg)}
+.yr{display:grid;gap:8px}
+.yr-val{font-size:1.7rem;font-weight:800;color:var(--mare2);text-align:center}
+.yr input[type=range]{width:100%;height:36px;accent-color:var(--rot)}
+.yr-nudge{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.yr-scale{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted)}
+.buckets{display:grid;gap:10px;margin:8px 0}
+@media (min-width:600px){.buckets.b2{grid-template-columns:1fr 1fr}.buckets.b3{grid-template-columns:repeat(3,1fr)}}
+.bucket{border:3px dashed var(--line);border-radius:14px;padding:8px 10px;min-height:96px;background:var(--surface2)}
+.bucket h4{margin:0 0 6px;font-size:1rem}
+.bucket:hover{border-color:var(--mare2)}
+.bucket .chip{border-color:var(--ok);background:var(--okbg);margin:0 6px 6px 0;min-height:36px;padding:4px 10px;cursor:default}
+.think .ans{background:var(--surface2);border-radius:12px;padding:10px 14px;margin-top:8px}
+
+/* ===== Heftaufgaben ===== */
+.heft-card{background:var(--paper);border-radius:6px 18px 18px 6px;box-shadow:var(--shadow);margin-bottom:14px;padding:12px 18px 12px 62px;position:relative;border:1px solid var(--line);
+  background-image:repeating-linear-gradient(transparent 0 31px,var(--paperline) 31px 32px);line-height:32px}
+.heft-card::before{content:"";position:absolute;left:44px;top:0;bottom:0;width:2px;background:var(--margin)}
+.heft-card .pen{position:absolute;left:8px;top:10px;font-size:1.6rem;line-height:1}
+.heft-card p{margin:0;line-height:32px}
+.heft-card ul{margin:0;padding-left:1.1em;line-height:32px}
+.heft-card label{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--muted);line-height:1.2;padding:6px 0 4px;cursor:pointer}
+.heft-card input{width:20px;height:20px;accent-color:var(--ok)}
+.entry{border:3px solid var(--mare2);border-radius:18px;background:var(--surface);padding:12px 18px 14px;box-shadow:var(--shadow)}
+.entry h4{margin:0 0 .4em;color:var(--mare2)}
+.entry ul{margin:0;padding-left:1.2em}
+.entry li{margin-bottom:.3em}
+
+/* ===== Lehrkraft & Fuß ===== */
+.teacher{margin:26px 0;background:var(--surface2);border-radius:var(--r);padding:10px 18px;border:2px dashed var(--line)}
+.teacher summary{cursor:pointer;font-weight:700;min-height:36px;display:flex;align-items:center}
+.teacher h4{margin:.9em 0 .2em}.teacher ul{margin:0 0 .5em;padding-left:1.2em}
+.foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:26px 0 40px}
+.done-banner{background:linear-gradient(90deg,var(--gold),#ffd97a);color:#1a1a1a;border-radius:var(--r);padding:12px 18px;font-weight:700;margin:18px 0}
+footer.site{text-align:center;color:var(--muted);font-size:.85rem;padding:0 16px 40px}
+
+/* ===== Ergänzungen (Motor) ===== */
+:root{padding-top:0;padding-bottom:0}
+body{padding-bottom:env(safe-area-inset-bottom,0px)}
+.hdr{top:0;padding-top:env(safe-area-inset-top,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+html{scroll-padding-top:calc(var(--hdr) + 10px)}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.skip{position:absolute;left:8px;top:-60px;background:var(--gold);color:#111;padding:8px 14px;border-radius:8px;z-index:300;font-weight:700}
+.skip:focus{top:8px}
+main:focus{outline:none}
+.tl-line{margin-bottom:12px}
+.tl-ost{margin-left:auto;font-size:.72rem;opacity:.75;white-space:nowrap;flex:none}
+@media (max-width:700px){.tl-ost{display:none}}
+.tl-bar{height:32px}
+.tl-zone{align-items:flex-start;padding-top:2px}
+.tl-dot{top:72%}
+.tl-pin{top:-8px}
+.tl-scale{margin-top:4px}
+.term{background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;font-weight:600;border-bottom:2px dotted var(--rot);cursor:help;text-align:inherit}
+.hint{color:var(--muted);font-size:.93rem;margin:0 0 .6em}
+.m-seap{stroke:#a89f86;stroke-width:1px;vector-effect:non-scaling-stroke}
+.m-landp{stroke:#b3a98c;stroke-width:1px;vector-effect:non-scaling-stroke}
+.m-lab,.m-city,.m-rlab{pointer-events:none}
+.m-lab{font-size:12px}
+.legend i.lim{background:none;border:0;border-top:3px dotted #1e3a8a;border-radius:0;height:0;align-self:center}
+.mapbox{display:block}
+.hdr .pills{max-width:70vw}
+.wordbank-h{font-size:.9rem;color:var(--muted);margin-top:6px}
+.gap.act{border-color:var(--gold);box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 45%,transparent)}
+.gap{font:inherit;color:inherit}
+.bucket{display:block;width:100%;text-align:left;font:inherit;color:inherit}
+.bucket .chip{cursor:default}
+.mosaic{height:10px;margin:36px 0 10px;background:repeating-linear-gradient(90deg,#F1B434 0 10px,#C4382C 10px 20px,#1D4E84 20px 30px,#EDE6D3 30px 40px);border-radius:3px}
+.done-banner.won{background:linear-gradient(90deg,#F1B434,#FFD97A);font-size:1.25rem}
+.done-banner{background:var(--surface2);border:2px solid var(--gold)}
+.foot-note{text-align:center;margin:0 0 32px}
+.how{grid-template-columns:1fr}
+@media (min-width:800px){.how{grid-template-columns:repeat(4,1fr)}}
+.opt,.chip,.mbtn,.gap,.bucket,.pin,.btn{touch-action:manipulation}
+.tf-btns .btn{min-height:44px}
+.pin{min-width:44px;min-height:44px;width:44px;height:44px}
+.pins{gap:4px}
+.map-tools button{min-height:44px}
+.tl-dot{min-width:7px}
+.fb{margin-top:6px}
+@media (max-width:979px){
+  .zr{display:block}
+  .zr-map,.zr-map .mapbox{display:contents}
+  .zr-map .map-wrap{position:sticky;top:calc(var(--hdr) + 6px);z-index:20;margin-bottom:8px}
+  .zr-map .map-svg{max-height:34vh;margin:0 auto}
+  .zr-map .legend{font-size:.78rem;gap:4px 12px;padding:0 2px 10px}
+}
+@media (max-width:600px){.pills a{font-size:.82rem;padding:6px 9px;min-height:44px}.brand{font-size:1rem}}
+.tasks .task .map-svg{max-height:none}
+.term:focus-visible,.m-pick:focus-visible{outline:3px solid var(--focus)}
+.m-pick:focus circle{stroke-width:4px}
+.hero h1{margin-top:0}
+
+@media (max-width:600px){.tl-scale span:nth-child(4),.tl-scale span:nth-child(5){display:none}}
+.m-kp{fill-opacity:1}
+
+.tl-pin{height:44px;top:-10px}
+.tl-pin::before{left:-10px;top:0;width:20px;height:20px;border-width:3px}
+.tl-pin::after{left:-1px;top:20px;height:14px}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Zum Inhalt springen</a>
+<div id="app"></div>
+<noscript><p style="padding:1em">Diese Seite braucht JavaScript.</p></noscript>
+<script>
+'use strict';
+/* ===== Hilfsfunktionen ===== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+function h(tag, attrs, ...kids) {
+  const e = document.createElement(tag);
+  if (attrs) for (const k in attrs) {
+    const v = attrs[k];
+    if (v == null || v === false) continue;
+    if (k === 'class') e.className = v;
+    else if (k === 'html') e.innerHTML = v;
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v === true ? '' : v);
+  }
+  for (const c of kids.flat(9)) {
+    if (c == null || c === false) continue;
+    e.append(c.nodeType ? c : document.createTextNode(c));
+  }
+  return e;
+}
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const shuffle = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+/* mischt so, dass nie die Lösungsreihenfolge (0,1,2,…) herauskommt */
+const shuffleNot = a => { if (a.length < 2) return [...a]; let b, n = 0; do { b = shuffle(a); } while (b.every((x, i) => x === a[i]) && ++n < 60); return b; };
+
+/* Jahreszahlen: negativ = v. Chr. */
+const fy = y => y < 0 ? (-y) + ' v. Chr.' : y + ' n. Chr.';
+
+/* Text mit Wort-Erklärung [[Wort|Erklärung]] und **fett** */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const rich = s => esc(s)
+  .replace(/\[\[(.+?)\|(.+?)\]\]/g, (m, a, b) => '<button type="button" class="term" aria-expanded="false" data-e="' + b + '">' + a + '</button>')
+  .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+const plain = s => String(s).replace(/\[\[(.+?)\|.+?\]\]/g, '$1').replace(/\*\*/g, '');
+
+/* ===== Speichern (localStorage, immer mit try/catch) ===== */
+const Store = (() => {
+  let mem = { solved: {}, heft: {} };
+  try { const r = localStorage.getItem('rom6-v1'); if (r) { const o = JSON.parse(r); if (o && typeof o === 'object') mem = { solved: o.solved || {}, heft: o.heft || {} }; } } catch (e) { /* ohne Speicher weiter */ }
+  const save = () => { try { localStorage.setItem('rom6-v1', JSON.stringify(mem)); } catch (e) { /* egal */ } };
+  return {
+    solved: id => !!mem.solved[id],
+    setSolved(id) { mem.solved[id] = 1; save(); document.dispatchEvent(new Event('rom-progress')); },
+    heft: id => !!mem.heft[id],
+    setHeft(id, v) { if (v) mem.heft[id] = 1; else delete mem.heft[id]; save(); },
+    reset() { mem = { solved: {}, heft: {} }; save(); document.dispatchEvent(new Event('rom-progress')); }
+  };
+})();
+
+/* ===== Vorlesen (Web Speech API) ===== */
+const Speech = {
+  ok: typeof window !== 'undefined' && 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined',
+  stop() { if (this.ok) try { speechSynthesis.cancel(); } catch (e) { } },
+  say(text, onend) {
+    if (!this.ok) return;
+    try {
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'de-DE'; u.rate = 0.92;
+      u.onend = u.onerror = () => onend && onend();
+      speechSynthesis.speak(u);
+    } catch (e) { onend && onend(); }
+  }
+};
+
+/* ===== Kapitel-Register (die Dateien kap1.js … kap9.js füllen CH) ===== */
+const CH = {};
+
+const GEO = {"land":{"eurasia":[[40,56],[8.5,56],[8.5,55.0],[8.6,54.0],[7.0,53.6],[5.3,53.2],[4.7,52.9],[4.4,52.0],[3.6,51.4],[2.5,51.1],[1.6,50.8],[1.5,50.2],[0.1,49.5],[-0.4,49.3],[-1.6,49.7],[-1.85,49.0],[-1.5,48.6],[-2.0,48.65],[-3.0,48.8],[-4.0,48.7],[-4.8,48.4],[-4.4,47.8],[-3.4,47.7],[-2.5,47.5],[-2.2,47.25],[-2.2,46.9],[-1.2,46.15],[-1.1,45.6],[-1.25,44.6],[-1.55,43.5],[-2.0,43.35],[-3.0,43.4],[-3.8,43.5],[-5.7,43.6],[-7.0,43.55],[-8.4,43.4],[-9.3,42.9],[-8.9,42.2],[-8.7,41.1],[-9.4,38.7],[-8.9,38.5],[-8.8,37.9],[-9.0,37.0],[-7.9,37.0],[-6.9,37.2],[-6.3,36.5],[-5.6,36.0],[-5.35,36.1],[-4.4,36.7],[-2.5,36.8],[-2.2,36.7],[-0.9,37.55],[-0.5,38.35],[0.2,38.7],[-0.3,39.45],[0.85,40.7],[1.25,41.1],[2.2,41.4],[3.2,41.9],[3.3,42.3],[3.0,42.7],[3.2,43.2],[3.7,43.4],[4.6,43.4],[5.4,43.3],[5.9,43.1],[6.7,43.4],[7.3,43.7],[8.9,44.4],[9.8,44.1],[10.3,43.55],[10.5,42.95],[11.2,42.4],[11.8,42.1],[12.3,41.7],[12.6,41.45],[13.05,41.2],[13.6,41.2],[14.25,40.85],[14.35,40.6],[14.75,40.65],[14.95,40.35],[15.3,40.0],[15.6,40.05],[15.8,39.7],[16.0,39.35],[15.85,38.6],[15.65,38.1],[16.06,37.92],[16.3,38.2],[16.6,38.8],[17.1,39.1],[16.5,39.75],[16.6,40.1],[16.8,40.35],[17.2,40.45],[17.98,40.05],[18.35,39.8],[18.5,40.15],[17.95,40.65],[16.85,41.13],[16.3,41.3],[15.9,41.6],[16.2,41.95],[15.0,42.0],[14.2,42.45],[13.5,43.6],[12.6,44.05],[12.3,44.4],[12.5,44.95],[12.3,45.4],[13.75,45.65],[13.6,45.2],[13.85,44.85],[14.4,45.3],[15.2,44.1],[15.9,43.7],[16.45,43.5],[17.4,43.05],[18.1,42.65],[19.1,42.1],[19.45,41.3],[19.45,40.45],[20.0,39.65],[20.75,38.95],[21.4,38.35],[21.8,38.4],[22.4,38.4],[23.0,38.15],[22.6,38.08],[21.75,38.25],[21.35,38.15],[21.15,37.85],[21.3,37.65],[21.65,37.25],[21.7,36.9],[21.9,36.7],[22.5,36.4],[23.2,36.45],[23.05,36.7],[22.8,37.55],[23.15,37.65],[23.0,37.9],[23.35,37.95],[23.65,37.93],[24.0,37.65],[24.0,38.15],[23.5,38.6],[22.9,39.0],[22.95,39.35],[22.6,40.1],[22.95,40.6],[23.5,40.2],[24.0,40.0],[23.9,40.55],[24.4,40.9],[25.9,40.85],[26.3,40.4],[26.2,39.9],[26.5,39.4],[26.7,39.3],[27.0,38.9],[27.1,38.4],[26.3,38.3],[27.25,37.85],[27.4,37.0],[28.2,36.85],[29.1,36.65],[29.6,36.2],[30.7,36.85],[32.0,36.5],[32.8,36.05],[34.6,36.75],[35.5,36.6],[36.15,36.7],[35.75,35.5],[35.9,34.9],[35.5,33.9],[35.2,33.3],[35.0,32.8],[34.75,32.1],[34.45,31.5],[34.25,31.3],[34.5,30.0],[40,30]],"africa":[[-10,30],[-9.7,31.5],[-9.2,32.4],[-8.5,33.4],[-6.9,34.0],[-6.3,35.0],[-5.9,35.8],[-5.3,35.9],[-4.4,35.2],[-3.0,35.25],[-2.0,35.1],[-1.0,35.5],[0.0,35.85],[1.2,36.5],[3.0,36.8],[4.5,36.9],[5.5,36.85],[7.0,37.0],[8.3,36.95],[9.8,37.3],[11.05,37.1],[10.6,36.4],[10.6,35.8],[11.1,35.5],[10.8,34.75],[10.2,33.9],[10.9,33.8],[11.1,33.5],[11.6,33.15],[13.2,32.9],[14.3,32.65],[15.1,32.4],[15.9,32.0],[16.6,31.2],[17.5,30.5],[19.0,30.3],[20.0,30.9],[20.07,32.1],[20.8,32.7],[21.7,32.9],[22.6,32.8],[23.5,32.4],[24.1,32.1],[25.2,31.6],[26.5,31.5],[27.2,31.35],[28.5,30.9],[29.9,31.2],[30.4,31.5],[31.0,31.6],[31.8,31.5],[32.3,31.3],[33.5,31.1],[34.2,31.3],[34.5,30.0]],"britain":[[-5.7,50.05],[-4.5,50.3],[-3.5,50.4],[-2.0,50.6],[-1.0,50.75],[0.2,50.75],[1.4,51.15],[1.5,51.4],[1.7,52.2],[1.7,52.7],[0.35,52.9],[0.1,53.5],[-0.1,53.7],[-0.3,54.1],[-1.15,54.6],[-1.6,55.0],[-1.7,55.6],[-2.2,56.0],[-5.0,56.0],[-5.0,55.4],[-4.8,55.0],[-3.0,54.85],[-3.3,54.3],[-3.0,53.4],[-4.5,53.35],[-4.5,52.85],[-4.1,52.4],[-5.15,51.85],[-4.0,51.6],[-3.0,51.4],[-4.2,51.2],[-5.0,50.75]],"sicily":[[12.4,37.9],[13.3,38.2],[15.0,38.1],[15.6,38.25],[15.1,37.4],[15.3,37.05],[15.1,36.7],[14.3,36.8],[12.6,37.6]],"sardinia":[[8.2,41.0],[9.2,41.25],[9.7,40.6],[9.6,39.3],[9.2,39.2],[8.6,38.9],[8.4,39.6],[8.4,40.6]],"corsica":[[8.6,42.6],[9.4,43.0],[9.5,42.4],[9.4,41.4],[9.0,41.4],[8.6,41.9]],"crete":[[23.5,35.5],[24.7,35.4],[26.3,35.2],[26.2,35.0],[24.5,35.0],[23.6,35.2]],"cyprus":[[32.3,35.0],[33.3,35.35],[34.6,35.7],[34.0,35.0],[32.9,34.6]],"mallorca":[[2.4,39.55],[3.3,39.9],[3.5,39.6],[3.0,39.3],[2.6,39.4]],"malta":[[14.3,35.95],[14.55,35.95],[14.5,35.8],[14.3,35.85]],"rhodes":[[27.7,36.4],[28.2,36.4],[28.2,35.9],[27.8,36.0]]},"blacksea":[[28.0,41.25],[28.1,42.5],[28.6,43.8],[29.0,44.6],[29.7,45.2],[30.3,46.3],[31.5,46.6],[33.3,46.1],[32.5,45.3],[33.5,44.5],[35.3,45.1],[36.6,45.3],[38.0,46.0],[38.0,47.1],[40,47.2],[40,41.4],[38.0,40.9],[36.5,41.3],[35.0,42.0],[33.0,42.0],[31.5,41.2],[29.5,41.15],[28.9,41.2]],"marmara":[[26.6,40.45],[27.6,40.35],[28.6,40.35],[29.5,40.7],[29.0,41.0],[28.0,40.95],[27.0,40.65]],"limes":[[4.0,52.0],[6.1,51.8],[7.0,50.6],[8.2,49.6],[7.6,47.6],[9.5,47.5],[10.0,48.4],[12.1,49.0],[14.0,48.3],[16.4,48.2],[19.0,47.6],[19.4,45.5],[20.5,44.8],[22.5,44.6],[25.0,43.8],[27.0,44.1],[28.0,44.2],[29.5,45.2]],"regions":[{"id":"stadt","name":"Stadt Rom","year":-753,"phase":1,"half":"W","poly":[[12.72,41.9],[12.691,42.01],[12.61,42.091],[12.5,42.12],[12.39,42.091],[12.309,42.01],[12.28,41.9],[12.309,41.79],[12.39,41.709],[12.5,41.68],[12.61,41.709],[12.691,41.79]]},{"id":"umland","name":"Umland von Rom","year":-509,"phase":1,"half":"W","poly":[[13.2,41.9],[13.121,42.16],[12.899,42.369],[12.578,42.485],[12.222,42.485],[11.901,42.369],[11.679,42.16],[11.6,41.9],[11.679,41.64],[11.901,41.431],[12.222,41.315],[12.578,41.315],[12.899,41.431],[13.121,41.64]]},{"id":"veji","name":"Veji und Südetrurien","year":-396,"phase":1,"half":"W","poly":[[11.7,42.45],[12.9,42.45],[12.9,41.9],[11.7,41.9]]},{"id":"latium","name":"Latium","year":-338,"phase":1,"half":"W","poly":[[11.9,42.4],[12.7,42.5],[13.4,42.1],[13.9,41.6],[13.8,41.0],[13.0,40.7],[12.0,41.0],[11.7,41.6]]},{"id":"mitte","name":"Mittelitalien","year":-290,"phase":2,"half":"W","poly":[[10.0,43.8],[11.3,44.2],[12.6,44.15],[12.9,44.4],[14.0,43.9],[15.0,42.2],[16.5,41.7],[15.7,41.3],[14.9,41.1],[14.3,40.7],[13.0,40.0],[10.0,40.0]]},{"id":"sued","name":"Süditalien","year":-272,"phase":2,"half":"W","poly":[[14.3,40.7],[14.9,41.1],[15.7,41.3],[16.5,41.7],[17.2,41.9],[18.8,41.0],[18.8,39.5],[17.6,38.0],[16.4,37.5],[15.85,37.7],[15.75,38.35],[15.5,38.7],[15.2,39.5],[14.6,40.0]]},{"id":"nord","name":"Poebene (Gallia Cisalpina)","year":-222,"phase":3,"half":"W","poly":[[7.3,43.5],[6.9,44.6],[7.0,45.9],[7.9,46.3],[10.0,46.7],[12.3,46.7],[13.6,46.4],[13.6,45.5],[13.0,44.9],[12.9,44.4],[12.0,43.9],[10.0,43.6],[8.5,43.9]]},{"id":"sizilien","name":"Sizilien","year":-241,"phase":3,"half":"W","poly":[[11.9,36.3],[15.7,36.3],[15.7,38.5],[11.9,38.5]]},{"id":"sardkorsika","name":"Sardinien und Korsika","year":-238,"phase":3,"half":"W","poly":[[8.0,43.3],[9.9,43.3],[9.9,38.7],[8.0,38.7]]},{"id":"hispania_o","name":"Hispanien (Ost und Süd)","year":-206,"phase":3,"half":"W","poly":[[-7.2,36.05],[-7.2,38.3],[-5.0,39.0],[-3.5,40.5],[-1.5,41.8],[0.3,42.3],[2.0,42.35],[3.2,42.35],[3.6,41.3],[2.0,40.6],[1.9,38.5],[0.0,38.0],[-0.8,37.3],[-2.3,36.5],[-4.4,36.3],[-5.5,36.05]]},{"id":"africa_prov","name":"Africa (Gebiet um Karthago)","year":-146,"phase":3,"half":"W","poly":[[7.5,30.0],[7.5,37.7],[11.6,37.7],[16.5,32.5],[16.5,30.0]]},{"id":"graecia","name":"Makedonien und Griechenland","year":-146,"phase":3,"half":"E","poly":[[19.3,36.0],[19.3,40.4],[20.6,41.2],[21.5,41.9],[23.2,42.0],[24.8,41.6],[24.9,40.4],[24.6,39.5],[24.3,36.0]]},{"id":"balearen","name":"Balearen","year":-123,"phase":4,"half":"W","poly":[[2.2,39.0],[4.5,39.0],[4.5,40.3],[2.2,40.3]]},{"id":"gallia_n","name":"Südgallien (Provence)","year":-121,"phase":4,"half":"W","poly":[[2.0,42.3],[2.0,43.8],[2.8,44.5],[3.6,45.3],[4.8,46.0],[6.2,46.3],[7.0,45.8],[7.0,44.5],[7.6,43.6],[7.6,42.6]]},{"id":"asia","name":"Asia (Pergamon)","year":-133,"phase":4,"half":"E","poly":[[25.8,40.2],[27.3,40.5],[29.5,40.0],[30.5,38.5],[30.0,37.0],[28.4,36.6],[26.0,36.5]]},{"id":"kyrene","name":"Kyrene","year":-74,"phase":4,"half":"E","poly":[[19.0,31.0],[19.0,33.5],[25.0,33.5],[25.0,31.0]]},{"id":"kreta","name":"Kreta","year":-67,"phase":4,"half":"E","poly":[[23.2,34.8],[26.6,34.8],[26.6,35.8],[23.2,35.8]]},{"id":"syrien","name":"Syrien und Palästina","year":-64,"phase":4,"half":"E","poly":[[34.0,29.9],[34.0,33.0],[34.9,34.0],[35.3,35.3],[35.5,36.0],[36.3,36.9],[40,37.2],[40,29.9]]},{"id":"anatolien","name":"Kleinasien (Bithynien, Pontus, Kilikien)","year":-63,"phase":4,"half":"E","poly":[[25.8,36.4],[25.8,41.5],[40,41.5],[40,37.2],[36.3,36.9],[35.6,36.0],[33.0,35.9],[30.0,35.9],[28.0,36.2]]},{"id":"zypern","name":"Zypern","year":-58,"phase":4,"half":"E","poly":[[32.0,34.3],[34.9,34.3],[34.9,35.85],[32.0,35.85]]},{"id":"illyrien","name":"Illyrien (Küste Dalmatiens)","year":-59,"phase":4,"half":"W","poly":[[13.6,45.8],[15.0,45.6],[16.5,44.6],[17.8,43.6],[19.0,43.0],[20.3,42.3],[20.4,41.2],[19.4,40.3],[19.0,41.7],[17.5,42.6],[16.2,43.2],[15.0,43.9],[13.9,44.7]]},{"id":"gallia","name":"Gallien (Frankreich, Belgien, Schweiz)","year":-51,"phase":4,"half":"W","poly":[[-1.78,43.37],[-2.2,43.9],[-5.0,44.6],[-5.0,49.6],[-1.0,50.3],[0.6,50.4],[1.7,50.95],[2.6,51.4],[3.6,51.7],[4.6,52.1],[5.5,52.0],[6.1,51.8],[6.9,51.0],[7.1,50.7],[7.5,50.3],[8.2,49.6],[8.3,49.0],[7.6,47.6],[8.5,47.7],[9.0,46.9],[7.0,45.9],[7.0,44.5],[7.6,43.0],[3.6,42.3],[3.2,42.45],[2.0,42.45],[1.0,42.7],[-0.5,42.85]]},{"id":"numidien","name":"Numidien (Afrika Nova)","year":-46,"phase":4,"half":"W","poly":[[1.0,30.0],[1.0,37.6],[7.6,37.6],[7.6,30.0]]},{"id":"aegypten","name":"Ägypten","year":-30,"phase":5,"half":"E","poly":[[25.0,29.9],[25.0,32.5],[32.6,32.5],[32.6,29.9]]},{"id":"hispania_n","name":"Hispanien (ganze Halbinsel)","year":-19,"phase":5,"half":"W","poly":[[-10.0,36.0],[-10.0,44.2],[-1.9,44.0],[-1.8,43.3],[-0.5,42.85],[1.0,42.7],[2.0,42.45],[3.2,42.45],[3.6,42.0],[3.6,41.0],[1.9,40.6],[1.9,38.6],[0.0,38.2],[-0.8,37.3],[-2.3,36.5],[-5.5,36.0]]},{"id":"alpen","name":"Alpenländer (Raetien, Noricum)","year":-15,"phase":5,"half":"W","poly":[[7.0,46.0],[8.5,47.7],[9.8,47.5],[10.0,48.4],[12.1,48.95],[14.0,48.3],[16.4,48.15],[16.5,46.5],[13.6,46.4],[12.3,46.7],[10.0,46.7],[7.9,46.3]]},{"id":"moesien","name":"Moesien (Balkan bis Donau)","year":6,"phase":5,"half":"E","poly":[[19.4,45.0],[20.5,44.9],[22.5,44.7],[25.0,43.9],[27.0,44.2],[28.9,44.4],[28.9,43.0],[28.0,42.7],[26.5,42.7],[24.7,42.2],[23.2,42.0],[21.5,41.9],[20.6,41.0],[19.4,40.3],[19.4,42.3]]},{"id":"pannonien","name":"Pannonien und Dalmatien","year":9,"phase":5,"half":"W","poly":[[13.6,46.4],[16.4,48.15],[19.05,47.9],[19.05,45.8],[19.4,45.0],[19.4,42.3],[18.6,42.2],[17.5,42.6],[16.2,43.2],[15.0,43.9],[13.9,44.7],[13.6,45.6]]},{"id":"britannien","name":"Britannien","year":43,"phase":6,"half":"W","poly":[[-6.0,49.8],[-6.0,55.0],[2.0,55.0],[2.0,49.8]]},{"id":"mauretanien","name":"Mauretanien","year":44,"phase":6,"half":"W","poly":[[-10.0,30.0],[-10.0,36.0],[1.0,36.6],[1.0,30.0]]},{"id":"thrakien","name":"Thrakien","year":46,"phase":6,"half":"E","poly":[[24.7,40.0],[24.7,42.3],[26.5,42.7],[28.4,42.7],[28.4,41.2],[26.9,40.3]]},{"id":"decumates","name":"Dekumatland (zwischen Rhein und Donau)","year":85,"phase":6,"half":"W","poly":[[8.2,49.7],[8.5,47.7],[10.0,48.4],[11.5,49.0],[10.5,49.9],[9.0,50.2]]},{"id":"dakien","name":"Dakien","year":106,"phase":6,"half":"E","poly":[[21.4,45.0],[22.6,44.6],[24.5,43.8],[24.8,45.4],[26.5,45.6],[26.0,47.2],[24.0,47.8],[22.6,47.2],[21.4,46.2]],"until":271}],"kingdoms":[{"id":"angelsachsen","name":"Angeln und Sachsen","year":449,"color":"#84cc16","regions":["britannien"]},{"id":"sueben","name":"Sueben","year":409,"color":"#fb7185","poly":[[-10,41.8],[-10,44.0],[-6.5,44.0],[-6.5,41.8]]},{"id":"westgoten","name":"Westgoten","year":418,"color":"#dc2626","regions":["hispania_o","hispania_n","gallia_n"],"poly":[[-5.0,44.6],[-2.0,47.6],[1.5,47.6],[3.0,44.0],[2.0,43.0],[-1.8,43.4]]},{"id":"vandalen","name":"Vandalen","year":439,"color":"#a855f7","regions":["africa_prov","numidien","sardkorsika","balearen"]},{"id":"burgunder","name":"Burgunder","year":443,"color":"#14b8a6","poly":[[3.0,44.0],[3.0,47.6],[7.6,47.6],[7.0,45.9],[7.0,44.5],[7.6,43.6],[4.0,43.0]]},{"id":"franken","name":"Franken (und Reste Roms in Gallien)","year":455,"color":"#0ea5e9","poly":[[-5.0,47.6],[-5.0,49.6],[-1.0,50.3],[0.6,50.4],[1.7,50.95],[2.6,51.4],[3.6,51.7],[4.6,52.1],[6.1,51.8],[7.5,50.3],[8.3,49.0],[7.6,47.6],[3.0,47.6],[-2.0,47.6]]},{"id":"andere","name":"Andere Stämme (Alemannen, Ostgoten, Mauren)","year":455,"color":"#94a3b8","regions":["decumates","pannonien","mauretanien"]},{"id":"odoaker","name":"Odoaker (Italien)","year":476,"color":"#eab308","regions":["stadt","umland","veji","latium","mitte","sued","nord","sizilien","alpen","illyrien"]}],"marks":{"rom":[12.5,41.9,"Rom"],"karthago":[10.3,36.85,"Karthago"],"syrakus":[15.3,37.05,"Syrakus"],"messina":[15.55,38.2,"Messina"],"tarent":[17.2,40.45,"Tarent"],"cannae":[16.15,41.3,"Cannae"],"zama":[9.4,36.0,"Zama"],"karthago_nova":[-0.98,37.6,"Neu-Karthago"],"alesia":[4.5,47.5,"Alesia"],"rubikon":[12.4,44.1,"Rubikon"],"pharsalos":[22.4,39.3,"Pharsalos"],"alexandria":[29.9,31.2,"Alexandria"],"actium":[20.75,38.95,"Aktium"],"korinth":[22.9,37.9,"Korinth"],"pergamon":[27.2,39.1,"Pergamon"],"numantia":[-2.45,41.8,"Numantia"],"veji":[12.4,42.0,"Veji"],"capua":[14.25,41.1,"Capua"],"athen":[23.7,38.0,"Athen"],"konstantinopel":[28.98,41.0,"Konstantinopel"],"ravenna":[12.2,44.4,"Ravenna"],"mailand":[9.2,45.5,"Mailand"],"trier":[6.65,49.75,"Trier"],"teutoburg":[8.5,52.1,"Teutoburger Wald"],"adrianopel":[26.55,41.7,"Adrianopel"],"chalons":[4.37,48.96,"Katalaunische Felder"],"mainz":[8.3,50.0,"Mainz"],"aquae":[5.45,43.5,"Aquae Sextiae"],"kap_aegates":[12.2,37.9,"Ägatische Inseln"],"sagunt":[-0.28,39.7,"Sagunt"],"lilybaeum":[12.4,37.8,"Lilybaeum"],"utica":[10.05,37.05,"Utica"],"york":[-1.1,53.95,"Eboracum"],"toulouse":[1.45,43.6,"Toulouse"],"tiber":[12.3,42.3,"Tiber"],"benevent":[14.78,41.13,"Benevent"],"trasimen":[12.1,43.15,"Trasimenischer See"],"philippi":[24.3,41.0,"Philippi"],"sinope":[35.15,42.0,"Pontus"],"aquileia":[13.4,45.8,"Aquileia"],"mesopotamien":[39.5,35.5,"Weiter nach Osten →"]},"routes":{"hannibal":{"label":"Hannibals Weg","color":"#dc2626","pts":[[-0.98,37.6],[0.9,40.7],[3.0,42.4],[4.8,43.9],[5.9,45.1],[7.1,45.1],[8.9,45.2],[10.5,44.5],[12.1,43.15],[16.15,41.3]]},"scipio":{"label":"Scipio nach Afrika","color":"#2563eb","pts":[[12.4,37.8],[10.05,37.05],[9.4,36.0]]},"hunnen":{"label":"Die Hunnen","color":"#f97316","pts":[[40,50.5],[33,49],[27,47.5],[22,47.2]]},"goten":{"label":"Goten","color":"#dc2626","pts":[[26.5,41.7],[21.0,42.5],[14.5,45.6],[12.5,41.9]]},"vandalen":{"label":"Vandalen","color":"#a855f7","pts":[[8.3,50.0],[3.0,47.5],[0.0,44.5],[-4.0,40.5],[-5.6,36.5],[3.0,36.8],[10.3,36.85]]},"vandalen_west":{"label":"Vandalen, Sueben, Alanen","color":"#a855f7","pts":[[8.3,50.0],[3.0,47.5],[0.0,44.5],[-4.0,40.5],[-5.6,36.5]]},"vandalen_rom":{"label":"Vandalen plündern Rom","color":"#a855f7","pts":[[10.3,36.85],[12.5,41.9]]},"attila":{"label":"Attila","color":"#f97316","pts":[[19.0,47.5],[10.5,48.5],[4.4,48.9]]},"caesar_gallien":{"label":"Caesar in Gallien","color":"#2563eb","pts":[[7.3,43.7],[4.8,45.5],[4.5,47.5],[3.0,49.0]]}}};
+/* Kapitel 1 – Gründung Roms (Stunde 1) */
+CH.k1 = {
+  id: 'k1', emoji: '🐺', color: '#C4382C', kicker: 'Stunde 1 · Kapitel 1', title: 'Die Gründung Roms',
+  goals: ['Du kannst Jahre vor und nach Christus richtig ordnen.', 'Du kannst die Sage von Romulus und Remus erzählen.', 'Du weißt, wie aus dem König-Staat eine Republik wurde.'],
+  steps: [
+    { y: -753, yl: '753 v. Chr. (Sage)', t: 'Die Sage von Romulus und Remus', s: 'Romulus gründet Rom (Sage)', view: [12.5, 41.9, 9], marks: ['tiber'],
+      txt: ['Vor etwa 2800 Jahren: Eine Wolfin findet am Ufer des Flusses Tiber einen Korb mit zwei ausgesetzten Kindern.',
+            'Die Wölfin wurde vom Vater der Zwillinge, dem Kriegsgott Mars, gesandt.',
+            'Die Wölfin säugt die Kinder wie ihre eigenen Jungen, so uberleben sie.',
+            'Später nimmtein Hirte die Kinder Romulus und Remus auf.',
+            'Als Erwachsene gründen sie im Jahre 753 v. Chr. am Ufer des Tiber eine neue Stadt mit dem Namen Rom.'],
+      fact: 'Die Römer feierten den Geburtstag ihrer Stadt jedes Jahr am 21. April.' },
+    { y: -750, about: true, t: 'Was sagen die Forscher?', s: 'Dörfer auf den sieben Hügeln', view: [12.5, 41.9, 9], marks: ['tiber'], pulse: [],
+      txt: ['Viele Forscher haben in der Erde gegraben, um Hinweise auf die Gründung Roms zu finden. Sie fanden Reste von Hütten aus dem 8. Jahrhundert v. Chr.',
+        'Auf den sieben Hügeln am [[Tiber|Der Fluss, an dem Rom liegt.]] lebten laut den Forschern Menschen in kleinen Dörfern.',
+        'Die Dörfer wuchsen mit der Zeit zusammen. So entstand langsam die Stadt Rom.',
+        'Die Gründung fand also nicht an einem einzelnen Tag statt. Es war ein langer Weg.'],
+      fact: 'Bei Rom gab es eine gute Stelle zum Überqueren des Flusses Tiber. Das war gut für den Handel.' },
+    { y: -616, about: true, t: 'Etruskische Könige machen Rom zur Stadt', s: 'Etruskische Könige', view: [12.3, 42.4, 12], marks: ['veji'], pulse: [],
+      txt: ['Im Norden Roms lebten die [[Etrusker|Ein Volk in Mittelitalien. Sie hatten große Städte und waren gute Handwerker.]].',
+        'Etruskische Könige herrschten nun auch in Rom. Der erste war nach der Überlieferung Tarquinius Priscus, um 616 v. Chr.',
+        'Unter den Königen wurde Rom eine richtige Stadt. Es gab Tempel und Straßen.',
+        'Auch einen großen Abwasserkanal baute man: die [[Cloaca Maxima|Der große Abwasserkanal Roms. Er leitete Wasser aus dem Sumpf in den Tiber.]].',
+        'Der letzte König hieß Tarquinius Superbus.'] },
+    { y: -509, t: 'Die Könige werden vertrieben', s: 'Ende der Königszeit', view: [12.4, 41.9, 12],
+      txt: ['Nach der Überlieferung war der letzte König hart und ungerecht. Die Adligen vertrieben ihn im Jahr 509 v. Chr aus Rom.',
+        'Rom wollte nie wieder einen König haben.',
+        'Nach und nach wurde Rom zu einer [[Republik|Das Wort kommt von „res publica“ = „Sache des Volkes“. Gewählte Männer regieren, kein König.]].',
+        'Das Wort „res publica“ heißt: „Sache des Volkes“.'] },
+    { y: -509, t: 'Wer regiert in der Republik?', s: 'Konsuln und Senat', view: [12.4, 41.9, 12], pulse: [],
+      txt: ['Zwei [[Konsuln|Die beiden obersten Beamten Roms. Sie wurden für ein Jahr gewählt.]] leiten den Staat. Sie werden nur für ein Jahr gewählt.',
+        'So kann keiner zu mächtig werden. Beide können „Nein“ zum anderen sagen.',
+        'Der [[Senat|Der Rat der Adligen. Er beriet die Konsuln.]] berät die Konsuln. Im Senat sitzen erfahrene Männer, meist Adlige.',
+        'Am Anfang bestimmen vor allem die Adligen. Die einfachen Leute haben wenig Macht. Das gibt bald Streit (Stunde 3).'] }
+  ],
+  material: [
+    { t: 'fig', pre: true, title: 'Zeitrechnung – so zählt man Jahre', items: [
+      { big: '⏪', text: 'Vor Christus zählt rückwärts. 753 v. Chr. liegt früher als 509 v. Chr.' },
+      { big: '0️⃣🚫', text: 'Ein Jahr 0 gibt es nicht. Auf 1 v. Chr. folgt 1 n. Chr.' },
+      { big: '💯', text: 'Ein Jahrhundert hat 100 Jahre. „Im 8. Jh. v. Chr.“ heißt: 800 bis 701 v. Chr.' }] },
+    { t: 'vergleich', title: 'Sage oder Forschung?', left: { h: '🐺 Die Sage sagt', items: ['Romulus gründet Rom an einem Tag.', 'Das Jahr ist 753 v. Chr.', 'Eine Wölfin rettet die Zwillinge.'] }, right: { h: '🔎 Die Forscher sagen', items: ['Rom wächst langsam aus Dörfern.', 'Das geschah im 8. Jh. v. Chr.', 'Die Hügel am Tiber waren gut zu besiedeln.'] } },
+    { t: 'info', title: '🏛️ Die Republik in Kürze', list: ['Zwei **Konsuln** führen den Staat – nur für ein Jahr.', 'Der **Senat** berät sie.', 'Am Anfang haben nur Adlige die Macht.', 'Das lateinische Wort: „res publica“ = Sache des Volkes.'] }
+  ],
+  tasks: [
+    { t: 'mc', q: 'Was ist älter: 753 v. Chr. oder 509 v. Chr.?', opts: ['753 v. Chr. ist älter.', '509 v. Chr. ist älter.', 'Beide sind gleich alt.'], a: 0, why: 'Bei „vor Christus“ zählt man rückwärts. Große Zahl = früher.', tip: 'Bei „v. Chr.“ zählt man rückwärts. Was heißt das für die großen Zahlen?' },
+    { t: 'tf', q: 'Zeitrechnung: Stimmt das?', items: [
+      { s: '753 v. Chr. liegt früher als 509 v. Chr.', a: true, why: 'Bei v. Chr. wird die Zahl kleiner, je später es wird.' },
+      { s: 'Es gab ein Jahr 0.', a: false, why: 'Nach 1 v. Chr. kam sofort 1 n. Chr.' },
+      { s: 'Ein Jahrhundert hat 100 Jahre.', a: true },
+      { s: 'Das 8. Jh. v. Chr. sind die Jahre 800 bis 701 v. Chr.', a: true, why: 'Das 1. Jh. wäre 100 bis 1 v. Chr.' }] },
+    { t: 'year', q: 'Nach der Sage wurde Rom gegründet. Welches Jahr ist das? Stelle es auf dem Zeitstrahl ein.', a: -753, tol: 3, min: -900, max: -400, why: '753 v. Chr. gilt als Gründungsjahr (nach der Sage).', tip: 'Schau in die erste Station der Zeitreise.' },
+    { t: 'order', q: 'Bringe die Ereignisse in die richtige Reihenfolge. Das Früheste kommt zuerst.', items: ['Romulus gründet nach der Sage Rom.', 'Etruskische Könige herrschen in Rom.', 'Der letzte König wird vertrieben.', 'Zwei Konsuln führen die Republik.'], why: 'Erst die Sage, dann Könige, dann die Republik.' },
+    { t: 'gap', q: 'Fülle den Lückentext.', text: 'Rom liegt am Fluss {0}. Nach der Sage gründete {1} die Stadt. Im Jahr 509 v. Chr. wurde der letzte König {2}. Danach war Rom eine {3}.', words: ['Tiber', 'Romulus', 'vertrieben', 'Republik'], extra: ['Nil', 'Caesar', 'Kaiserreich'], why: 'Rom liegt am Tiber, wurde von Romulus gegründet und wurde zur Republik.' },
+    { t: 'match', q: 'Ordne die Begriffe zu.', pairs: [['Konsul', 'oberster Beamter für ein Jahr'], ['Senat', 'Rat der Adligen'], ['Republik', '„Sache des Volkes“'], ['Etrusker', 'Volk nördlich von Rom']], why: 'Diese vier Wörter brauchst du oft.' },
+    { t: 'mc', q: 'Warum gibt es zwei Konsuln und nicht nur einen?', opts: ['Keiner soll zu mächtig werden.', 'Rom hatte zu viele Könige.', 'Ein Konsul war für den Krieg, einer für das Essen.'], a: 0, why: 'Zwei Konsuln kontrollieren sich gegenseitig – und nach einem Jahr ist Schluss.', tip: 'Denke an das, was die Römer nach den Königen vermeiden wollten.' }
+  ],
+  heft: [
+    'Zeichne einen Zeitstrahl von 800 v. Chr. bis 0 (1 cm = 100 Jahre). Trage **753 v. Chr.** und **509 v. Chr.** ein. Schreibe dazu, was damals geschah.',
+    'Erzähle die Sage von Romulus und Remus in vier Sätzen. Nenne dazu, was die Forscher dazu sagen.',
+    'Erkläre: Was ist eine Republik? Nenne zwei Unterschiede zwischen einem König und einem Konsul.'
+  ],
+  entry: { title: 'Die Gründung Roms', items: ['**Nach der Sage** gründete Romulus Rom im Jahr **753 v. Chr.** am Tiber.', '**Forscher:** Aus kleinen Dörfern auf den sieben Hügeln wurde langsam eine Stadt.', 'Von etwa **616 bis 509 v. Chr.** herrschten etruskische Könige.', '**509 v. Chr.:** Der letzte König wird vertrieben. Rom wird eine **Republik** („Sache des Volkes“).', 'Zwei **Konsuln** regieren für ein Jahr. Der **Senat** berät sie.'] },
+  teacher: {
+    plan: [['5 Min', 'Einstieg: Zeitstrahl-Regeln (v. Chr. zählt rückwärts, kein Jahr 0). Aufgaben 1–3 am Bildschirm.'], ['8 Min', 'Zeitreise gemeinsam am Beamer: Sage und Forschung vergleichen (Station 1 und 2).'], ['5 Min', 'Stationen 3–5 selbstständig lesen (Partnerarbeit). Wort-Erklärungen anklicken.'], ['2 Min', 'Aufgaben 4–7. Restliche Aufgaben und Heftaufgaben bei Bedarf als Hausaufgabe.']],
+    sol: ['Heftaufgabe 1: Zeitstrahl mit Einteilung 100 Jahre = 1 cm; 753 v. Chr. bei etwa 0,5 cm von links, 509 v. Chr. bei etwa 2,9 cm von links.', 'Heftaufgabe 2: Zwillinge – Wölfin – Streit – Romulus gründet und tötet Remus. Forscher: Dörfer wachsen zusammen, kein einzelner Tag.', 'Heftaufgabe 3: Republik = Sache des Volkes, gewählte Amtsträger. König: auf Lebenszeit, erblich. Konsul: nur ein Jahr, zwei Personen, gewählt.'],
+    diff: ['Leichter: Aufgaben 1, 3 und 5 zuerst; Stationen mit Vorlesefunktion hören.', 'Schwerer: Zusatzfrage „Warum ist die Gründungssage wohl erst später erfunden worden?“']
+  }
+};
+
+/* Kapitel 2 – Ausbreitung in Italien (Stunde 1) */
+CH.k2 = {
+  id: 'k2', emoji: '🛣️', color: '#EA580C', kicker: 'Stunde 1 · Kapitel 2', title: 'Rom erobert Italien',
+  goals: ['Du kannst mit Jahreszahlen erklären, wie Rom Italien eroberte.', 'Du kannst sagen, was Bundesgenossen sind.', 'Du weißt, warum Straßen für Rom wichtig waren.'],
+  steps: [
+    { y: -396, t: 'Rom erobert Veji', s: 'Eroberung von Veji', view: [12.4, 42.3, 14], marks: ['veji'],
+      txt: ['Nördlich von Rom liegt die reiche Etruskerstadt [[Veji|Eine Etruskerstadt etwa 15 km nördlich von Rom.]].', 'Rom und Veji kämpften lange um Land und Macht.', 'Im Jahr 396 v. Chr. eroberten die Römer Veji.', 'Rom bekam viel neues Land. Es wurde stärker als seine Nachbarn.'] },
+    { y: -390, yl: 'um 390 v. Chr.', t: 'Gallier plündern Rom', s: 'Gallier plündern Rom', view: [12.5, 43.0, 22], marks: [], pulse: [],
+      txt: ['Von Norden kamen die Gallier. Das waren Krieger aus Keltenstämmen.', 'Nach der Überlieferung besiegten sie die Römer und plünderten die Stadt. Das war um 390 v. Chr.', 'Nur das [[Kapitol|Der Burgberg Roms mit dem wichtigsten Tempel.]] hielt stand.', 'Die Römer bauten danach eine starke Stadtmauer. Sie wollten nie wieder überrascht werden.'],
+      fact: 'Laut Sage warnten nachts Gänse auf dem Kapitol die Römer. So wurde die Burg gerettet.' },
+    { y: -338, t: 'Latium wird römisch', s: 'Latinerbund aufgelöst', view: [12.8, 41.7, 15],
+      txt: ['Rom hatte Nachbarn, die sprachen fast wie die Römer. Man nennt sie [[Latiner|Die Bewohner der Landschaft Latium. Sie sprachen fast die gleiche Sprache wie die Römer.]].', 'Die Latiner bildeten einen Bund. Sie wollten nicht von Rom abhängig sein.', 'Rom gewann den Krieg. Im Jahr 338 v. Chr. wurde der Latinerbund aufgelöst.', 'Latium gehörte jetzt zu Rom.'] },
+    { y: -312, t: 'Die Via Appia entsteht', s: 'Bau der Via Appia', view: [13.6, 41.3, 14], marks: ['capua'], pulse: [],
+      txt: ['Rom baute eine breite Straße nach Süden. Sie hieß Via Appia. Das war 312 v. Chr.', 'Sie führte von Rom bis nach Capua und später weiter bis zur Hafenstadt Brindisi.', 'Auf der Straße kamen Soldaten schnell voran. Auch Händler nutzten sie.', 'Das römische Straßennetz hielt das Reich zusammen.'],
+      fact: 'Die Römer nannten die Via Appia „Königin der Straßen“.' },
+    { y: -290, t: 'Kriege gegen die Samniten', s: 'Samnitenkriege enden', view: [13.8, 41.6, 22], marks: ['benevent'],
+      txt: ['In den Bergen Mittelitaliens lebten die [[Samniten|Ein starkes Bergvolk in Mittel- und Süditalien.]].', 'Rom kämpfte von 343 bis 290 v. Chr. gegen sie. Es waren drei lange Kriege.', 'Die Römer verloren Schlachten, aber sie gaben nicht auf.', 'Im Jahr 290 v. Chr. war Mittelitalien römisch.'] },
+    { y: -280, t: 'Pyrrhus kommt aus Griechenland', s: 'Krieg gegen Pyrrhus beginnt', view: [16, 40.6, 18], marks: ['tarent', 'benevent'], pulse: [],
+      txt: ['Im Süden lagen reiche griechische Städte, zum Beispiel [[Tarent|Eine reiche griechische Hafenstadt im Süden Italiens.]].', 'Tarent rief König Pyrrhus um Hilfe. Er kam mit Elefanten und einem großen Heer.', 'Von 280 bis 275 v. Chr. kämpfte er gegen Rom. Er gewann zwei Schlachten.', 'Aber seine Verluste waren riesig. Seitdem sagt man: **Pyrrhussieg**. Das ist ein Sieg mit sehr hohen Verlusten.'] },
+    { y: -272, t: 'Tarent fällt – Süditalien ist römisch', s: 'Fall von Tarent', view: [15.5, 40.5, 16], marks: ['tarent'],
+      txt: ['Pyrrhus gab auf und zog ab. Rom war zu zäh für ihn.', 'Im Jahr 272 v. Chr. fiel Tarent an Rom.', 'Damit gehörte auch Süditalien zu Rom.', 'Rom war nun die stärkste Macht in Italien.'] },
+    { y: -264, t: 'Rom beherrscht Italien', s: 'Bundesgenossen-System', view: [12.5, 42.3, 24], marks: ['rubikon'], pulse: [],
+      txt: ['Um 264 v. Chr. gehörte Rom die Halbinsel bis etwa zum Fluss Arno und zum Rubikon.', 'Rom machte nicht alle zu Römern. Viele Städte wurden [[Bundesgenossen|Städte, die mit Rom einen Vertrag hatten. Sie blieben selbstständig, mussten aber Soldaten stellen.]].', 'Sie stellten Soldaten für Roms Heer. Dafür bekamen sie Schutz.', 'An wichtigen Orten gründete Rom neue Städte, [[Kolonien|Neue Städte, in denen sich Römer ansiedelten. Sie sicherten das Land.]].'] }
+  ],
+  material: [
+    { t: 'info', title: '👥 Wer gehört wozu?', list: ['**Römische Bürger:** haben alle Rechte. Sie wählen und dürfen Ämter haben.', '**Latiner:** haben teils die gleichen Rechte wie Bürger, zum Beispiel beim Handel.', '**Bundesgenossen:** haben einen Vertrag mit Rom. Sie bleiben selbstständig, stellen aber Soldaten.'] },
+    { t: 'quelle', title: '📜 Die Gänse auf dem Kapitol (nacherzählt)', text: 'Die Gallier schlichen nachts den Burgberg hinauf. Die Wachen schliefen. Doch heilige Gänse begannen laut zu schnattern. Ein Römer namens Manlius wachte auf und warf die Angreifer den Hang hinunter. So wurde die Burg gerettet.', cite: 'Nach dem römischen Geschichtsschreiber Livius (1. Jh. v. Chr.), frei nacherzählt. Eine Sage, kein sicherer Bericht.' },
+    { t: 'vergleich', title: 'Wie man Rom-Freund wird', left: { h: '🤝 Das bekommst du', items: ['Schutz vor Feinden', 'Frieden zwischen den Städten', 'Handel auf römischen Straßen', 'Manchmal das römische Bürgerrecht'] }, right: { h: '🪖 Das musst du tun', items: ['Soldaten für Roms Heer stellen', 'Keine Kriege auf eigene Faust führen', 'Straßen und Kolonien dulden', 'Rom als Anführer anerkennen'] } }
+  ],
+  tasks: [
+    { t: 'order', q: 'Bringe die Ereignisse in die richtige Reihenfolge. Das Früheste zuerst.', items: ['Rom erobert die Stadt Veji.', 'Gallier plündern Rom.', 'Der Bau der Via Appia beginnt.', 'Tarent fällt an Rom.'], why: '396 → 390 → 312 → 272 v. Chr.' },
+    { t: 'match', q: 'Welches Jahr passt zu welchem Ereignis?', pairs: [['396 v. Chr.', 'Rom erobert Veji'], ['338 v. Chr.', 'Latinerbund aufgelöst'], ['290 v. Chr.', 'Ende der Samnitenkriege'], ['272 v. Chr.', 'Tarent fällt']], why: 'Diese vier Jahre helfen dir beim Zeitstrahl.' },
+    { t: 'map', q: 'Wo liegt die Stadt Tarent im Süden Italiens? Klicke auf den richtigen Buchstaben.', year: -272, view: [14.6, 40.6, 22], picks: [{ l: 'A', lon: 14.25, lat: 41.1 }, { l: 'B', lon: 17.2, lat: 40.45 }, { l: 'C', lon: 12.2, lat: 44.4 }, { l: 'D', lon: 15.3, lat: 37.05 }], a: 1, why: 'Tarent liegt am „Absatz“ des italienischen „Stiefels“.', tip: 'Tarent liegt im Süden, an der Innenseite des Stiefels.' },
+    { t: 'mc', q: 'Was ist ein „Pyrrhussieg“?', opts: ['Ein Sieg mit sehr hohen Verlusten.', 'Ein Sieg ohne Kampf.', 'Ein Sieg mit Elefanten.'], a: 0, why: 'König Pyrrhus gewann, verlor aber fast sein ganzes Heer.', tip: 'Pyrrhus gewann Schlachten, aber zu welchem Preis?' },
+    { t: 'sort', q: 'Bundesgenossen bekamen etwas von Rom – und mussten etwas leisten. Sortiere.', groups: ['Das bekommen sie', 'Das müssen sie tun'], items: [['Schutz vor Feinden', 0], ['Handel auf sicheren Straßen', 0], ['Soldaten für Roms Heer', 1], ['Keine eigenen Kriege führen', 1], ['Frieden mit den Nachbarn', 0], ['Straßen und Kolonien dulden', 1]] },
+    { t: 'tf', q: 'Stimmt das?', items: [
+      { s: 'Der Latinerbund wurde 338 v. Chr. aufgelöst.', a: true },
+      { s: 'Die Via Appia führte von Rom nach Süden.', a: true, why: 'Sie ging bis Capua und später bis Brindisi.' },
+      { s: 'Rom machte alle besiegten Völker sofort zu römischen Bürgern.', a: false, why: 'Viele blieben Bundesgenossen mit eigenen Städten.' },
+      { s: 'Die Gallier plünderten Rom im Jahr 264 v. Chr.', a: false, why: 'Der Gallierbrand war um 390 v. Chr.' }] },
+    { t: 'year', q: 'Tarent fällt und Süditalien wird römisch. Welches Jahr ist das?', a: -272, tol: 3, min: -400, max: -150, why: 'Tarent fiel 272 v. Chr.', tip: 'Schau in die Zeitreise: Station „Tarent fällt“.' }
+  ],
+  heft: [
+    'Schreibe vier Schritte auf, mit denen Rom Italien eroberte. Nenne bei jedem Schritt das Jahr (zum Beispiel 396, 338, 290, 272 v. Chr.).',
+    'Erstelle eine kleine Tabelle: **Bürger – Latiner – Bundesgenossen**. Schreibe zu jeder Gruppe einen Satz.',
+    'Warum blieben die Bundesgenossen lange treu zu Rom? Nenne zwei Gründe und einen Nachteil für sie.'
+  ],
+  entry: { title: 'Rom erobert Italien', items: ['**396 v. Chr.:** Rom erobert Veji. **um 390 v. Chr.**: Gallier plündern Rom.', '**338 v. Chr.:** Der Latinerbund wird aufgelöst. Latium gehört zu Rom.', '**343–290 v. Chr.:** Samnitenkriege. Mittelitalien wird römisch.', '**272 v. Chr.:** Tarent fällt. Süditalien wird römisch.', '**Bundesgenossen** stellen Soldaten und bekommen Schutz. **Straßen** (z. B. Via Appia, 312 v. Chr.) halten das Reich zusammen.'] },
+  teacher: {
+    plan: [['5 Min', 'Wiederholung: Republik. Karte am Beamer: Was ist um 500 v. Chr. römisch?'], ['10 Min', 'Zeitreise in Partnerarbeit, danach Klassengespräch: Was hat Rom stark gemacht?'], ['7 Min', 'Material „Wer gehört wozu?“ und Vergleich; Aufgaben 1–4.'], ['3 Min', 'Aufgaben 5–7 und Heftaufgaben (Rest Hausaufgabe). Hefteintrag sichern.']],
+    sol: ['Heftaufgabe 1: Veji 396 → Latium 338 → Mittelitalien 290 → Süditalien 272 v. Chr.', 'Heftaufgabe 2: Bürger: alle Rechte. Latiner: teils gleiche Rechte. Bundesgenossen: eigener Vertrag, stellen Soldaten.', 'Heftaufgabe 3: Gründe: Schutz, Handel, Aufstieg zum Bürgerrecht möglich. Nachteil: Soldaten stellen, keine eigene Außenpolitik.'],
+    diff: ['Leichter: Reihenfolge-Aufgabe zuerst als Gruppe lösen; Jahre an der Tafel anschreiben.', 'Schwerer: Warum war das Bundesgenossen-System klüger als reine Unterwerfung?']
+  }
+};
+
+/* Kapitel 3 – Punische Kriege (Stunde 2) */
+CH.k3 = {
+  id: 'k3', emoji: '🐘', color: '#0F9E8E', kicker: 'Stunde 2 · Kapitel 3', title: 'Die Punischen Kriege',
+  goals: ['Du kannst erklären, wer die Punier waren und warum Rom gegen sie kämpfte.', 'Du kannst die drei Kriege mit Jahreszahlen nennen.', 'Du weißt, was Hannibal, Cannae und Zama bedeuten.'],
+  steps: [
+    { y: -264, t: 'Rom gegen Karthago: Der erste Krieg beginnt', s: '1. Punischer Krieg beginnt', view: [12.5, 37.8, 26], marks: ['karthago', 'messina', 'syrakus'], pulse: [],
+      txt: ['Die [[Punier|So nannten die Römer die Karthager. Sie kamen ursprünglich aus dem Gebiet des heutigen Libanon.]] sind die Karthager. Ihre Hauptstadt liegt in Nordafrika. Sie sind eine reiche Handelsmacht mit vielen Schiffen.',
+        'Auf Sizilien streiten sich zwei Städte um die Stadt [[Messina|Eine Hafenstadt an der Nordost-Spitze Siziliens.]]. Beide Seiten holen Hilfe: Rom und Karthago.',
+        'Im Jahr 264 v. Chr. beginnt der 1. Punische Krieg. Es geht um die Vorherrschaft auf Sizilien.',
+        'Rom hat kaum Schiffe. Es baut in kurzer Zeit eine große Flotte.'],
+      fact: 'Die Römer erfanden eine Enterbrücke. Damit machten sie aus Seeschlachten fast Landkämpfe.' },
+    { y: -241, t: 'Rom gewinnt den ersten Krieg', s: 'Seesieg bei den Ägatischen Inseln', view: [12.8, 37.9, 16], marks: ['kap_aegates', 'lilybaeum', 'syrakus'],
+      txt: ['Der Krieg dauerte 23 Jahre. Er war hart und teuer.', 'Im Jahr 241 v. Chr. siegten die Römer auf See bei den Ägatischen Inseln.', 'Karthago bat um Frieden. Es musste Sizilien abgeben und Geld zahlen.', 'Sizilien wurde die erste [[Provinz|Ein Land außerhalb Italiens, das Rom beherrscht. Es zahlt Steuern.]] Roms.'] },
+    { y: -238, t: 'Sardinien und Korsika', s: 'Rom nimmt Sardinien und Korsika', view: [10.5, 40.5, 18], marks: [],
+      txt: ['Karthago war geschwächt. Seine Söldner hatten sich gegen die Stadt erhoben.', 'Rom nutzte das aus. Um 238 v. Chr. nahm es die Inseln Sardinien und Korsika.', 'Im Jahr 227 v. Chr. wurden sie Provinzen.', 'Karthago fühlte sich betrogen. Es wollte Rache.'] },
+    { y: -218, t: 'Hannibal zieht über die Alpen', s: 'Hannibal überquert die Alpen', view: [8, 41.5, 26], marks: ['karthago_nova', 'sagunt'], routes: ['hannibal'], pulse: [],
+      txt: ['Der karthagische Feldherr [[Hannibal|Ein sehr berühmter Feldherr aus Karthago. Er wollte Rom besiegen.]] wollte Rache. Er startete in Spanien.',
+        'Im Jahr 218 v. Chr. begann der 2. Punische Krieg. Hannibal zog über die Pyrenäen und die Alpen.',
+        'Er hatte Elefanten dabei. Viele Tiere und Soldaten starben in Kälte und Schnee.',
+        'Trotzdem kam er in Italien an. Die Römer erschraken.'],
+      fact: 'Hannibal wollte Rom im eigenen Land treffen. Darum ging er den weiten Landweg.' },
+    { y: -216, t: 'Cannae: Roms schwerste Niederlage', s: 'Schlacht bei Cannae', view: [14.5, 41.2, 14], marks: ['cannae'], routes: ['hannibal'], pulse: [],
+      txt: ['Im Jahr 216 v. Chr. trafen die Heere bei [[Cannae|Ein Dorf in Süditalien. Dort verlor Rom die größte Schlacht des Krieges.]] aufeinander.',
+        'Hannibal umzingelte das große römische Heer. Zehntausende Römer starben.',
+        'Es war die schwerste Niederlage in Roms Geschichte.',
+        'Aber Rom gab nicht auf. Die meisten Bundesgenossen blieben treu. Rom holte neue Soldaten.'] },
+    { y: -206, t: 'Scipio erobert Spanien', s: 'Scipio vertreibt Karthago aus Spanien', view: [-1, 39.5, 24], marks: ['karthago_nova'], pulse: undefined,
+      txt: ['Rom griff nun Karthagos Land in Spanien an. Der junge Feldherr [[Scipio|Ein römischer Feldherr. Er besiegte Hannibal am Ende.]] eroberte 209 v. Chr. Neu-Karthago.',
+        'Im Jahr 206 v. Chr. war der Süden und Osten Spaniens in römischer Hand. Das Silber aus Spanien fehlte Karthago.',
+        'Hannibal saß noch in Italien fest. Er bekam wenig Nachschub.',
+        'Der Krieg drehte sich zugunsten Roms.'] },
+    { y: -202, t: 'Zama: Scipio besiegt Hannibal', s: 'Schlacht bei Zama', view: [10.5, 36.8, 14], marks: ['zama', 'karthago', 'utica'], routes: ['scipio'], pulse: [],
+      txt: ['Scipio segelte nach Afrika. Karthago rief Hannibal aus Italien zurück.', 'Im Jahr 202 v. Chr. kam es bei [[Zama|Ein Ort in Nordafrika. Dort gewann Scipio die entscheidende Schlacht.]] zur letzten großen Schlacht. Scipio siegte.', 'Im Jahr 201 v. Chr. schlossen sie Frieden.', 'Karthago musste seine Kriegsflotte und Spanien abgeben. Es durfte keine Kriege mehr ohne Rom führen.'] },
+    { y: -146, t: 'Karthago wird zerstört', s: 'Zerstörung Karthagos', view: [11, 37.5, 16], marks: ['karthago'],
+      txt: ['Karthago wurde wieder reich. Das machte den Römern Angst.', 'Der Senator [[Cato|Ein strenger römischer Politiker. Er sagte oft: „Karthago muss zerstört werden!“]] wiederholte immer wieder: „Karthago muss zerstört werden!“',
+        'Im 3. Punischen Krieg (149–146 v. Chr.) belagerte Rom die Stadt. 146 v. Chr. wurde Karthago zerstört. Die Überlebenden wurden versklavt.',
+        'Aus dem Land wurde die römische Provinz Africa. Im selben Jahr 146 v. Chr. wurde auch Korinth zerstört. Griechenland kam ebenfalls zu Rom (Stunde 4).'] }
+  ],
+  material: [
+    { t: 'vergleich', title: 'Rom gegen Karthago', left: { h: '🏛️ Rom', items: ['Stark zu Land: großes Bürgerheer', 'Bundesgenossen stellen Soldaten', 'Baut im Krieg eine Flotte', 'Gibt nicht auf'] }, right: { h: '🚢 Karthago', items: ['Stark zur See: viele Schiffe', 'Bezahlte Söldner als Soldaten', 'Reich durch Handel', 'Hannibal ist ein genialer Feldherr'] } },
+    { t: 'info', title: '📅 Die drei Punischen Kriege', list: ['**1. Krieg:** 264–241 v. Chr. – um Sizilien. Rom siegt. Sizilien wird Provinz.', '**2. Krieg:** 218–201 v. Chr. – Hannibal in Italien, Cannae 216, Zama 202. Rom siegt.', '**3. Krieg:** 149–146 v. Chr. – Karthago wird zerstört. Provinz Africa.'] }
+  ],
+  tasks: [
+    { t: 'order', q: 'Bringe die Ereignisse in die richtige Reihenfolge.', items: ['Krieg um Sizilien beginnt', 'Hannibal zieht über die Alpen', 'Schlacht bei Cannae', 'Scipio siegt bei Zama', 'Karthago wird zerstört'], why: '264 → 218 → 216 → 202 → 146 v. Chr.' },
+    { t: 'map', q: 'Wo liegt Karthago? Klicke auf den richtigen Buchstaben.', year: -264, view: [10.5, 38.5, 30], picks: [{ l: 'A', lon: 15.3, lat: 37.05 }, { l: 'B', lon: -0.98, lat: 37.6 }, { l: 'C', lon: 10.3, lat: 36.85 }, { l: 'D', lon: 9.2, lat: 45.5 }], a: 2, why: 'Karthago lag in Nordafrika, im heutigen Tunesien.', tip: 'Karthago liegt in Afrika, nicht in Europa.' },
+    { t: 'gap', q: 'Fülle die Lücken.', text: 'Im 1. Krieg ging es um die Insel {0}. Im 2. Krieg zog {1} mit Elefanten über die {2}. Die schwerste Niederlage erlitt Rom bei {3}. Im Jahr 146 v. Chr. wurde {4} zerstört.', words: ['Sizilien', 'Hannibal', 'Alpen', 'Cannae', 'Karthago'], extra: ['Zama', 'Pyrenäen', 'Athen'], why: 'Sizilien – Hannibal – Alpen – Cannae – Karthago.' },
+    { t: 'year', q: 'In welchem Jahr wurde Karthago zerstört?', a: -146, tol: 3, min: -300, max: -50, why: '146 v. Chr. wurde Karthago zerstört.', tip: 'Es war das Ende des 3. Punischen Krieges.' },
+    { t: 'tf', q: 'Stimmt das?', items: [
+      { s: 'Punier ist ein anderes Wort für Karthager.', a: true },
+      { s: 'Bei Cannae gewann Rom gegen Hannibal.', a: false, why: 'Cannae war Roms schwerste Niederlage.' },
+      { s: 'Nach dem 2. Krieg musste Karthago seine Flotte abgeben.', a: true },
+      { s: 'Sizilien wurde die erste römische Provinz.', a: true },
+      { s: 'Hannibal zog ohne Elefanten nach Italien.', a: false, why: 'Er hatte Elefanten dabei, aber viele starben unterwegs.' }] },
+    { t: 'mc', q: 'Warum konnte Rom trotz Cannae am Ende gewinnen?', opts: ['Die meisten Bundesgenossen blieben treu und Rom holte neue Soldaten.', 'Hannibal wurde nach Cannae krank.', 'Karthago hatte keine Elefanten mehr.'], a: 0, why: 'Rom hatte viele Soldaten und starke Verbündete. Es gab nicht auf.', tip: 'Denke an Kapitel 2: Bundesgenossen.' },
+    { t: 'think', q: 'Stell dir vor: Du bist ein Römer im Krieg in Cannae. Die Kämpfer Karthagos stehen in deinem eigenen Land. Was würdest du tun? Aufgeben oder weiterkämpfen? Nenne Gründe.', ans: 'Rom kämpfte weiter, weil die Stadt viele Männer und Verbündete hatte und weil ein Frieden mit Karthago gefährlich schien. Hannibal konnte Rom nicht erobern, weil ihm Belagerungsgerät und Nachschub fehlten.' }
+  ],
+  heft: [
+    'Lege eine Tabelle an: **1., 2. und 3. Punischer Krieg**. Schreibe Jahre, Anlass und Ergebnis auf.',
+    'Erzähle in fünf Sätzen, wie Hannibal nach Italien kam und was bei Cannae geschah.',
+    'Nenne zwei Gründe, warum Rom am Ende gewann. Nenne einen Grund, warum Karthago verlor.'
+  ],
+  entry: { title: 'Die Punischen Kriege', items: ['**Punier** = Karthager, eine Handelsmacht in Nordafrika.', '**264–241 v. Chr.** 1. Krieg um Sizilien. Rom baut eine Flotte. Sizilien wird die erste Provinz.', '**218–201 v. Chr.** 2. Krieg: Hannibal zieht mit Elefanten über die Alpen. **216** Cannae, Roms schwerste Niederlage. **202** Scipio siegt bei Zama.', '**149–146 v. Chr.** 3. Krieg: Karthago wird zerstört. Provinz Africa.', 'Rom beherrscht nun das westliche Mittelmeer.'] },
+  teacher: {
+    plan: [['5 Min', 'Einstieg: Karte 264 v. Chr. Was liegt gegenüber von Rom? Wer sind die Punier?'], ['15 Min', 'Zeitreise gemeinsam (Beamer), Stationen 1–4; ab Station 5 Partnerarbeit.'], ['5 Min', 'Vergleich Rom–Karthago und Infokasten mit den drei Kriegen.'], ['15 Min', 'Aufgaben 1–6 (Reihenfolge und Karte im Plenum vorführen); Denkaufgabe im Gespräch.'], ['5 Min', 'Hefteintrag; Heftaufgaben als Hausaufgabe.']],
+    sol: ['Heftaufgabe 1: 1. Krieg 264–241 (Sizilien; Rom siegt); 2. Krieg 218–201 (Hannibal; Rom siegt); 3. Krieg 149–146 (Zerstörung).', 'Heftaufgabe 2: Spanien – Pyrenäen/Alpen – Elefanten – Cannae 216 – Rom hält trotzdem durch.', 'Heftaufgabe 3: Rom: Bundesgenossen, Ausdauer, Flotte. Karthago: Söldner, weniger Nachschub, Rom-Angriff auf Afrika.'],
+    diff: ['Leichter: Karte Aufgabe 2 zuerst; Station „Cannae“ vorlesen lassen.', 'Schwerer: Warum wollte Cato Karthago zerstören? Diskutiere Angst und Neid.']
+  }
+};
+
+/* Kapitel 4 – Adel gegen Bauern (Stunde 3) */
+CH.k4 = {
+  id: 'k4', emoji: '🌾', color: '#8B5CF6', kicker: 'Stunde 3 · Kapitel 4', title: 'Adel gegen Bauern',
+  goals: ['Du kannst Patrizier und Plebejer unterscheiden.', 'Du kannst erklären, warum viele Bauern durch die Kriege ihr Land verloren.', 'Du weißt, was die Brüder Gracchus wollten.'],
+  steps: [
+    { y: -494, t: 'Die Plebejer streiken', s: 'Auszug der Plebejer', view: [12.4, 41.9, 12], marks: ['tiber'], pulse: [],
+      txt: ['In der frühen Republik hatten die [[Patrizier|Die reichen Adelsfamilien. Sie besaßen viel Land und hatten fast alle Ämter.]] die Macht. Das waren reiche Adelsfamilien.',
+        'Die [[Plebejer|Die einfachen Bürger: Bauern, Handwerker und Händler.]] waren einfache Bürger. Viele hatten Schulden und keine Rechte.',
+        'Im Jahr 494 v. Chr. zogen die Plebejer aus Rom aus. Sie gingen auf einen „heiligen Berg“. Sie sagten: „Wir arbeiten und kämpfen nicht mehr!“',
+        'Die Adligen gaben nach. Die Plebejer bekamen eigene Vertreter: die [[Volkstribunen|Sie schützten die Plebejer. Sie durften „Veto“ sagen, also „Ich verbiete es“.]].'],
+      fact: 'Die Volkstribunen durften „Veto“ rufen. Das ist Latein und heißt „Ich verbiete es“.' },
+    { y: -450, yl: '451/450 v. Chr.', t: 'Das Recht wird aufgeschrieben', s: 'Zwölftafelgesetze', view: [12.4, 41.9, 12], pulse: [],
+      txt: ['Früher kannten nur die Adligen das Recht. Sie konnten es beugen.', 'Darum forderten die Plebejer: „Schreibt die Gesetze auf!“', 'Um 450 v. Chr. entstanden die [[Zwölftafelgesetze|Das erste aufgeschriebene römische Recht auf zwölf Tafeln. Es stand auf dem Marktplatz.]]. Sie standen auf zwölf Tafeln mitten in Rom.', 'Nun konnte jeder nachlesen, was Recht ist.'] },
+    { y: -287, t: 'Gleiche Rechte für alle', s: 'Beschlüsse der Plebejer gelten für alle', view: [12.4, 41.9, 12], pulse: [],
+      txt: ['Nach und nach durften auch Plebejer Konsul werden.', 'Im Jahr 287 v. Chr. gab es ein wichtiges Gesetz: Was die Plebejer beschlossen, galt für alle Römer.', 'Damit war der Streit zwischen Adel und einfachen Bürgern fast vorbei.', 'Aber bald kam ein neuer Streit: Arm gegen Reich.'] },
+    { y: -200, about: true, yl: 'um 200 v. Chr.', t: 'Die Kriege ruinieren viele Bauern', s: 'Bauern in Not', view: [13, 41.5, 30], marks: [], pulse: [],
+      txt: ['Rom führte viele Kriege. Die meisten Soldaten waren Bauern.', 'Sie waren jahrelang weit weg. Zuhause konnte niemand Getreide anbauen. Die Höfe verfielen.', 'Die Familien machten Schulden. Viele Bauern mussten ihr Land verkaufen.', 'Reiche Adlige kauften es billig auf.'] },
+    { y: -150, about: true, yl: 'um 150 v. Chr.', t: 'Große Güter, Sklaven und arme Städter', s: 'Latifundien und Landflucht', view: [13, 41.5, 30], marks: [], pulse: [],
+      txt: ['Die Adligen bauten riesige Güter, die [[Latifundien|Sehr große Landgüter reicher Römer. Dort arbeiteten Sklaven.]].', 'Dort arbeiteten Sklaven aus den Kriegen. Sklaven kosten keinen Lohn.', 'Aus den Provinzen kam auch billiges Getreide. Die Bauern konnten ihre Ernte nicht mehr gut verkaufen.', 'Viele Bauern zogen arbeitslos nach Rom. Man nennt sie [[Proletarier|Arme Leute ohne Besitz. Sie lebten in der Stadt von Gelegenheitsarbeit.]].'],
+      fact: 'In Rom wohnten immer mehr Menschen ohne Arbeit. Sie brauchten Brot – und Politiker versprachen es ihnen.' },
+    { y: -133, t: 'Tiberius Gracchus will Land verteilen', s: 'Tiberius Gracchus wird ermordet', view: [12.4, 41.9, 20], pulse: [],
+      txt: ['Tiberius Gracchus war Volkstribun. Er stammte selbst aus dem Adel.', 'Er wollte Land des Staates an arme Bauern verteilen. Die Reichen sollten nicht alles behalten.', 'Viele Senatoren wurden wütend. Sie fürchteten um ihr Land.', 'Im Jahr 133 v. Chr. erschlug ihn ein Trupp seiner Gegner. Zum ersten Mal wurde in Rom ein Politiker im Streit getötet.'] },
+    { y: -123, yl: '123–121 v. Chr.', t: 'Gaius Gracchus macht weiter', s: 'Gaius Gracchus und das Getreidegesetz', view: [12.4, 41.9, 20], pulse: [],
+      txt: ['Sein Bruder Gaius Gracchus wurde 123 v. Chr. ebenfalls Volkstribun.', 'Er setzte ein Getreidegesetz durch: Arme konnten billiges Getreide kaufen.', 'Auch er hatte mächtige Feinde. Im Jahr 121 v. Chr. wurde er getötet.', 'Nun wussten alle: Gewalt gehört jetzt zur Politik. Das war ein Vorzeichen für die späteren Bürgerkriege.'] }
+  ],
+  material: [
+    { t: 'vergleich', title: 'Patrizier und Plebejer', left: { h: '👑 Patrizier', items: ['Reiche Adelsfamilien', 'Anfangs fast alle Ämter', 'Sitzen im Senat', 'Besitzen viel Land'] }, right: { h: '🌾 Plebejer', items: ['Bauern, Handwerker, Händler', 'Anfangs kaum Rechte', 'Wählen Volkstribunen', 'Kämpfen im Heer'] } },
+    { t: 'kette', title: '⛓️ Warum verlieren die Bauern ihr Land?', items: [
+      { ic: '⚔️', text: 'Rom führt viele **Kriege**.' },
+      { ic: '👨‍🌾', text: 'Die **Bauern** sind lange als Soldaten weg.' },
+      { ic: '🏚️', text: 'Die **Höfe verfallen**. Die Familien machen Schulden.' },
+      { ic: '💸', text: 'Die Bauern **verkaufen ihr Land**.' },
+      { ic: '🏰', text: 'Reiche kaufen es und bauen **Latifundien** mit **Sklaven**.' },
+      { ic: '🌾', text: 'Billiges **Getreide** aus den Provinzen kommt dazu.' },
+      { ic: '🏙️', text: 'Die Bauern **ziehen nach Rom**. Sie haben keine Arbeit.' },
+      { ic: '😠', text: 'Viele **arme Bürger** und **Streit**: Die Gracchen wollen Land verteilen.' }] }
+  ],
+  tasks: [
+    { t: 'sort', q: 'Wer gehört zu welcher Gruppe? Sortiere die Karten.', groups: ['Patrizier', 'Plebejer'], items: [['Reiche Adelsfamilien', 0], ['Bauern, Handwerker und Händler', 1], ['Hatten anfangs fast alle wichtigen Ämter', 0], ['Wählten die Volkstribunen', 1], ['Zogen 494 v. Chr. aus Rom aus', 1], ['Hatten viel Land und Geld', 0]] },
+    { t: 'order', q: 'Bringe die Ursache-Wirkungs-Kette in die richtige Reihenfolge.', items: ['Rom führt viele Kriege.', 'Bauern sind lange Soldaten.', 'Ihre Höfe verfallen. Sie machen Schulden.', 'Sie verkaufen ihr Land.', 'Reiche bauen Latifundien mit Sklaven.', 'Arbeitslose Bauern ziehen nach Rom.'], why: 'Eins führt zum nächsten – das nennt man Ursache und Wirkung.' },
+    { t: 'mc', q: 'Was sind Latifundien?', opts: ['Sehr große Landgüter reicher Römer mit Sklavenarbeit.', 'Kleine Bauernhöfe mit Familien.', 'Häuser für arme Menschen in Rom.'], a: 0, why: 'Latifundien = Großgüter. Dort arbeiteten Sklaven.', tip: 'Das Wort steckt im Material: Große Güter und Sklaven.' },
+    { t: 'year', q: 'In welchem Jahr wurde Tiberius Gracchus getötet?', a: -133, tol: 3, min: -300, max: -50, why: '133 v. Chr. wurde Tiberius Gracchus getötet.', tip: 'Schau in die Zeitreise: Station „Tiberius Gracchus“.' },
+    { t: 'match', q: 'Ordne die Begriffe zu.', pairs: [['Volkstribun', 'schützt die Plebejer'], ['Zwölftafelgesetze', 'aufgeschriebenes Recht'], ['Latifundien', 'große Güter mit Sklaven'], ['Proletarier', 'arme Städter ohne Besitz']], why: 'Diese Begriffe brauchst du für den Hefteintrag.' },
+    { t: 'tf', q: 'Stimmt das?', items: [
+      { s: 'Die Plebejer zogen im Jahr 494 v. Chr. aus Rom aus, um zu streiken.', a: true },
+      { s: 'Die Zwölftafelgesetze wurden aufgeschrieben, damit jeder sie kennt.', a: true },
+      { s: 'Durch die Kriege wurden die Bauern immer reicher.', a: false, why: 'Sie verloren Höfe und Land.' },
+      { s: 'Tiberius Gracchus wollte Land an arme Bauern verteilen.', a: true },
+      { s: 'Die Gracchen wurden von den Reichen zu Konsuln gewählt.', a: false, why: 'Sie wurden getötet.' }] },
+    { t: 'gap', q: 'Fülle die Lücken.', text: 'Im Krieg mussten die {0} lange als Soldaten kämpfen. Ihre Höfe {1}. Reiche Adlige bauten {2} mit {3}. Viele Bauern zogen arbeitslos nach {4}.', words: ['Bauern', 'verfielen', 'Latifundien', 'Sklaven', 'Rom'], extra: ['Karthago', 'Söldnern', 'Schiffen'], why: 'So entstand Armut in Rom.' }
+  ],
+  heft: [
+    'Zeichne die **Ursache-Wirkungs-Kette**: „Warum verloren viele Bauern ihr Land?“ Nutze mindestens sechs Kästchen mit Pfeilen.',
+    'Erkläre in je einem Satz: **Patrizier, Plebejer, Volkstribun**.',
+    'Was wollte Tiberius Gracchus? Warum wurde er ermordet? Was hättest du an seiner Stelle getan?'
+  ],
+  entry: { title: 'Adel gegen Bauern', items: ['**Patrizier** = Adel, **Plebejer** = einfache Bürger. **494 v. Chr.:** Auszug der Plebejer. Sie bekommen **Volkstribunen**.', '**um 450 v. Chr.:** Zwölftafelgesetze – das Recht wird aufgeschrieben. **287 v. Chr.:** Plebejer-Beschlüsse gelten für alle.', '**Nach den Kriegen (ab etwa 200 v. Chr.):** Bauern sind lange Soldaten, verschulden sich und verkaufen ihr Land.', 'Reiche bauen **Latifundien** mit **Sklaven**. Arbeitslose Bauern ziehen nach Rom (**Landflucht**).', '**133 v. Chr.** Tiberius Gracchus, **121 v. Chr.** Gaius Gracchus: Beide wollen helfen und werden getötet.'] },
+  teacher: {
+    plan: [['5 Min', 'Einstieg: „Wer arbeitet, wer besitzt?“ – Gespräch über Gerechtigkeit; Bezug zu Stunde 2 (Kriege).'], ['12 Min', 'Zeitreise: Stationen 1–3 (Ständekämpfe) kurz, Stationen 4–7 (Kriegsfolgen) ausführlich.'], ['8 Min', 'Ursache-Wirkungs-Kette am Beamer Schritt für Schritt aufklappen; Schüler sagen jeweils den nächsten Schritt voraus.'], ['15 Min', 'Aufgaben 1–7 (Sortieren, Reihenfolge, Zuordnen).'], ['5 Min', 'Hefteintrag; Heftaufgabe 1 (Kette zeichnen) in der Stunde beginnen.']],
+    sol: ['Heftaufgabe 1: Kriege → Bauern lange Soldaten → Höfe verfallen, Schulden → Land verkauft → Latifundien mit Sklaven → billiges Getreide → Landflucht nach Rom.', 'Heftaufgabe 2: Patrizier: reiche Adelsfamilien. Plebejer: einfache Bürger. Volkstribun: schützt die Plebejer, darf Veto einlegen.', 'Heftaufgabe 3: Er wollte Staatsland an arme Bauern verteilen. Senatoren fürchteten um ihren Besitz und töteten ihn. Individuelle Meinungen zulassen.'],
+    diff: ['Leichter: Kette schon vorgedruckt mit Lücken.', 'Schwerer: Sind die Gracchen „Helden“? Begründe mit Blick auf Gewalt in der Politik.']
+  }
+};
+
+/* Kapitel 5 – Weitere Kriege und Folgen (Stunde 4) */
+CH.k5 = {
+  id: 'k5', emoji: '⚔️', color: '#3B82F6', kicker: 'Stunde 4 · Kapitel 5', title: 'Weitere Kriege und ihre Folgen',
+  goals: ['Du kannst zeigen, welche Länder Rom im 2. und 1. Jh. v. Chr. eroberte.', 'Du kannst erklären, wer von den Kriegen profitierte und wer verlor.', 'Du weißt, warum ein Berufsheer für die Republik gefährlich wurde.'],
+  steps: [
+    { y: -197, yl: '197–190 v. Chr.', t: 'Rom mischt sich im Osten ein', s: 'Rom besiegt Makedonien und Antiochos', view: [24, 39.5, 24], marks: ['athen', 'korinth', 'pergamon'], pulse: [],
+      txt: ['Im Osten des Mittelmeers lagen mächtige Königreiche. Eines war Makedonien.', 'Im 2. Makedonischen Krieg (200–197 v. Chr.) besiegte Rom den König Philipp V.', 'Rom erklärte die Griechen für „frei“. Aber in Wahrheit sagte nun Rom, was gilt.', 'Im Jahr 190 v. Chr. besiegte Rom bei Magnesia auch den König Antiochos aus dem Osten.'] },
+    { y: -146, t: 'Korinth wird zerstört', s: 'Korinth zerstört, Provinz Makedonien', view: [22.5, 39, 16], marks: ['korinth', 'athen'],
+      txt: ['Viele Griechen wollten keine Herren aus Rom. Es gab Aufstände.', 'Im Jahr 146 v. Chr. zerstörte Rom die reiche Stadt [[Korinth|Eine große griechische Handelsstadt. Rom plünderte sie.]].', 'Aus Makedonien und Griechenland wurde eine römische Provinz. Im selben Jahr fiel Karthago.', 'Kunstwerke aus Griechenland kamen als Beute nach Rom.'] },
+    { y: -133, t: 'Pergamon wird vererbt', s: 'Pergamon wird römisch, Numantia fällt', view: [12, 40.5, 50], marks: ['pergamon', 'numantia'],
+      txt: ['Der König von Pergamon in Kleinasien starb 133 v. Chr. Er hinterließ sein Reich in seinem Testament den Römern.', 'Daraus wurde die Provinz [[Asia|Die römische Provinz im Westen Kleinasiens.]]. Sie war sehr reich.', 'Im selben Jahr fiel in Spanien die Stadt [[Numantia|Eine Stadt in Spanien, die sich lange gegen Rom wehrte.]] nach langer Belagerung.', 'Rom herrschte nun im Westen und im Osten des Mittelmeeres.'] },
+    { y: -121, yl: '123–121 v. Chr.', t: 'Südgallien wird römisch', s: 'Südgallien wird römisch', view: [4, 41.8, 28], marks: ['aquae'],
+      txt: ['Rom wollte einen sicheren Landweg nach Spanien.', 'Im Jahr 123 v. Chr. nahm es die Balearen. Im Jahr 121 v. Chr. kam Südgallien dazu.', 'Die Provinz hieß später Gallia Narbonensis. Rom baute dort Städte und Straßen.', 'Von hier aus konnte Rom später ganz Gallien erobern.'] },
+    { y: -107, about: true, t: 'Kimbern, Teutonen und Marius', s: 'Marius macht Rom zum Berufsheer', view: [8, 45.5, 28], marks: ['aquae'], pulse: [],
+      txt: ['Von 113 bis 101 v. Chr. drohten die [[Kimbern und Teutonen|Germanische Stämme, die aus dem Norden nach Süden zogen.]] aus dem Norden. Sie besiegten mehrere römische Heere.', 'Der Feldherr Marius rettete Rom. Er änderte das Heer: Jetzt durften auch arme Männer Soldat werden.',
+        'Sie bekamen Sold und nach dem Dienst Land. Man nennt das ein [[Berufsheer|Ein Heer aus Männern, die das Kämpfen als Beruf haben.]].', 'Aber diese Soldaten hielten zu ihrem Feldherrn, nicht mehr zum Staat. Das wurde gefährlich.'],
+      fact: 'Marius setzte die Reform um 107 v. Chr. um. Seine Siege bei Aquae Sextiae (102) und Vercellae (101) beendeten die Gefahr.' },
+    { y: -88, t: 'Bürgerkrieg: Marius gegen Sulla', s: 'Bürgerkrieg Marius gegen Sulla', view: [14, 41, 30], marks: [], pulse: [],
+      txt: ['Zwei Feldherren kämpften um die Macht: Marius und Sulla. Jeder hatte treue Soldaten.', 'Von 88 bis 82 v. Chr. führten sie Krieg gegeneinander. Römer töteten Römer.', 'Sulla siegte und ließ viele Gegner töten. Er war danach Diktator.', 'Gleichzeitig kämpfte Rom im Osten gegen König Mithridates von Pontus (88–63 v. Chr.).'] },
+    { y: -73, t: 'Spartacus und die Sklaven', s: 'Sklavenaufstand des Spartacus', view: [14.5, 40.5, 20], marks: ['capua'], pulse: [],
+      txt: ['In Italien arbeiteten sehr viele Sklaven. Einige mussten als Gladiatoren kämpfen.', 'Im Jahr 73 v. Chr. floh der Gladiator Spartacus aus einer Schule in Capua.', 'Tausende Sklaven schlossen sich ihm an. Sie besiegten mehrere römische Heere.', 'Im Jahr 71 v. Chr. wurden sie besiegt. Tausende Aufständische wurden gekreuzigt.'] },
+    { y: -63, t: 'Pompeius ordnet den Osten', s: 'Pompeius ordnet den Osten', view: [33, 37.5, 24], marks: ['sinope'],
+      txt: ['Der Feldherr Pompeius besiegte König Mithridates und ordnete den Osten neu.', 'Im Jahr 64 v. Chr. wurde Syrien römische Provinz. Im Jahr 63 v. Chr. folgten Pontus und Kleinasien.', 'Rom verdiente viel Geld: Steuern, Beute und Land.', 'Pompeius wurde in Rom gefeiert. Er wurde einer der mächtigsten Männer.'] }
+  ],
+  material: [
+    { t: 'info', title: '🏙️ Folgen für die Menschen in Rom', list: ['**Beute und Sklaven** kamen in Massen nach Rom.', 'Wenige wurden sehr **reich**: Adlige, Feldherren und **Steuerpächter**.', 'Viele blieben **arm**. Der Staat verteilte Getreide und gab Spiele („**Brot und Spiele**“).', 'Es gab mehr **Gewalt** in der Politik – bis zum Bürgerkrieg.'] },
+    { t: 'kette', title: '⛓️ Warum wurde das Heer gefährlich?', items: [
+      { ic: '🛡️', text: 'Marius macht **arme Männer zu Berufssoldaten**.' },
+      { ic: '💰', text: 'Die Soldaten leben von **Sold und Beute**.' },
+      { ic: '🎖️', text: 'Sie sind dem **Feldherrn treu**, der sie bezahlt.' },
+      { ic: '👑', text: 'Feldherren wie Sulla **kämpfen um Macht**.' },
+      { ic: '🔥', text: 'Es beginnt der **Bürgerkrieg**.' }] }
+  ],
+  tasks: [
+    { t: 'sort', q: 'Gewinner oder Verlierer der Kriege? Sortiere die Karten.', groups: ['Gewinner', 'Verlierer'], items: [['Reiche Adlige mit großen Gütern', 0], ['Steuerpächter (kassieren Steuern in Provinzen)', 0], ['Feldherren mit viel Beute', 0], ['Sklaven aus den Kriegen', 1], ['Bauern ohne Land', 1], ['Besiegte Völker in den Provinzen', 1]] },
+    { t: 'order', q: 'Bringe die Ereignisse in die richtige Reihenfolge.', items: ['Korinth wird zerstört.', 'Pergamon wird vererbt.', 'Südgallien wird römisch.', 'Marius baut das Berufsheer.', 'Spartacus führt den Sklavenaufstand an.', 'Pompeius ordnet den Osten.'], why: '146 → 133 → 121 → 107 → 73 → 63 v. Chr.' },
+    { t: 'match', q: 'Welches Jahr passt zu welchem Ereignis?', pairs: [['146 v. Chr.', 'Korinth wird zerstört'], ['133 v. Chr.', 'Pergamon wird vererbt'], ['121 v. Chr.', 'Südgallien wird römisch'], ['73 v. Chr.', 'Spartacus beginnt den Aufstand']], why: 'Prüfe die Jahre noch einmal mit der Zeitreise.' },
+    { t: 'map', q: 'Wo liegt Pergamon (später Provinz Asia)? Klicke auf den richtigen Buchstaben.', year: -133, view: [21, 39.5, 34], picks: [{ l: 'A', lon: 23.7, lat: 38.0 }, { l: 'B', lon: 27.2, lat: 39.1 }, { l: 'C', lon: 29.9, lat: 31.2 }, { l: 'D', lon: 12.2, lat: 44.4 }], a: 1, why: 'Pergamon lag im Westen Kleinasiens.', tip: 'Pergamon liegt auf der Halbinsel Kleinasien, östlich vom Ägäischen Meer.' },
+    { t: 'mc', q: 'Was änderte Marius am römischen Heer?', opts: ['Auch arme Männer konnten Berufssoldaten werden.', 'Es gab nur noch Söldner aus Karthago.', 'Frauen durften Soldat werden.'], a: 0, why: 'Die Soldaten bekamen Sold und Land – und hielten zu ihrem Feldherrn.', tip: 'Denke an das Wort „Berufsheer“.' },
+    { t: 'tf', q: 'Stimmt das?', items: [
+      { s: 'Durch die Kriege kamen sehr viele Sklaven nach Italien.', a: true },
+      { s: 'Alle Menschen in Rom wurden durch die Beute gleich reich.', a: false, why: 'Nur wenige wurden sehr reich, viele blieben arm.' },
+      { s: 'Spartacus war ein Sklave und Gladiator, der einen Aufstand anführte.', a: true },
+      { s: 'Marius und Sulla führten von 88 bis 82 v. Chr. Bürgerkrieg.', a: true },
+      { s: '„Brot und Spiele“ heißt: Der Staat gab Getreide und Unterhaltung.', a: true }] },
+    { t: 'year', q: 'In welchem Jahr begann der Sklavenaufstand des Spartacus?', a: -73, tol: 3, min: -150, max: -20, why: '73 v. Chr. begann der Aufstand; 71 v. Chr. endete er.', tip: 'Schau in die Zeitreise: Station „Spartacus“.' }
+  ],
+  heft: [
+    'Lege eine Tabelle an: **Gewinner** und **Verlierer** der Kriege. Nenne je drei Gruppen und begründe kurz.',
+    'Schreibe auf: Was änderte Marius am Heer? Warum wurde das für die Republik gefährlich?',
+    'Erkläre „Brot und Spiele“. Was findest du gut, was schlecht daran? Wo gibt es das heute?'
+  ],
+  entry: { title: 'Weitere Kriege und ihre Folgen', items: ['**200–190 v. Chr.:** Rom besiegt Makedonien und Antiochos. **146 v. Chr.:** Korinth zerstört, Provinz Makedonien.', '**133 v. Chr.:** Pergamon wird vererbt (Provinz Asia). **121 v. Chr.:** Südgallien wird römisch.', '**um 107 v. Chr.:** Marius schafft das Berufsheer. Die Soldaten folgen ihrem Feldherrn.', '**88–82 v. Chr.:** Bürgerkrieg Marius gegen Sulla. **73–71 v. Chr.:** Spartacus-Aufstand. **63 v. Chr.:** Pompeius ordnet den Osten.', '**Folgen in Rom:** Wenige werden sehr reich, viele sind arm. „Brot und Spiele“ und Gewalt in der Politik.'] },
+  teacher: {
+    plan: [['5 Min', 'Einstieg: Karte 146 v. Chr. neben Karte 63 v. Chr. Was hat sich geändert?'], ['13 Min', 'Zeitreise: Osten (Stationen 1–3), Westen (4), Heer und Bürgerkrieg (5–8).'], ['7 Min', 'Material „Folgen für die Menschen in Rom“ und Kette „Heer“.'], ['15 Min', 'Aufgaben 1–7; „Gewinner oder Verlierer?“ mit Begründungen im Plenum.'], ['5 Min', 'Hefteintrag und Heftaufgabe 1.']],
+    sol: ['Heftaufgabe 1: Gewinner: reiche Adlige, Steuerpächter, Feldherren. Verlierer: Sklaven, Bauern ohne Land, Besiegte in den Provinzen.', 'Heftaufgabe 2: Marius: Berufsheer mit Sold und Land. Soldaten sind dem Feldherrn treu → Feldherren können Politik mit Waffen machen.', 'Heftaufgabe 3: Getreide und Spiele halten die Armen ruhig; Gefahr: Politiker kaufen Zustimmung. Heute: Ablenkung durch Unterhaltung, Geschenke vor Wahlen (offen diskutieren).'],
+    diff: ['Leichter: Sortieraufgabe zu zweit; Kette Schritt für Schritt vorlesen.', 'Schwerer: War Spartacus ein Held? Diskutiere.']
+  }
+};
+
+/* Kapitel 6 – Caesar, Ermordung, Augustus (Stunde 5) */
+CH.k6 = {
+  id: 'k6', emoji: '🗡️', color: '#C4382C', kicker: 'Stunde 5 · Kapitel 6', title: 'Caesar, seine Ermordung und Augustus',
+  goals: ['Du kannst erzählen, wie Caesar Gallien eroberte und Alleinherrscher wurde.', 'Du weißt, warum und wann Caesar ermordet wurde.', 'Du kannst erklären, wie Augustus die Republik zum Kaiserreich machte.'],
+  steps: [
+    { y: -58, yl: '60–58 v. Chr.', t: 'Caesar zieht nach Gallien', s: 'Caesar beginnt den Krieg in Gallien', view: [5, 46, 30], marks: ['aquae'], routes: ['caesar_gallien'], pulse: [],
+      txt: ['Im Jahr 60 v. Chr. taten sich drei mächtige Männer zusammen: Caesar, Pompeius und Crassus. Sie teilten die Macht unter sich auf.',
+        'Julius [[Caesar|Ein ehrgeiziger Feldherr und Politiker. Er wollte sehr viel Macht.]] wurde Statthalter in Gallien. Von 58 bis 51 v. Chr. führte er dort Krieg.',
+        'Die Gallier waren Kelten. Sie lebten in vielen Stämmen und wehrten sich.',
+        'Caesar hatte ein starkes Heer. Er gewann Ruhm und Reichtum.'] },
+    { y: -51, yl: '52/51 v. Chr.', t: 'Alesia: Der Sieg über Vercingetorix', s: 'Alesia – ganz Gallien wird römisch', view: [4.5, 47.5, 26], marks: ['alesia'],
+      txt: ['Im Jahr 52 v. Chr. vereinten sich viele Gallier unter [[Vercingetorix|Der Anführer der Gallier gegen Caesar.]].', 'Caesar belagerte die Festung Alesia. Er baute einen Wall um die Stadt und einen zweiten Wall gegen Hilfe von außen.', 'Die Gallier mussten sich ergeben. Bis 51 v. Chr. war ganz Gallien römisch.', 'Caesar schrieb ein Buch über seine Kriege. Darin lobte er vor allem sich selbst.'],
+      fact: 'Caesar begann sein Buch mit dem Satz: Gallien besteht aus drei Teilen.' },
+    { y: -49, yl: '49–46 v. Chr.', t: 'Über den Rubikon: Bürgerkrieg', s: 'Caesar überschreitet den Rubikon', view: [15, 41, 40], marks: ['rubikon', 'pharsalos', 'alexandria'], pulse: [],
+      txt: ['Der Senat und Pompeius fürchteten Caesars Macht. Sie wollten ihn entmachten.', 'Im Jahr 49 v. Chr. überschritt Caesar mit seinem Heer den [[Rubikon|Ein kleiner Fluss. Er war die Grenze zwischen Italien und der Provinz. Ein Heer durfte ihn nicht überschreiten.]]. Das war verboten. Es bedeutete Bürgerkrieg.',
+        'Bei Pharsalos in Griechenland besiegte er im Jahr 48 v. Chr. Pompeius. Pompeius floh nach Ägypten und wurde dort getötet.',
+        'Bis 46 v. Chr. besiegte Caesar auch die letzten Gegner, zum Beispiel in Afrika. Numidien wurde römisch.'],
+      fact: 'Bis heute sagt man „den Rubikon überschreiten“, wenn man eine Entscheidung trifft, die man nicht mehr zurücknehmen kann.' },
+    { y: -44, t: 'Die Iden des März', s: 'Caesar wird ermordet', view: [12.4, 41.9, 14], pulse: [],
+      txt: ['Caesar war jetzt der mächtigste Mann. Er führte Reformen ein, zum Beispiel einen neuen Kalender.', 'Im Februar 44 v. Chr. ließ er sich zum Diktator auf Lebenszeit ernennen. Viele Senatoren fürchteten, dass er König werden will.',
+        'Am 15. März 44 v. Chr. ermordeten ihn Verschwörer im Senat. Ihre Anführer waren Brutus und Cassius. Sie wollten die Republik retten.', 'Der 15. März hieß bei den Römern „Iden des März“.'],
+      fact: 'Aus Caesars Namen entstanden später die Wörter „Kaiser“ und „Zar“.' },
+    { y: -43, yl: '43–42 v. Chr.', t: 'Wieder Bürgerkrieg', s: 'Zweites Bündnis: Octavian, Antonius, Lepidus', view: [20, 41.5, 34], marks: ['philippi'], pulse: [],
+      txt: ['Die Mörder brachten keinen Frieden. Rom versank wieder im Bürgerkrieg.', 'Im Jahr 43 v. Chr. schlossen Caesars Adoptivsohn Octavian, Antonius und Lepidus ein Bündnis.', 'Bei Philippi besiegten sie 42 v. Chr. die Caesar-Mörder Brutus und Cassius.', 'Danach stritten Octavian und Antonius um die Macht.'] },
+    { y: -30, yl: '31/30 v. Chr.', t: 'Actium und Ägypten', s: 'Sieg bei Actium – Ägypten wird römisch', view: [26, 35, 28], marks: ['actium', 'alexandria'],
+      txt: ['Antonius verbündete sich mit der ägyptischen Königin [[Kleopatra|Die letzte Königin Ägyptens.]].', 'Octavian besiegte beide im Jahr 31 v. Chr. in der Seeschlacht bei Actium.', 'Im Jahr 30 v. Chr. nahm er Ägypten ein. Antonius und Kleopatra nahmen sich das Leben.', 'Ägypten wurde römisch. Octavian war nun der Herr im ganzen Mittelmeer.'] },
+    { y: -27, t: 'Octavian wird Augustus', s: 'Augustus – Rom wird Kaiserreich', view: [15, 42.5, 50], pulse: [],
+      txt: ['Im Jahr 27 v. Chr. gab der Senat Octavian den Ehrennamen [[Augustus|Lateinisch: „der Erhabene“. Der erste römische Kaiser trug diesen Namen.]].', 'Er nannte sich nicht König. Er nannte sich „erster Bürger“ (lateinisch: princeps).', 'Doch in Wahrheit entschied er fast alles. Aus der Republik wurde ein [[Kaiserreich|Ein Staat, in dem ein Kaiser fast alle Macht hat.]].', 'Augustus brachte Frieden nach den Bürgerkriegen. Man nennt das „Pax Romana“ (römischer Friede).'] },
+    { y: 9, yl: '19 v. – 14 n. Chr.', t: 'Grenzen und Varusschlacht', s: 'Varusschlacht im Teutoburger Wald', view: [12, 46.5, 40], marks: ['teutoburg'], pulse: undefined,
+      txt: ['Augustus eroberte weitere Länder: Spanien ganz (19 v. Chr.), die Alpenländer (15 v. Chr.) und den Balkan bis zur Donau.', 'Im Jahr 9 n. Chr. vernichteten Germanen im Teutoburger Wald drei römische Legionen. Ihr Anführer war Arminius.',
+        'Germanien blieb frei. Rhein und Donau wurden die Grenze des Reiches (gepunktete Linie).', 'Augustus starb im Jahr 14 n. Chr. Sein Nachfolger wurde Tiberius.'] }
+  ],
+  material: [
+    { t: 'vergleich', title: 'Republik und Kaiserreich', left: { h: '🏛️ Republik', items: ['Zwei Konsuln für ein Jahr', 'Senat berät und entscheidet', 'Wahlen für Ämter', 'Macht ist verteilt'] }, right: { h: '👑 Kaiserreich', items: ['Ein Kaiser mit sehr viel Macht', 'Senat hat wenig zu sagen', 'Kaiser bestimmt die Nachfolger', 'Frieden im Inneren (Pax Romana)'] } },
+    { t: 'quelle', title: '📜 Die Ermordung Caesars (nacherzählt)', text: 'Caesar kam am 15. März 44 v. Chr. in den Senat. Viele Senatoren traten an ihn heran, als wollten sie eine Bitte vortragen. Plötzlich zogen sie Dolche. Sie stachen mehrmals zu. Caesar wehrte sich, aber er hatte keine Chance. Er starb im Senatssaal.', cite: 'Nach antiken Berichten (z. B. von Sueton, um 120 n. Chr.), frei nacherzählt.' },
+    { t: 'kette', title: '⛓️ Vom Ende der Republik zum Kaiser', items: [
+      { ic: '🔥', text: 'Bürgerkriege erschüttern Rom.' },
+      { ic: '👑', text: 'Caesar wird **Diktator auf Lebenszeit**.' },
+      { ic: '🗡️', text: 'Senatoren **ermorden** ihn, um die Republik zu retten.' },
+      { ic: '⚔️', text: 'Es gibt **noch mehr Bürgerkrieg**.' },
+      { ic: '🏛️', text: 'Octavian **gewinnt**, wird **Augustus** und bringt Frieden.' }] }
+  ],
+  tasks: [
+    { t: 'order', q: 'Bringe die Ereignisse in die richtige Reihenfolge.', items: ['Caesar erobert Gallien (58–51 v. Chr.)', 'Caesar überschreitet den Rubikon (49 v. Chr.)', 'Caesar wird ermordet (44 v. Chr.)', 'Seeschlacht bei Actium (31 v. Chr.)', 'Octavian wird Augustus (27 v. Chr.)', 'Varusschlacht (9 n. Chr.)'], why: '58 → 49 → 44 → 31 → 27 v. Chr., dann 9 n. Chr.' },
+    { t: 'mc', q: 'Was bedeutet es, dass Caesar den Rubikon überschritt?', opts: ['Er begann den Bürgerkrieg, weil er mit seinem Heer nach Italien zog.', 'Er fuhr mit dem Schiff nach Ägypten.', 'Er ging als einfacher Bürger nach Hause.'], a: 0, why: 'Das Heer durfte den Fluss nicht überschreiten. Es gab kein Zurück mehr.', tip: 'Schau in die Station „Über den Rubikon“.' },
+    { t: 'year', q: 'In welchem Jahr wurde Caesar ermordet?', a: -44, tol: 2, min: -100, max: -10, why: 'Am 15. März 44 v. Chr.', tip: 'Es war die „Iden des März“.' },
+    { t: 'match', q: 'Wer war wer?', pairs: [['Caesar', 'eroberte Gallien'], ['Vercingetorix', 'Anführer der Gallier'], ['Brutus', 'Anführer der Verschwörer'], ['Octavian', 'wurde Augustus'], ['Kleopatra', 'Königin von Ägypten']], why: 'Die fünf wichtigsten Personen dieses Kapitels.' },
+    { t: 'tf', q: 'Stimmt das?', items: [
+      { s: 'Caesar wurde am 15. März 44 v. Chr. ermordet.', a: true },
+      { s: 'Augustus nannte sich König von Rom.', a: false, why: 'Er nannte sich „erster Bürger“ (princeps).' },
+      { s: 'Unter Augustus herrschte lange Frieden („Pax Romana“).', a: true },
+      { s: 'Germanien wurde nach der Varusschlacht römische Provinz.', a: false, why: 'Die Germanen siegten. Germanien blieb frei.' },
+      { s: 'Nach Caesars Tod gab es sofort Frieden.', a: false, why: 'Es folgten weitere Bürgerkriege.' }] },
+    { t: 'map', q: 'Wo lag Alesia, die Festung des Vercingetorix? Klicke auf den richtigen Buchstaben.', year: -51, view: [4.5, 47.5, 34], picks: [{ l: 'A', lon: 8.5, lat: 52.1 }, { l: 'B', lon: 4.5, lat: 47.5 }, { l: 'C', lon: 12.4, lat: 44.1 }, { l: 'D', lon: -2.45, lat: 41.8 }], a: 1, why: 'Alesia lag in Gallien (im heutigen Frankreich).', tip: 'Alesia liegt in Gallien, also im heutigen Frankreich.' },
+    { t: 'gap', q: 'Fülle die Lücken.', text: 'Caesar eroberte {0}. Im Jahr 49 v. Chr. überschritt er den {1}. Er wurde von {2} und anderen ermordet. Sein Adoptivsohn Octavian nannte sich später {3}. Er war der erste {4}.', words: ['Gallien', 'Rubikon', 'Brutus', 'Augustus', 'Kaiser'], extra: ['Hannibal', 'Tiber', 'Antonius'], why: 'Damit hast du die Geschichte in Kurzform.' }
+  ],
+  heft: [
+    'Vergleiche in einer Tabelle **Republik** und **Kaiserreich**: Wer regiert? Wer entscheidet? Wie lange? Gibt es Wahlen?',
+    'Erzähle in fünf Sätzen: Von Caesars Ermordung bis zum Beginn der Kaiserzeit (44 bis 27 v. Chr.).',
+    'War Caesar ein Held oder ein Tyrann? Schreibe drei Argumente auf und entscheide dich.'
+  ],
+  entry: { title: 'Caesar und Augustus', items: ['**58–51 v. Chr.:** Caesar erobert Gallien (Alesia 52). **49 v. Chr.:** Er überschreitet den Rubikon – Bürgerkrieg.', '**15. März 44 v. Chr.:** Caesar wird von Verschwörern um Brutus und Cassius ermordet.', '**31 v. Chr.:** Octavian siegt bei Actium. **30 v. Chr.:** Ägypten wird römisch.', '**27 v. Chr.:** Octavian wird **Augustus**. Rom wird ein **Kaiserreich**. Es herrscht Frieden (Pax Romana).', '**9 n. Chr.:** Varusschlacht. Rhein und Donau werden Grenze. **14 n. Chr.:** Augustus stirbt.'] },
+  teacher: {
+    plan: [['5 Min', 'Einstieg: Wann ist Macht zu groß? Bezug zu Stunde 3 und 4 (Bürgerkriege).'], ['15 Min', 'Zeitreise: Stationen 1–3 zügig, Station 4 (Ermordung) mit Quelle, Stationen 5–8 selbstständig.'], ['5 Min', 'Vergleich Republik/Kaiserreich und Kette.'], ['15 Min', 'Aufgaben 1–7; Kartenaufgabe im Plenum.'], ['5 Min', 'Hefteintrag; Heftaufgabe 3 (Held oder Tyrann?) als Diskussion mit Partner.']],
+    sol: ['Heftaufgabe 1: Republik: 2 Konsuln, Senat, Wahlen, ein Jahr. Kaiserreich: 1 Kaiser, sehr viel Macht, lebenslang, Nachfolger wird bestimmt.', 'Heftaufgabe 2: Ermordung → Bürgerkrieg → Triumvirat 43 → Philippi 42 → Actium 31 → Augustus 27.', 'Heftaufgabe 3: Held: Reformen, Kalender, Gallien. Tyrann: Diktator, Krieg gegen Rom, Senat entmachtet. Argumente wichtiger als Urteil.'],
+    diff: ['Leichter: Kette laut lesen lassen; Personen-Zuordnung mit Bildkarten.', 'Schwerer: Warum wollten die Verschwörer die Republik retten und erreichten das Gegenteil?']
+  }
+};
+
+/* Kapitel 7 – Teilung in West- und Ostrom (Stunde 6) */
+CH.k7 = {
+  id: 'k7', emoji: '🏛️', color: '#1D4E84', kicker: 'Stunde 6 · Kapitel 7', title: 'Das Reich wird geteilt: Westrom und Ostrom',
+  goals: ['Du kannst sagen, wann das Reich am größten war.', 'Du kannst erklären, warum und wann das Reich geteilt wurde.', 'Du kannst Westrom und Ostrom auf der Karte unterscheiden.'],
+  steps: [
+    { y: 117, t: 'Das Reich ist am größten', s: 'Größte Ausdehnung unter Trajan', view: [15, 42.5, 50], marks: ['mesopotamien'], pulse: ['dakien'],
+      txt: ['Im Jahr 117 n. Chr. war das Römische Reich am größten. Kaiser war Trajan.', 'Britannien gehörte seit 43 n. Chr. dazu. Dakien hatte Trajan im Jahr 106 n. Chr. erobert.',
+        'Rhein und Donau bildeten im Norden eine feste Grenze, den [[Limes|Die Grenze des Römischen Reiches. Mit Wällen, Türmen und Kastellen.]] (die gepunktete Linie).', 'Kurze Zeit gehörte sogar Mesopotamien dazu. Das liegt östlich außerhalb der Karte.'],
+      fact: 'Rund um das Mittelmeer lebten bis zu 50 Millionen Menschen im Reich. Man nannte das Meer „unser Meer“.' },
+    { y: 212, t: 'Fast alle werden Bürger', s: 'Bürgerrecht für fast alle Freien', view: [15, 42.5, 50], pulse: [],
+      txt: ['Früher waren nur wenige Bewohner römische Bürger.', 'Im Jahr 212 n. Chr. gab Kaiser Caracalla fast allen freien Bewohnern das Bürgerrecht.', 'Dadurch wurden sie auch steuerpflichtig. Der Kaiser bekam mehr Geld.', 'Die Sprache blieb Latein, im Osten aber oft Griechisch.'] },
+    { y: 271, yl: '235–284 n. Chr.', t: 'Die Zeit der Soldatenkaiser', s: 'Krise der Soldatenkaiser', view: [15, 42.5, 50], pulse: [],
+      txt: ['Von 235 bis 284 n. Chr. gab es eine große Krise.', 'Es gab mehr als zwanzig Kaiser. Soldaten machten sie zu Kaisern – und stürzten sie wieder. Man nennt sie [[Soldatenkaiser|Kaiser, die vom Heer ausgerufen wurden. Sie regierten oft nur kurz.]].', 'Dazu kamen Angriffe an den Grenzen und Bürgerkriege.', 'Im Jahr 271 n. Chr. gab Rom Dakien wieder auf.'] },
+    { y: 284, yl: '284/293 n. Chr.', t: 'Diokletian teilt die Verwaltung', s: 'Diokletian teilt die Verwaltung', view: [15, 42.5, 50], pulse: [],
+      txt: ['Kaiser [[Diokletian|Ein starker Kaiser. Er beendete die Krise, indem er die Herrschaft teilte.]] wollte das Reich retten.', 'Er sagte: Das Reich ist zu groß für einen Mann. Ab 284 teilte er die Verwaltung.', 'Im Jahr 293 n. Chr. gab es vier Herrscher: die [[Tetrarchie|Griechisch für „Herrschaft der Vier“. Zwei Kaiser und zwei Unter-Kaiser.]].', 'Der Osten und der Westen wurden nun getrennt verwaltet.'] },
+    { y: 313, yl: '313–380 n. Chr.', t: 'Das Christentum wird wichtig', s: 'Toleranz für Christen', view: [15, 42.5, 50], pulse: [],
+      txt: ['Lange wurden Christen im Reich verfolgt. Sie glaubten nur an einen Gott.', 'Im Jahr 313 n. Chr. erlaubte Kaiser Konstantin das Christentum. Man nennt das Toleranz.', 'Im Jahr 380 n. Chr. machte Kaiser Theodosius das Christentum zur Staatsreligion.', 'Nach und nach wurden andere Religionen verboten.'] },
+    { y: 330, t: 'Konstantinopel wird Hauptstadt', s: 'Konstantinopel neue Hauptstadt', view: [24, 40.5, 40], marks: ['konstantinopel'], pulse: [],
+      txt: ['Kaiser Konstantin gründete im Jahr 330 n. Chr. eine neue Hauptstadt im Osten.', 'Sie hieß Konstantinopel. Sie lag am Bosporus, wo Europa und Asien sich treffen.', 'Der Ort war reich und gut zu verteidigen.', 'Der Osten wurde wichtiger als Rom.'] },
+    { y: 395, t: 'Endgültige Teilung', s: 'Endgültige Teilung: Westrom und Ostrom', view: [15, 42.5, 50], marks: ['konstantinopel', 'ravenna'], pulse: [],
+      txt: ['Im Jahr 395 n. Chr. starb Kaiser Theodosius. Seine beiden Söhne erbten das Reich.', 'Honorius bekam den Westen. Arcadius bekam den Osten mit der Hauptstadt Konstantinopel.', 'Ab 402 n. Chr. war [[Ravenna|Eine Stadt an der Adria. Sie war leichter zu verteidigen als Rom.]] Hauptstadt des Westens.', 'Die Karte zeigt jetzt zwei Farben: Westrom (blau) und Ostrom (orange). Das Ostreich („Byzanz“) besteht noch bis 1453.'],
+      fact: 'Aus Ostrom wurde das Byzantinische Reich. Es endete erst 1453, als die Türken Konstantinopel eroberten.' }
+  ],
+  material: [
+    { t: 'vergleich', title: 'Westrom und Ostrom', left: { h: '🔵 Westrom', items: ['Kaiser Honorius', 'Hauptstadt: Ravenna (ab 402)', 'Ärmer, viele Angriffe', 'Endet 476 n. Chr.'] }, right: { h: '🟠 Ostrom', items: ['Kaiser Arcadius', 'Hauptstadt: Konstantinopel', 'Reicher, mit starken Mauern', 'Besteht bis 1453 n. Chr.'] } },
+    { t: 'fig', title: 'Die Tetrarchie (293 n. Chr.)', items: [{ big: '👑👑', text: 'Zwei Oberkaiser: einer für den Osten, einer für den Westen.' }, { big: '🎖️🎖️', text: 'Zwei Unter-Kaiser helfen und folgen später nach.' }, { big: '🗺️', text: 'Vier Herrscher verwalten ein riesiges Reich schneller.' }] },
+    { t: 'info', title: '✝️ Das Christentum im Reich', list: ['**bis 311 n. Chr.:** Christen werden oft verfolgt.', '**313 n. Chr.:** Konstantin erlaubt das Christentum (Toleranz).', '**380 n. Chr.:** Theodosius macht es zur Staatsreligion.'] }
+  ],
+  tasks: [
+    { t: 'year', q: 'Wann wurde das Römische Reich endgültig in Westrom und Ostrom geteilt?', a: 395, tol: 3, min: 200, max: 500, why: 'Im Jahr 395 n. Chr. starb Theodosius. Seine Söhne teilten das Reich.', tip: 'Es war nach dem Tod von Kaiser Theodosius.' },
+    { t: 'order', q: 'Bringe die Ereignisse in die richtige Reihenfolge.', items: ['Größte Ausdehnung unter Trajan', 'Bürgerrecht für fast alle Freien', 'Diokletian teilt die Verwaltung', 'Konstantin erlaubt das Christentum', 'Konstantinopel wird Hauptstadt', 'Endgültige Teilung des Reichs'], why: '117 → 212 → 284 → 313 → 330 → 395 n. Chr.' },
+    { t: 'match', q: 'Ordne Jahr und Ereignis zu.', pairs: [['212 n. Chr.', 'Bürgerrecht für fast alle Freien'], ['313 n. Chr.', 'Christentum wird erlaubt'], ['330 n. Chr.', 'Konstantinopel wird Hauptstadt'], ['380 n. Chr.', 'Christentum wird Staatsreligion']], why: 'Diese vier Jahre gehören zusammen mit Konstantin und Theodosius.' },
+    { t: 'sort', q: 'Gehört das zu Westrom oder zu Ostrom?', groups: ['Westrom', 'Ostrom'], items: [['Kaiser Honorius', 0], ['Hauptstadt Ravenna', 0], ['Endet 476 n. Chr.', 0], ['Kaiser Arcadius', 1], ['Hauptstadt Konstantinopel', 1], ['Besteht bis 1453 n. Chr.', 1]] },
+    { t: 'mc', q: 'Warum wurde das Reich geteilt?', opts: ['Es war zu groß, um es von einer Stelle aus gut zu regieren und zu verteidigen.', 'Die Römer wollten keine Kaiser mehr.', 'Die Hunnen hatten Rom erobert.'], a: 0, why: 'Lange Grenzen und viele Feinde – zwei Herrscher konnten schneller reagieren.', tip: 'Denke an die Größe des Reichs auf der Karte.' },
+    { t: 'tf', q: 'Stimmt das?', items: [
+      { s: 'Im Jahr 117 n. Chr. war das Reich am größten.', a: true },
+      { s: 'Caracalla gab 212 n. Chr. fast allen freien Bewohnern das Bürgerrecht.', a: true },
+      { s: 'Zur Zeit der Soldatenkaiser war die Lage ruhig und sicher.', a: false, why: 'Es gab Krisen, Kämpfe und Angriffe.' },
+      { s: 'Im Jahr 380 n. Chr. wurde das Christentum Staatsreligion.', a: true },
+      { s: 'Die Hauptstadt des Westens war ab 402 n. Chr. Konstantinopel.', a: false, why: 'Konstantinopel war im Osten. Der Westen hatte Ravenna.' }] },
+    { t: 'map', q: 'Wo lag Konstantinopel, die Hauptstadt im Osten? Klicke auf den richtigen Buchstaben.', year: 395, view: [22, 40, 40], picks: [{ l: 'A', lon: 12.2, lat: 44.4 }, { l: 'B', lon: 28.98, lat: 41.0 }, { l: 'C', lon: 23.7, lat: 38.0 }, { l: 'D', lon: 29.9, lat: 31.2 }], a: 1, why: 'Konstantinopel lag am Bosporus, dort wo heute Istanbul liegt.', tip: 'Die Stadt lag am Meer, das Europa und Asien trennt.' }
+  ],
+  heft: [
+    'Lege eine Tabelle an: **Westrom – Ostrom**. Schreibe Kaiser, Hauptstadt und das Jahr des Endes auf.',
+    'Erkläre: Warum teilte Diokletian die Verwaltung? Was änderte Konstantin für die Christen?',
+    'Zeichne einen Zeitstrahl von 100 bis 500 n. Chr. Trage fünf Ereignisse aus dieser Stunde ein.'
+  ],
+  entry: { title: 'Die Teilung des Reiches', items: ['**117 n. Chr.:** Größte Ausdehnung unter Trajan. **212:** Bürgerrecht für fast alle Freien.', '**235–284:** Krise der Soldatenkaiser. **284/293:** Diokletian teilt die Verwaltung (Tetrarchie).', '**313:** Konstantin erlaubt das Christentum. **330:** Konstantinopel wird Hauptstadt. **380:** Christentum wird Staatsreligion.', '**395 n. Chr.:** Nach dem Tod von Theodosius wird das Reich endgültig geteilt: **Westrom** (Honorius, später Ravenna) und **Ostrom** (Arcadius, Konstantinopel).', 'Ostrom („Byzanz“) besteht bis **1453**.'] },
+  teacher: {
+    plan: [['5 Min', 'Einstieg: Karte 117 n. Chr. Warum ist ein so großes Reich schwer zu regieren?'], ['10 Min', 'Zeitreise: Stationen 1–4 zügig, ab Station 5 mit Kartenwechsel auf 395 (Farbwechsel zeigen).'], ['5 Min', 'Vergleich Westrom/Ostrom; Infokasten Christentum.'], ['5 Min', 'Aufgaben 1–4. Rest der Aufgaben und Heftaufgaben in Stillarbeit/Hausaufgabe.']],
+    sol: ['Heftaufgabe 1: Westrom: Honorius, Ravenna, Ende 476. Ostrom: Arcadius, Konstantinopel, Ende 1453.', 'Heftaufgabe 2: Diokletian: Reich zu groß, vier Herrscher. Konstantin: 313 Toleranz, 330 neue Hauptstadt.', 'Heftaufgabe 3: individuelle Zeitstrahl-Lösung (z. B. 117, 212, 284, 313, 395).'],
+    diff: ['Leichter: Sortieraufgabe zuerst; Karte 395 mit Farben beschriften lassen.', 'Schwerer: Warum konnte Ostrom länger überleben als Westrom?']
+  }
+};
+
+/* Kapitel 8 – Zerfall Westroms (Stunde 6) */
+CH.k8 = {
+  id: 'k8', emoji: '🏚️', color: '#B45309', kicker: 'Stunde 6 · Kapitel 8', title: 'Das Ende Westroms',
+  goals: ['Du kannst erzählen, wie Völker ins Reich kamen (Völkerwanderung).', 'Du kannst Ursachen für den Zerfall Westroms nennen.', 'Du weißt, was am 4. September 476 n. Chr. geschah.'],
+  steps: [
+    { y: 378, yl: '375–378 n. Chr.', t: 'Die Hunnen kommen', s: 'Hunnen treiben die Goten ins Reich', view: [26, 45.5, 36], marks: ['adrianopel'], routes: ['hunnen'], pulse: [],
+      txt: ['Um 375 n. Chr. kamen Reiterkrieger aus dem Osten: die [[Hunnen|Ein Reitervolk aus Asien. Sie waren berüchtigt für ihre Angriffe.]].', 'Die Goten lebten nördlich der Donau. Sie hatten Angst vor den Hunnen und baten um Aufnahme im Reich.',
+        'So begann die [[Völkerwanderung|Viele Völker zogen in neue Länder. Sie wanderten in das Römische Reich.]]. Viele Völker zogen auf römisches Gebiet.', 'Im Jahr 378 n. Chr. besiegten die Goten die Römer bei Adrianopel. Kaiser Valens starb.'] },
+    { y: 406, t: 'Über den Rhein', s: 'Vandalen, Sueben und Alanen überqueren den Rhein', view: [3, 44, 36], marks: ['mainz'], routes: ['vandalen_west'], pulse: [],
+      txt: ['Am Rhein stand ein römisches Grenzheer. Doch es war zu schwach.', 'Ende des Jahres 406 zogen Vandalen, Sueben und Alanen über den zugefrorenen Rhein.', 'Sie plünderten Gallien und zogen weiter nach Spanien.', 'Rom konnte sie nicht aufhalten.'] },
+    { y: 410, t: 'Alarich plündert Rom', s: 'Westgoten unter Alarich plündern Rom', view: [15, 43.5, 36], marks: [], routes: ['goten'],
+      txt: ['Der Gotenkönig [[Alarich|Der König der Westgoten. Er plünderte im Jahr 410 Rom.]] forderte Land und Geld. Er wurde nicht ernst genommen.', 'Im Jahr 410 n. Chr. eroberten seine Westgoten Rom. Sie plünderten drei Tage lang.',
+        'Seit fast 800 Jahren war die Stadt nicht mehr erobert worden. Die Welt erschrak.', 'Schon 409 n. Chr. hatten sich die Sueben in Spanien niedergelassen.'] },
+    { y: 418, t: 'Die Westgoten bekommen Land', s: 'Westgoten in Aquitanien', view: [0, 44.5, 26], marks: ['toulouse'],
+      txt: ['Die Kaiser konnten die Westgoten nicht besiegen. Sie schlossen einen Vertrag.', 'Im Jahr 418 n. Chr. durften die Westgoten in Aquitanien (Südwestfrankreich) siedeln.', 'Sie sollten dafür Rom helfen. Aber sie wurden bald unabhängig.', 'Ein Stück des Reiches war verloren.'] },
+    { y: 439, t: 'Die Vandalen erobern Karthago', s: 'Vandalen erobern Karthago', view: [5, 39, 44], marks: ['karthago'], routes: ['vandalen'],
+      txt: ['Die Vandalen zogen von Spanien nach Nordafrika.', 'Im Jahr 439 n. Chr. eroberten sie Karthago. Das war für Rom ein schwerer Schlag.', 'Afrika war die [[Kornkammer|Ein Gebiet, das sehr viel Getreide liefert.]] Roms. Von dort kamen Getreide und viele Steuern.', 'Ohne Afrika fehlte Rom Geld für sein Heer.'] },
+    { y: 451, yl: '443–451 n. Chr.', t: 'Attila und die neuen Reiche', s: 'Schlacht auf den Katalaunischen Feldern', view: [7, 47, 36], marks: ['chalons'], routes: ['attila'],
+      txt: ['Um 443 n. Chr. siedelten die Burgunder in Gallien. Im Jahr 449 n. Chr. kamen Angeln und Sachsen nach Britannien.', 'Der Hunnenkönig [[Attila|Der König der Hunnen. Er wurde „Geißel Gottes“ genannt.]] griff Gallien an.',
+        'Im Jahr 451 n. Chr. schlugen Römer und Westgoten ihn auf den Katalaunischen Feldern.', 'Rom hatte nur noch mit fremden Verbündeten Erfolg.'] },
+    { y: 455, t: 'Die Vandalen plündern Rom', s: 'Vandalen plündern Rom', view: [11, 39.5, 26], marks: ['karthago'], routes: ['vandalen_rom'],
+      txt: ['Im Jahr 455 n. Chr. segelten die Vandalen von Karthago nach Rom.', 'Sie plünderten die Stadt zwei Wochen lang.', 'Von da an bestimmten meist Heerführer, wer Kaiser wurde. Die Kaiser wechselten schnell.', 'Auch Franken und andere Stämme hatten sich Land genommen. Das Westreich war fast nur noch Italien.'] },
+    { y: 476, t: 'Das Ende: 4. September 476', s: 'Odoaker setzt den letzten Kaiser ab', view: [15, 42.5, 50], pulse: undefined,
+      txt: ['Der letzte Kaiser im Westen war ein Junge. Er hieß Romulus Augustulus.', 'Am 4. September 476 n. Chr. setzte ihn der Heerführer [[Odoaker|Ein germanischer Heerführer. Er wurde König von Italien.]] ab.', 'Odoaker schickte die Kaiserzeichen nach Konstantinopel. Er wurde selbst König von Italien.', 'Das ist das Ende Westroms. Im Osten aber blieb das Reich bestehen.'],
+      fact: 'Der letzte Kaiser trug die Namen des ersten Königs (Romulus) und des ersten Kaisers (Augustus). Ein Kreis schließt sich.' }
+  ],
+  material: [
+    { t: 'info', title: '🧳 Die Völkerwanderung', list: ['Viele Völker zogen in neue Länder: Goten, Vandalen, Sueben, Burgunder, Franken, Angeln und Sachsen.', 'Manche suchten Schutz vor den Hunnen. Andere wollten Land und Beute.', 'Sie gründeten eigene Reiche auf dem Boden des Römischen Reiches.'] },
+    { t: 'vergleich', title: 'Warum überlebte Ostrom?', left: { h: '🔵 Westrom fiel, weil …', items: ['viele Feinde an langen Grenzen', 'weniger Geld und Steuern', 'schwache Kaiser', 'Städte und Handel gingen zurück'] }, right: { h: '🟠 Ostrom blieb, weil …', items: ['reicher, mit viel Handel', 'Konstantinopel hatte starke Mauern', 'kürzere Grenze zu verteidigen', 'Steuern flossen weiter'] } }
+  ],
+  tasks: [
+    { t: 'order', q: 'Bringe die Ereignisse in die richtige Reihenfolge.', items: ['Die Hunnen treiben die Goten ins Reich.', 'Vandalen, Sueben und Alanen überqueren den Rhein.', 'Alarich plündert Rom.', 'Die Vandalen erobern Karthago.', 'Attila kämpft auf den Katalaunischen Feldern.', 'Odoaker setzt den letzten Kaiser ab.'], why: 'Um 375 → 406 → 410 → 439 → 451 → 476 n. Chr.' },
+    { t: 'match', q: 'Warum zerfiel Westrom? Ordne Ursache und Erklärung zu.', pairs: [['Angriffe von außen', 'Goten, Vandalen und Hunnen fallen ein'], ['Bürgerkriege', 'Kaiser und Feldherren kämpfen um Macht'], ['Hohe Steuern', 'Die Menschen sind arm, der Staat hat zu wenig Geld'], ['Söldner statt Bürgersoldaten', 'Soldaten kämpfen für Geld, nicht für Rom'], ['Reich zu groß', 'Die Grenzen sind zu lang zum Verteidigen']], why: 'Nicht ein Grund, sondern viele zusammen.' },
+    { t: 'year', q: 'In welchem Jahr endete das Weströmische Reich?', a: 476, tol: 3, min: 300, max: 550, why: 'Am 4. September 476 setzte Odoaker den letzten Kaiser ab.', tip: 'Odoaker setzte Romulus Augustulus ab.' },
+    { t: 'map', q: 'Wo lag Ravenna, die Hauptstadt Westroms? Klicke auf den richtigen Buchstaben.', year: 402, view: [12, 43.5, 22], picks: [{ l: 'A', lon: 9.2, lat: 45.5 }, { l: 'B', lon: 12.2, lat: 44.4 }, { l: 'C', lon: 14.25, lat: 40.85 }, { l: 'D', lon: 13.4, lat: 45.8 }], a: 1, why: 'Ravenna lag an der Adria-Küste, südlich der Poebene.', tip: 'Ravenna liegt an der Ostküste Italiens.' },
+    { t: 'gap', q: 'Fülle die Lücken.', text: 'Im Jahr 410 plünderten die {0} unter Alarich Rom. Im Jahr 439 eroberten die {1} Karthago. Im Jahr 451 kämpfte Rom gegen {2}, den König der Hunnen. Im Jahr 476 setzte {3} den letzten Kaiser ab. Der hieß {4}.', words: ['Westgoten', 'Vandalen', 'Attila', 'Odoaker', 'Romulus Augustulus'], extra: ['Hannibal', 'Franken', 'Konstantin'], why: 'Damit hast du die wichtigsten Namen dieser Zeit.' },
+    { t: 'tf', q: 'Stimmt das?', items: [
+      { s: 'Die Hunnen trieben die Goten in Richtung Römisches Reich.', a: true },
+      { s: 'Die Vandalen plünderten im Jahr 455 Rom.', a: true },
+      { s: 'Der letzte Kaiser im Westen hieß Konstantin.', a: false, why: 'Er hieß Romulus Augustulus.' },
+      { s: 'Nach 476 gab es das Ostreich weiter.', a: true },
+      { s: 'Der Verlust Karthagos 439 war für Rom nicht wichtig.', a: false, why: 'Rom verlor Getreide und Steuern.' }] },
+    { t: 'mc', q: 'Warum war der Verlust von Karthago (439) so schlimm für Westrom?', opts: ['Es fehlten Getreide und Steuergeld für das Heer.', 'Die Stadt war die Hauptstadt des Westens.', 'Dort lebte der Kaiser.'], a: 0, why: 'Ohne Steuern konnte Rom seine Soldaten nicht mehr bezahlen.', tip: 'Afrika war die Kornkammer Roms.' }
+  ],
+  heft: [
+    'Zeichne einen Zeitstrahl von 375 bis 476 n. Chr. Trage sechs Ereignisse ein (zum Beispiel 406, 410, 439, 451, 455, 476).',
+    'Nenne **fünf Ursachen** für den Zerfall Westroms. Ordne sie: Was war für dich am wichtigsten? Begründe.',
+    'Erkläre die Namen **Romulus Augustulus**: Was haben sie mit dem Anfang Roms zu tun?'
+  ],
+  entry: { title: 'Der Zerfall Westroms', items: ['**ab 375 n. Chr.:** Hunnen treiben die Goten ins Reich (**Völkerwanderung**). **378:** Adrianopel.', '**406:** Vandalen, Sueben und Alanen überqueren den Rhein. **410:** Alarich (Westgoten) plündert Rom.', '**439:** Vandalen erobern Karthago (Getreide und Steuern fehlen). **455:** Vandalen plündern Rom. **451:** Attila auf den Katalaunischen Feldern.', '**Ursachen:** Angriffe von außen, Bürgerkriege, hohe Steuern, Söldner statt Bürgersoldaten, Reich zu groß.', '**4. September 476 n. Chr.:** Odoaker setzt Romulus Augustulus ab. Ende Westroms. Ostrom besteht weiter.'] },
+  teacher: {
+    plan: [['5 Min', 'Einstieg: Karte 395 und Karte 476 nebeneinander. Was fällt auf? Hypothesen sammeln.'], ['13 Min', 'Zeitreise: Pfeile (Hunnen, Goten, Vandalen) mit Kartenzoom besprechen; Nachfolgereiche erscheinen nach Jahr.'], ['5 Min', 'Völkerwanderung und Vergleich Ost/West.'], ['10 Min', 'Aufgaben 1–7; Ursachen-Zuordnung als Kernaufgabe besprechen.'], ['2 Min', 'Hefteintrag, Heftaufgaben zu Hause. Danach: Abschlussquiz.']],
+    sol: ['Heftaufgabe 1: 375 Hunnen, 406 Rhein, 410 Rom, 439 Karthago, 451 Attila, 476 Ende (Reihenfolge stimmt).', 'Heftaufgabe 2: Angriffe von außen, Bürgerkriege, Steuern/Wirtschaft, Söldner, Reich zu groß. Ordnung individuell begründen.', 'Heftaufgabe 3: Romulus = Gründer, Augustus = erster Kaiser. Der letzte Kaiser trägt beide Namen: Anfang und Ende.'],
+    diff: ['Leichter: Ursachen-Zuordnung mit Lösungskarten; Pfeile auf der Karte erklären lassen.', 'Schwerer: War 476 wirklich ein „Ende“? Was änderte sich im Alltag der Menschen?']
+  }
+};
+
+/* Kapitel 9 – Abschlussquiz (Stunde 6) */
+CH.k9 = {
+  id: 'k9', emoji: '🏆', color: '#D99A0B', kicker: 'Stunde 6 · Abschlussquiz', title: 'Abschlussquiz: Rom im Schnelldurchlauf',
+  goals: ['Du wiederholst alle 8 Themen aus den 6 Stunden.', 'Du ordnest die wichtigsten Ereignisse auf dem Zeitstrahl.', 'Du sammelst Sterne und wirst Rom-Profi.'],
+  steps: [],
+  material: [],
+  finale: quizFinale,
+  tasks: [
+    { t: 'order', q: 'Bringe die 8 wichtigsten Ereignisse in die richtige Reihenfolge. Das Früheste zuerst.', items: ['Nach der Sage wird Rom gegründet.', 'Rom wird Republik.', 'Süditalien wird römisch.', 'Karthago wird zerstört.', 'Caesar wird ermordet.', 'Augustus wird der erste Kaiser.', 'Das Reich wird in West und Ost geteilt.', 'Westrom endet.'], why: '753 v. → 509 v. → 272 v. → 146 v. → 44 v. → 27 v. → 395 n. → 476 n. Chr. Das ist das Gerüst der ganzen Geschichte!' },
+    { t: 'year', q: 'In welchem Jahr wurde Rom eine Republik?', a: -509, tol: 3, min: -800, max: -300, why: '509 v. Chr. wurde der letzte König vertrieben.', tip: 'Es war das Ende der Königszeit.' },
+    { t: 'year', q: 'In welchem Jahr wurde Karthago zerstört?', a: -146, tol: 3, min: -300, max: -50, why: '146 v. Chr. Ende des 3. Punischen Krieges.', tip: 'Nach dem 3. Punischen Krieg.' },
+    { t: 'year', q: 'In welchem Jahr endete das Weströmische Reich?', a: 476, tol: 3, min: 300, max: 550, why: '476 n. Chr. setzte Odoaker den letzten Kaiser ab.', tip: 'Odoaker und Romulus Augustulus.' },
+    { t: 'map', q: 'Wo liegt Karthago? Klicke auf den richtigen Buchstaben.', year: -146, view: [10.5, 38.5, 34], picks: [{ l: 'A', lon: 15.3, lat: 37.05 }, { l: 'B', lon: 12.2, lat: 44.4 }, { l: 'C', lon: 28.98, lat: 41.0 }, { l: 'D', lon: 10.3, lat: 36.85 }], a: 3, why: 'Karthago lag in Nordafrika, im heutigen Tunesien.', tip: 'Karthago liegt in Afrika.' },
+    { t: 'mc', q: 'Warum verloren viele römische Bauern ihr Land?', opts: ['Sie waren als Soldaten lange weg, machten Schulden und verkauften ihre Höfe.', 'Die Hunnen nahmen es ihnen weg.', 'Die Konsuln haben es verboten.'], a: 0, why: 'Reiche kauften das Land und bauten Latifundien mit Sklaven.', tip: 'Denke an Stunde 3.' },
+    { t: 'sort', q: 'Republik oder Kaiserreich? Sortiere.', groups: ['Republik', 'Kaiserreich'], items: [['Zwei Konsuln für ein Jahr', 0], ['Ein Kaiser mit großer Macht', 1], ['Der Senat hat viel zu sagen', 0], ['Augustus', 1], ['Pax Romana (römischer Friede)', 1], ['Wahlen für Ämter', 0]] },
+    { t: 'gap', q: 'Warum zerfiel Westrom? Fülle die Lücken.', text: 'Westrom zerfiel durch Angriffe von {0}, durch {1} und durch hohe {2}. Außerdem kämpften {3} statt Bürgersoldaten, und das Reich war {4}.', words: ['außen', 'Bürgerkriege', 'Steuern', 'Söldner', 'zu groß'], extra: ['Elefanten', 'Konsuln', 'Siege'], why: 'Viele Ursachen zusammen führten zum Ende.' },
+    { t: 'match', q: 'Wer war wer?', pairs: [['Romulus', 'Gründer Roms (nach der Sage)'], ['Hannibal', 'zog mit Elefanten über die Alpen'], ['Tiberius Gracchus', 'wollte Land an Bauern verteilen'], ['Caesar', 'überschritt den Rubikon'], ['Augustus', 'erster Kaiser'], ['Odoaker', 'setzte den letzten Kaiser ab']], why: 'Sechs Namen, sechs Kapitel.' },
+    { t: 'tf', q: 'Stimmt das?', items: [
+      { s: 'Rom beherrschte um 264 v. Chr. ganz Italien bis zum Arno und zum Rubikon.', a: true },
+      { s: 'Bei Cannae verlor Rom gegen Hannibal.', a: true },
+      { s: 'Caesar wurde am 15. März 44 v. Chr. ermordet.', a: true },
+      { s: 'Konstantinopel war die Hauptstadt von Westrom.', a: false, why: 'Konstantinopel war die Hauptstadt von Ostrom.' },
+      { s: 'Das Ostreich endete zusammen mit Westrom im Jahr 476.', a: false, why: 'Ostrom bestand noch bis 1453.' }] },
+    { t: 'mc', q: 'Was war eine Folge der Kriege für viele arme Menschen in Rom?', opts: ['Sie blieben arm und bekamen Getreide und Spiele („Brot und Spiele“).', 'Sie wurden alle Senatoren.', 'Sie zogen als reiche Herren nach Karthago.'], a: 0, why: 'Wenige wurden reich, viele arm.', tip: 'Denke an Stunde 4.' },
+    { t: 'think', q: 'Welches der 8 Themen findest du am wichtigsten für die Geschichte Roms? Nenne einen Grund. Vergleiche mit deiner Partnerin oder deinem Partner.', ans: 'Individuelle Antworten. Gute Gründe: Die Republik (Macht verteilt), die Punischen Kriege (Aufstieg zur Großmacht), Caesar/Augustus (Ende der Republik), die Teilung und der Zerfall (Ende Westroms).' }
+  ],
+  heft: [
+    'Zeichne einen großen Zeitstrahl von **800 v. Chr. bis 500 n. Chr.** Trage zehn Ereignisse aus den sechs Stunden ein. Nutze drei Farben für Königszeit, Republik und Kaiserzeit.',
+    'Schreibe einen kurzen Text: „**Rom in fünf Minuten**“ für Kinder aus der 5. Klasse. Nutze mindestens sechs Jahreszahlen.'
+  ],
+  entry: { title: 'Rom auf einen Blick', items: ['**753 v. Chr.** (Sage) Gründung Roms. **509 v. Chr.** Republik.', '**Ab 396 v. Chr.** Rom erobert Italien. **264–146 v. Chr.** Punische Kriege. **Danach** Griechenland, Asien, Südgallien.', 'Die Kriege machen wenige reich und viele Bauern arm. **133/121 v. Chr.** Gracchen. **88 v. Chr.** Bürgerkriege beginnen.', '**44 v. Chr.** Caesar wird ermordet. **27 v. Chr.** Augustus wird erster Kaiser.', '**117 n. Chr.** größte Ausdehnung. **395 n. Chr.** Teilung. **476 n. Chr.** Ende Westroms. Ostrom besteht bis **1453**.'] },
+  teacher: {
+    plan: [['ca. 10 Min', 'Abschlussquiz einzeln oder in Zweiergruppen. Kernaufgaben: Reihenfolge, Zuordnung der Personen, Zerfalls-Ursachen.'], ['ca. 5 Min', 'Auswertung: Welche Aufgaben waren schwer? Häufige Fehler sammeln (z. B. Konstantinopel/Ravenna, Cannae/Zama).'], ['Optional', 'Hausaufgabe: Zeitstrahl-Poster oder „Rom in fünf Minuten“.']],
+    sol: ['Heftaufgabe 1: Kontrolle anhand der Daten im Hefteintrag „Rom auf einen Blick“.', 'Heftaufgabe 2: Bewertung nach: mindestens sechs Jahreszahlen, richtige Reihenfolge, kurze Sätze.'],
+    diff: ['Leichter: Reihenfolge-Aufgabe mit den Hefteinträgen der Stunden 1–6 lösen.', 'Schwerer: Zusatzfrage „Welche Ereignisse hängen als Ursache und Wirkung zusammen?“']
+  }
+};
+
+/* ===== Stunden ===== */
+const LESSONS = [
+  { n: 1, emoji: '🐺', title: 'Rom entsteht und wächst', blurb: 'Vom Dorf am Tiber zur Herrin Italiens.', ch: ['k1', 'k2'] },
+  { n: 2, emoji: '🐘', title: 'Die Punischen Kriege', blurb: 'Rom gegen Karthago – Hannibal und seine Elefanten.', ch: ['k3'] },
+  { n: 3, emoji: '🌾', title: 'Adel gegen Bauern', blurb: 'Warum die Bauern Land und Arbeit verlieren.', ch: ['k4'] },
+  { n: 4, emoji: '⚔️', title: 'Weitere Kriege und ihre Folgen', blurb: 'Beute, Sklaven, Reichtum – und Streit in Rom.', ch: ['k5'] },
+  { n: 5, emoji: '🗡️', title: 'Caesar und Augustus', blurb: 'Ein Diktator wird ermordet. Ein Kaiser beginnt.', ch: ['k6'] },
+  { n: 6, emoji: '🏛️', title: 'Teilung und Ende Westroms', blurb: 'West und Ost gehen getrennte Wege. Dann fällt Westrom.', ch: ['k7', 'k8', 'k9'] }
+];
+const lessonOf = id => LESSONS.find(l => l.ch.includes(id));
+const chaptersOf = l => l.ch.map(id => CH[id]);
+const ALL_CH = () => LESSONS.flatMap(chaptersOf);
+
+/* ===== Karte ===== */
+const PH = {
+  1: { c: '#E5484D', t: 'Rom und Umgebung' },
+  2: { c: '#EA580C', t: 'Mittel- und Süditalien' },
+  3: { c: '#14B8A6', t: 'Gewinne in und nach den Punischen Kriegen' },
+  4: { c: '#8B5CF6', t: 'Weitere Eroberungen bis Caesar' },
+  5: { c: '#3B82F6', t: 'Zeit des Augustus' },
+  6: { c: '#FACC15', t: 'Kaiserzeit bis zur größten Ausdehnung' }
+};
+const WEST = '#3B82F6', OST = '#F97316';
+const MX = lon => (lon + 10) * 15, MY = lat => (55 - lat) * 20;
+const pts = p => p.map(q => MX(q[0]).toFixed(1) + ',' + MY(q[1]).toFixed(1)).join(' ');
+const FULL = [15, 42.5, 50];
+const MAPLABELS = [
+  ['Mittelmeer', 18.5, 34.2, 1], ['Atlantik', -7.3, 46.3, 1], ['Nordsee', 3.5, 54.2, 1], ['Schwarzes Meer', 34, 43.6, 1], ['Tyrrhenisches Meer', 11.8, 39.6, 1],
+  ['Gallien', 2, 46.9, 0], ['Italien', 11.6, 44.4, 0], ['Hispanien', -4.2, 40.2, 0], ['Britannien', -2.6, 53, 0], ['Germanien', 11, 51.6, 0],
+  ['Dakien', 24.5, 46.1, 0], ['Kleinasien', 32, 39, 0], ['Syrien', 37.5, 34.5, 0], ['Ägypten', 28, 30.6, 0], ['Nordafrika', 5, 31.5, 0], ['Griechenland', 22, 39.8, 0]
+];
+const rmotion = () => { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
+const raf = window.requestAnimationFrame ? f => window.requestAnimationFrame(f) : f => setTimeout(() => f(Date.now()), 16);
+let MAPN = 0;
+
+function makeMap(opts = {}) {
+  const uid = 'm' + (++MAPN);
+  const tools = opts.tools !== false, legendOn = opts.legend !== false;
+  const S = { st: null, v: null, full: false, anim: 0 };
+  const land = Object.values(GEO.land).map(p => '<polygon points="' + pts(p) + '"/>').join('');
+  const seas = [GEO.blacksea, GEO.marmara].map(p => '<polygon class="m-sea m-seap" points="' + pts(p) + '"/>').join('');
+  const root = h('div', { class: 'mapbox' });
+  root.innerHTML =
+    '<div class="map-wrap"><svg class="map-svg" viewBox="0 0 750 500" role="img" aria-label="Karte des Mittelmeerraums">' +
+    '<defs><clipPath id="' + uid + 'c">' + land + '</clipPath></defs>' +
+    '<rect class="m-sea" x="-3000" y="-3000" width="7000" height="7000"/>' +
+    '<g>' + land.replace(/<polygon/g, '<polygon class="m-landp"') + '</g>' +
+    '<g clip-path="url(#' + uid + 'c)"><g class="L-reg"></g><g class="L-king"></g></g>' +
+    seas + '<g class="L-limes"></g><g class="L-lab"></g><g class="L-route"></g><g class="L-city"></g><g class="L-pick"></g></svg>' +
+    '<div class="map-badge"></div>' + (tools ? '<div class="map-tools"></div>' : '') + '</div>' + (legendOn ? '<div class="legend" aria-label="Legende"></div>' : '');
+  const svg = $('svg', root), badge = $('.map-badge', root), legend = $('.legend', root);
+  const L = n => $('.L-' + n, svg);
+  let zoomBtn = null;
+  if (tools) {
+    zoomBtn = h('button', { type: 'button', onclick: () => { S.full = !S.full; upd(); goView(true); } });
+    $('.map-tools', root).append(zoomBtn);
+  }
+  const upd = () => { if (zoomBtn) zoomBtn.textContent = S.full ? '🔍 Zur Station' : '🗺️ Ganze Karte'; };
+
+  /* Größen mitskalieren: alles Beschriftete liegt in Gruppen mit scale(k) */
+  function rescale() {
+    const v = S.v; if (!v) return;
+    const r = svg.getBoundingClientRect();
+    const sc = r.width ? Math.min(r.width / v.w, r.height / (v.w * 2 / 3)) : 0.9;
+    const k = 1 / sc;
+    $$('[data-sx]', svg).forEach(e => {
+      e.setAttribute('transform', 'translate(' + e.dataset.sx + ' ' + e.dataset.sy + ')' + (e.dataset.rot ? ' rotate(' + e.dataset.rot + ')' : '') + ' scale(' + k.toFixed(4) + ')');
+    });
+  }
+  function applyV(v) {
+    S.v = v;
+    svg.setAttribute('viewBox', v.x.toFixed(1) + ' ' + v.y.toFixed(1) + ' ' + v.w.toFixed(1) + ' ' + (v.w * 2 / 3).toFixed(1));
+    rescale();
+  }
+  function target(view) {
+    const w = clamp(view[2] * 15, 60, 750), hh = w * 2 / 3;
+    return { x: clamp(MX(view[0]) - w / 2, 0, 750 - w), y: clamp(MY(view[1]) - hh / 2, 0, 500 - hh), w };
+  }
+  function goView(animate) {
+    const st = S.st; if (!st) return;
+    const to = target(S.full ? FULL : (st.view || FULL));
+    const id = ++S.anim;
+    if (!animate || !S.v || rmotion()) { applyV(to); return; }
+    const from = { ...S.v }, t0 = performance.now(), D = 600;
+    (function step(now) {
+      if (id !== S.anim) return;
+      let p = clamp(((now || performance.now()) - t0) / D, 0, 1);
+      p = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      applyV({ x: from.x + (to.x - from.x) * p, y: from.y + (to.y - from.y) * p, w: from.w + (to.w - from.w) * p });
+      if (p < 1) raf(step);
+    })(t0);
+  }
+
+  function set(st, animate) {
+    S.st = st;
+    const year = st.year, split = year >= 395;
+    const vis = GEO.regions.filter(r => r.year <= year && !(r.until && year >= r.until)).sort((a, b) => b.year - a.year);
+    const kings = year >= 409 ? GEO.kingdoms.filter(k => k.year <= year).sort((a, b) => b.year - a.year) : [];
+    const prev = (st.prev != null && st.prev < year) ? st.prev : year - 1;
+    const pulse = new Set(st.pulse ? st.pulse : (st.pulse === undefined ? [...vis.filter(r => r.year > prev), ...kings.filter(k => k.year > prev)].map(x => x.id) : []));
+    const col = r => split ? (r.half === 'W' ? WEST : OST) : PH[r.phase].c;
+    L('reg').innerHTML = vis.map(r => '<polygon class="m-reg' + (pulse.has(r.id) ? ' new' : '') + '" fill="' + col(r) + '" points="' + pts(r.poly) + '"><title>' + esc(r.name) + '</title></polygon>').join('');
+    L('king').innerHTML = kings.map(k => {
+      const polys = (k.regions || []).map(id => GEO.regions.find(r => r.id === id).poly).concat(k.poly ? [k.poly] : []);
+      return polys.map(p => '<polygon class="m-kp' + (pulse.has(k.id) ? ' new' : '') + '" fill="' + k.color + '" points="' + pts(p) + '"><title>' + esc(k.name) + '</title></polygon>').join('');
+    }).join('');
+    L('limes').innerHTML = year >= 6 ? '<polyline class="m-limes" points="' + pts(GEO.limes) + '"/>' : '';
+    L('lab').innerHTML = MAPLABELS.map(a => '<text class="m-lab' + (a[3] ? ' sea' : '') + '" font-size="12" data-sx="' + MX(a[1]).toFixed(1) + '" data-sy="' + MY(a[2]).toFixed(1) + '" text-anchor="middle" stroke-width="3">' + a[0] + '</text>').join('');
+    L('route').innerHTML = (st.routes || []).map(id => {
+      const R = GEO.routes[id]; if (!R) return '';
+      const P = R.pts.map(q => [MX(q[0]), MY(q[1])]), n = P.length, a = P[n - 2], b = P[n - 1];
+      const ang = Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI, m = P[Math.floor(n / 2)];
+      return '<polyline class="m-route" stroke="' + R.color + '" points="' + P.map(q => q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' ') + '"/>' +
+        '<g data-sx="' + b[0].toFixed(1) + '" data-sy="' + b[1].toFixed(1) + '" data-rot="' + ang.toFixed(1) + '"><polygon points="2,0 -13,-7 -13,7" fill="' + R.color + '" stroke="#fff" stroke-width="1"/></g>' +
+        '<text class="m-rlab" font-size="13" fill="' + R.color + '" data-sx="' + m[0].toFixed(1) + '" data-sy="' + (m[1] - 8).toFixed(1) + '" text-anchor="middle" stroke-width="4">' + esc(R.label) + '</text>';
+    }).join('');
+    const ids = ['rom', ...(st.marks || []).filter(x => x !== 'rom')];
+    L('city').innerHTML = ids.map(id => {
+      const m = GEO.marks[id]; if (!m) return '';
+      return '<g class="m-city" data-sx="' + MX(m[0]).toFixed(1) + '" data-sy="' + MY(m[1]).toFixed(1) + '"><circle r="' + (id === 'rom' ? 7 : 5) + '"' + (id === 'rom' ? ' style="fill:#F1B434"' : '') + '/><text x="9" y="4.5" font-size="13" stroke-width="4">' + esc(m[2]) + '</text></g>';
+    }).join('');
+    const picks = st.picks || [];
+    L('pick').innerHTML = picks.map((p, i) => '<g class="m-pick" tabindex="0" role="button" aria-label="Ort ' + p.l + '" data-i="' + i + '" data-sx="' + MX(p.lon).toFixed(1) + '" data-sy="' + MY(p.lat).toFixed(1) + '"><circle r="15"/><text font-size="17">' + p.l + '</text></g>').join('');
+    badge.textContent = st.badge || fy(year);
+    if (legend) {
+      const items = [];
+      if (split) {
+        items.push([WEST, 'Westrom'], [OST, 'Ostrom']);
+        kings.forEach(k => items.push([k.color, k.name]));
+      } else {
+        const ph = [...new Set(vis.map(r => r.phase))].sort();
+        ph.forEach(p => items.push([PH[p].c, PH[p].t]));
+      }
+      legend.innerHTML = items.map(i => '<span><i style="background:' + i[0] + '"></i>' + esc(i[1]) + '</span>').join('') +
+        (year >= 6 ? '<span><i class="lim"></i>Rhein-Donau-Grenze</span>' : '') +
+        (pulse.size ? '<span><b class="neu">NEU</b> dick umrandet = gerade dazugekommen</span>' : '');
+    }
+    upd();
+    goView(animate);
+  }
+  svg.addEventListener('click', e => { const g = e.target.closest('.m-pick'); if (g && api.onPick) api.onPick(+g.dataset.i, g); });
+  svg.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('m-pick')) { e.preventDefault(); api.onPick && api.onPick(+e.target.dataset.i, e.target); } });
+  if (window.ResizeObserver) new ResizeObserver(() => rescale()).observe(svg);
+  const api = { root, set, svg, onPick: null };
+  return api;
+}
+
+/* ===== Globaler Zeitstrahl ===== */
+const TLpos = y => (y + 800) / 1300 * 100;
+const Cur = { ch: null, step: 0, year: -753, what: 'Rom beginnt' };
+let TLel = null;
+function buildTimeline() {
+  const zones = [['z1', -753, -509, 'Königszeit', 'Königszeit'], ['z2', -509, -27, 'Republik', 'Republik'], ['z3', -27, 476, 'Kaiserzeit', 'Kaiserzeit'], ['z4', 476, 500, '', 'Ostrom lebt weiter']];
+  const dots = [];
+  ALL_CH().forEach(c => (c.steps || []).forEach((s, i) => dots.push(h('button', {
+    type: 'button', class: 'tl-dot', style: 'left:' + TLpos(s.y) + '%', 'data-ch': c.id,
+    'aria-label': fy(s.y) + ': ' + (s.s || s.t) + ' (Stunde ' + lessonOf(c.id).n + ')', title: fy(s.y) + ' – ' + (s.s || s.t),
+    onclick: () => goStation(c.id, i)
+  }))));
+  const ticks = [-800, -600, -400, -200, 200, 400].map(y => h('span', { style: 'left:' + TLpos(y) + '%' }, (y < 0 ? -y + ' v.' : y + ' n.')));
+  const el = h('div', { class: 'tl' },
+    h('div', { class: 'tl-line' }, h('span', { class: 'tl-year' }), h('span', { class: 'tl-what' }), h('span', { class: 'tl-ost' }, 'nach 476: Ostrom lebt weiter')),
+    h('div', { class: 'tl-bar' },
+      zones.map(z => h('div', { class: 'tl-zone ' + z[0], style: 'left:' + TLpos(z[1]) + '%;width:' + (TLpos(z[2]) - TLpos(z[1])) + '%', title: z[4] + ' (' + fy(z[1]) + ' bis ' + fy(z[2]) + ')' }, z[3])),
+      h('div', { class: 'tl-zero', style: 'left:' + TLpos(0) + '%' }, h('span', null, 'Christi Geburt')),
+      dots, h('div', { class: 'tl-pin' })),
+    h('div', { class: 'tl-scale' }, ticks));
+  TLel = el;
+  return el;
+}
+function setCurrent(chId, step, year, what, ylabel) {
+  Cur.ch = chId; Cur.step = step; Cur.year = year; Cur.what = what; Cur.yl = ylabel;
+  if (!TLel) return;
+  $('.tl-year', TLel).textContent = ylabel || fy(year);
+  $('.tl-what', TLel).textContent = what;
+  $('.tl-pin', TLel).style.left = TLpos(year) + '%';
+  $$('.tl-dot', TLel).forEach(d => d.classList.toggle('on', d.dataset.ch === chId));
+}
+
+/* ===== Wort-Erklärungen ===== */
+let POP = null;
+function closePop() { if (POP) { POP.remove(); POP = null; } $$('.term[aria-expanded="true"]').forEach(b => b.setAttribute('aria-expanded', 'false')); }
+document.addEventListener('click', e => {
+  const t = e.target.closest && e.target.closest('.term');
+  const wasSame = t && POP && POP._for === t;
+  closePop();
+  if (!t || wasSame) return;
+  const r = t.getBoundingClientRect();
+  POP = h('div', { class: 'pop', role: 'status' }, '📖 ' + t.dataset.e);
+  POP._for = t;
+  document.body.append(POP);
+  t.setAttribute('aria-expanded', 'true');
+  const sx = window.scrollX || 0, sy = window.scrollY || 0;
+  POP.style.left = clamp(r.left + sx, 8 + sx, Math.max(8, document.documentElement.clientWidth - 316) + sx) + 'px';
+  POP.style.top = (r.bottom + sy + 6) + 'px';
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePop(); });
+
+/* ===== Zeitreise ===== */
+const ZR = {};
+const YT = s => (s.about ? 'um ' : '') + fy(s.y);
+let ZRvis = new Map(), IO = null;
+function Zeitreise(ch) {
+  const steps = ch.steps; let i = 0, full = false;
+  const map = makeMap();
+  const pins = h('div', { class: 'pins', role: 'group', 'aria-label': 'Stationen' });
+  const body = h('div', { class: 'step-body', 'aria-live': 'polite' });
+  const pill = h('span', { class: 'year-pill' }), title = h('h3');
+  const back = h('button', { type: 'button', class: 'btn ghost', onclick: () => api.show(i - 1, true, true) }, '◀ Zurück');
+  const next = h('button', { type: 'button', class: 'btn', onclick: () => api.show(i + 1, true, true) }, 'Weiter ▶');
+  let speakBtn = null;
+  if (Speech.ok) {
+    speakBtn = h('button', { type: 'button', class: 'btn ghost', 'aria-label': 'Station vorlesen', onclick: () => {
+      if (speakBtn.dataset.on) { Speech.stop(); speakBtn.dataset.on = ''; speakBtn.textContent = '🔊 Vorlesen'; return; }
+      const s = steps[i];
+      speakBtn.dataset.on = '1'; speakBtn.textContent = '⏹ Stopp';
+      Speech.say(YT(s) + '. ' + plain(s.t) + '. ' + s.txt.map(plain).join(' '), () => { speakBtn.dataset.on = ''; speakBtn.textContent = '🔊 Vorlesen'; });
+    } }, '🔊 Vorlesen');
+  }
+  const card = h('div', { class: 'step-card' }, pins, pill, title, body, h('div', { class: 'step-nav' }, back, h('span', { class: 'sp' }), speakBtn, next));
+  const root = h('div', { class: 'zr', id: 'zr-' + ch.id, style: '--c:' + ch.color }, h('div', { class: 'zr-map' }, map.root), h('div', { class: 'zr-text' }, card));
+  const pinEls = steps.map((s, n) => h('button', { type: 'button', class: 'pin', 'aria-label': 'Station ' + (n + 1) + ': ' + plain(s.t), onclick: () => api.show(n, true, true) }, String(n + 1)));
+  pins.append(...pinEls);
+  const seen = new Set();
+  const api = {
+    root, get i() { return i; },
+    publish() { const s = steps[i]; setCurrent(ch.id, i, s.y, plain(s.s || s.t), YT(s)); },
+    show(n, animate, operated) {
+      n = clamp(n, 0, steps.length - 1); i = n; seen.add(n);
+      const s = steps[n];
+      map.set({ year: s.y, view: s.view, marks: s.marks, routes: s.routes, pulse: s.pulse, prev: n > 0 ? steps[n - 1].y : s.y - 1, picks: null }, animate);
+      pill.textContent = s.yl || YT(s);
+      title.innerHTML = rich(s.t);
+      body.innerHTML = s.txt.map(t => '<p>' + rich(t) + '</p>').join('') + (s.fact ? '<div class="fact">💡 <b>Wusstest du?</b> ' + rich(s.fact) + '</div>' : '');
+      pinEls.forEach((p, k) => { p.classList.toggle('on', k === n); p.classList.toggle('seen', seen.has(k) && k !== n); if (k === n) p.setAttribute('aria-current', 'step'); else p.removeAttribute('aria-current'); });
+      back.disabled = n === 0; next.disabled = n === steps.length - 1;
+      if (speakBtn) { Speech.stop(); speakBtn.dataset.on = ''; speakBtn.textContent = '🔊 Vorlesen'; }
+      closePop();
+      if (operated) IOlast = api;
+      api.publish();
+    }
+  };
+  map.set({ year: steps[0].y, view: steps[0].view, marks: steps[0].marks, routes: steps[0].routes, pulse: steps[0].pulse, prev: steps[0].y - 1 }, false);
+  api.show(0, false, false);
+  ZR[ch.id] = api;
+  return api;
+}
+let IOlast = null;
+function observeZR() {
+  if (IO) { IO.disconnect(); IO = null; }
+  ZRvis = new Map();
+  if (!window.IntersectionObserver) return;
+  IO = new IntersectionObserver(es => {
+    es.forEach(e => ZRvis.set(e.target, e.isIntersecting ? e.intersectionRatio : 0));
+    let best = null, br = 0;
+    ZRvis.forEach((r, el) => { if (r > br) { br = r; best = el; } });
+    if (best && br > 0.15) { const z = Object.values(ZR).find(z => z.root === best); if (z) { IOlast = z; z.publish(); } }
+  }, { threshold: [0, .15, .3, .5, .75, 1] });
+  Object.values(ZR).forEach(z => IO.observe(z.root));
+}
+
+/* ===== Aufgaben ===== */
+const TYPE_NAMES = { mc: 'Wähle die richtige Antwort', tf: 'Stimmt oder stimmt nicht?', order: 'Bringe in die richtige Reihenfolge', match: 'Ordne zu', gap: 'Lückentext', year: 'Zeitstrahl: Welches Jahr?', sort: 'Sortiere in Gruppen', map: 'Klicke auf der Karte', think: 'Denkaufgabe (mit Partner)' };
+const TASK = {};
+const NOTYET = 'Noch nicht ganz. ';
+const TIPDEF = 'Lies noch einmal in der Zeitreise.';
+
+TASK.mc = (t, body, api) => {
+  const wrap = h('div', { class: 'opts', role: 'group' });
+  shuffle(t.opts.map((o, k) => k)).forEach(k => {
+    const b = h('button', {
+      type: 'button', class: 'opt', onclick: () => {
+        if (k === t.a) { b.classList.add('right'); wrap.classList.add('locked'); api.solve(t.why || ''); }
+        else { b.classList.add('wrong'); b.disabled = true; api.fb(NOTYET + (t.tip || TIPDEF) + ' Versuch es noch einmal.', 'bad'); }
+      }
+    }, t.opts[k]);
+    wrap.append(b);
+  });
+  body.append(wrap);
+};
+
+TASK.tf = (t, body, api) => {
+  let left = t.items.length;
+  t.items.forEach(it => {
+    const note = h('div', { class: 'tf-note', 'aria-live': 'polite' });
+    const row = h('div', { class: 'tf-row' }, h('div', { class: 'tf-q' }, it.s));
+    const yes = h('button', { type: 'button', class: 'btn ghost sm' }, '✔ Stimmt'), no = h('button', { type: 'button', class: 'btn ghost sm' }, '✖ Stimmt nicht');
+    const pick = (v, b) => {
+      if (v === it.a) {
+        b.classList.remove('ghost'); b.classList.add('right'); yes.disabled = no.disabled = true; row.classList.add('done');
+        note.style.color = ''; note.textContent = '✔ Richtig. ' + (it.why || '');
+        if (--left === 0) api.solve('Alle Aussagen richtig!');
+      } else {
+        b.classList.add('wrong'); b.disabled = true; note.style.color = 'var(--bad)';
+        note.textContent = 'Noch nicht ganz. ' + (it.tip || 'Denk noch einmal nach.');
+        setTimeout(() => b.classList.remove('wrong'), 350);
+      }
+    };
+    yes.onclick = () => pick(true, yes); no.onclick = () => pick(false, no);
+    row.append(h('div', { class: 'tf-btns' }, yes, no), note);
+    body.append(row);
+  });
+};
+
+TASK.order = (t, body, api) => {
+  const n = t.items.length; let slots, pool, checked;
+  const pl = h('div', { class: 'chips', 'aria-label': 'Karten' }), sl = h('ol', { class: 'slots', 'aria-label': 'Reihenfolge' });
+  const reset = () => { slots = Array(n).fill(null); pool = shuffleNot([...Array(n).keys()]); checked = null; api.clear(); draw(); };
+  const changed = () => { checked = null; api.clear(); draw(); };
+  function draw() {
+    pl.replaceChildren(...pool.map(k => h('button', { type: 'button', class: 'chip', onclick: () => { const s = slots.indexOf(null); if (s < 0) return; slots[s] = k; pool = pool.filter(x => x !== k); changed(); } }, t.items[k])));
+    sl.replaceChildren(...slots.map((v, s) => h('li', { class: 'slot' + (checked ? (checked[s] ? ' ok' : ' no') : ''), 'aria-label': 'Platz ' + (s + 1) },
+      v == null ? null : h('button', { type: 'button', class: 'chip', 'aria-label': t.items[v] + ' – zurücklegen', onclick: () => { slots[s] = null; pool.push(v); changed(); } }, t.items[v]))));
+  }
+  const check = h('button', {
+    type: 'button', class: 'btn', onclick: () => {
+      if (slots.includes(null)) { api.fb('Lege zuerst alle Karten in die Kästchen. Tippe dazu die Karten an.', 'info'); return; }
+      checked = slots.map((v, s) => v === s); draw();
+      if (checked.every(Boolean)) api.solve(t.why || '');
+      else api.fb(NOTYET + 'Rot markierte Plätze stimmen nicht. Tippe eine Karte im Kästchen an, dann kommt sie zurück.', 'bad');
+    }
+  }, 'Prüfen');
+  body.append(pl, sl, h('div', { class: 'actions' }, check, h('button', { type: 'button', class: 'btn ghost', onclick: reset }, 'Neu starten')));
+  reset();
+};
+
+TASK.match = (t, body, api) => {
+  const n = t.pairs.length; let sel = null, link, checked;
+  const rightOrder = shuffleNot([...Array(n).keys()]);
+  const cols = h('div', { class: 'mcols' });
+  const lc = h('div', { class: 'opts' }), rc = h('div', { class: 'opts' });
+  const reset = () => { sel = null; link = Array(n).fill(null); checked = null; api.clear(); draw(); };
+  const changed = () => { checked = null; api.clear(); draw(); };
+  function draw() {
+    lc.replaceChildren(...t.pairs.map((p, i) => {
+      const b = h('button', { type: 'button', class: 'mbtn' + (sel === i ? ' sel' : '') + (checked && link[i] != null ? (checked[i] ? ' ok' : ' no') : ''), 'aria-pressed': sel === i ? 'true' : 'false', onclick: () => { if (link[i] != null) { link[i] = null; sel = i; } else sel = sel === i ? null : i; changed(); } }, p[0]);
+      if (link[i] != null) b.dataset.m = i % 8;
+      return b;
+    }));
+    rc.replaceChildren(...rightOrder.map(j => {
+      const li = link.indexOf(j);
+      const b = h('button', { type: 'button', class: 'mbtn' + (checked && li >= 0 ? (checked[li] ? ' ok' : ' no') : ''), onclick: () => { if (sel != null) { const old = link.indexOf(j); if (old >= 0) link[old] = null; link[sel] = j; sel = null; changed(); } else if (li >= 0) { link[li] = null; changed(); } } }, t.pairs[j][1]);
+      if (li >= 0) b.dataset.m = li % 8;
+      return b;
+    }));
+  }
+  const check = h('button', {
+    type: 'button', class: 'btn', onclick: () => {
+      if (link.includes(null)) { api.fb('Verbinde zuerst alles: erst links antippen, dann rechts das passende Feld.', 'info'); return; }
+      checked = link.map((j, i) => j === i); draw();
+      if (checked.every(Boolean)) api.solve(t.why || ''); else api.fb(NOTYET + 'Rot markierte Paare passen nicht. Tippe sie an, dann kannst du neu verbinden.', 'bad');
+    }
+  }, 'Prüfen');
+  cols.append(lc, rc);
+  body.append(h('p', { class: 'hint' }, 'Tippe links ein Feld an. Tippe dann rechts das passende Feld an.'), cols, h('div', { class: 'actions' }, check, h('button', { type: 'button', class: 'btn ghost', onclick: reset }, 'Neu starten')));
+  reset();
+};
+
+TASK.gap = (t, body, api) => {
+  const parts = t.text.split(/\{(\d+)\}/); const ng = t.words.length;
+  const bank = shuffle([...t.words.map((w, k) => ({ w, k })), ...(t.extra || []).map(w => ({ w, k: -1 }))]);
+  let fill, selW = null, actG = null, checked = null;
+  const txt = h('p', { class: 'gaptext' }), chips = h('div', { class: 'chips' });
+  const reset = () => { fill = Array(ng).fill(null); selW = actG = checked = null; api.clear(); draw(); };
+  const changed = () => { checked = null; api.clear(); draw(); };
+  function draw() {
+    txt.replaceChildren(...parts.map((p, idx) => {
+      if (idx % 2 === 0) return p;
+      const g = +p, wi = fill[g];
+      return h('button', {
+        type: 'button', class: 'gap' + (wi != null ? ' filled' : '') + (checked ? (checked[g] ? ' ok' : ' no') : '') + (actG === g ? ' act' : ''), 'aria-label': 'Lücke ' + (g + 1),
+        onclick: () => { if (wi != null) { fill[g] = null; selW = null; } else if (selW != null) { fill[g] = selW; selW = null; actG = null; } else actG = actG === g ? null : g; changed(); }
+      }, wi != null ? bank[wi].w : '     ');
+    }));
+    chips.replaceChildren(...bank.map((b, k) => fill.includes(k) ? null : h('button', {
+      type: 'button', class: 'chip' + (selW === k ? ' sel' : ''), onclick: () => {
+        if (actG != null) { fill[actG] = k; actG = null; selW = null; } else selW = selW === k ? null : k; changed();
+      }
+    }, b.w)));
+  }
+  const check = h('button', {
+    type: 'button', class: 'btn', onclick: () => {
+      if (fill.includes(null)) { api.fb('Fülle zuerst alle Lücken. Tippe ein Wort an, dann eine Lücke.', 'info'); return; }
+      checked = fill.map((wi, g) => bank[wi].w === t.words[g]); draw();
+      if (checked.every(Boolean)) api.solve(t.why || ''); else api.fb(NOTYET + 'Rot markierte Lücken stimmen nicht. Tippe sie an, dann wird das Wort frei.', 'bad');
+    }
+  }, 'Prüfen');
+  body.append(txt, h('div', { class: 'wordbank-h' }, 'Wortspeicher (manche Wörter passen nirgends):'), chips, h('div', { class: 'actions' }, check, h('button', { type: 'button', class: 'btn ghost', onclick: reset }, 'Neu starten')));
+  reset();
+};
+
+TASK.year = (t, body, api) => {
+  const lo = t.min, hi = t.max, tol = t.tol || 0;
+  let v = Math.round((lo + hi) / 2); if (Math.abs(v - t.a) <= tol + (hi - lo) * .1) v = Math.round(lo + (hi - lo) * (t.a > (lo + hi) / 2 ? .2 : .8));
+  const fixv = (x, dir) => { x = clamp(x, lo, hi); if (x === 0) x = dir < 0 ? -1 : 1; return x; };
+  v = fixv(v, 1);
+  const val = h('div', { class: 'yr-val', 'aria-live': 'polite' });
+  const rng = h('input', { type: 'range', min: lo, max: hi, step: 1, value: v, 'aria-label': 'Jahr wählen' });
+  const set = (x, dir) => { v = fixv(x, dir); rng.value = v; val.textContent = fy(v); api.clear(); };
+  rng.addEventListener('input', () => { const old = v; set(+rng.value, +rng.value - old); });
+  const nud = d => h('button', { type: 'button', class: 'btn ghost sm', onclick: () => set(v + d, d) }, (d > 0 ? '+' : '−') + Math.abs(d));
+  const lab = y => y < 0 ? -y + ' v.' : y + ' n.';
+  const check = h('button', {
+    type: 'button', class: 'btn', onclick: () => {
+      const d = v - t.a;
+      if (Math.abs(d) <= tol) { api.solve((t.why || '') + (d ? ' (Du lagst ' + Math.abs(d) + ' Jahre daneben – das ist okay.)' : '')); return; }
+      const ad = Math.abs(d), near = ad > 100 ? 'Noch weit weg.' : ad > 30 ? 'Schon näher.' : 'Fast!';
+      api.fb(NOTYET + near + ' Dein Jahr ist zu ' + (d < 0 ? 'früh' : 'spät') + '. ' + (t.tip || ''), 'bad');
+    }
+  }, 'Prüfen');
+  body.append(h('div', { class: 'yr' }, val, rng, h('div', { class: 'yr-scale' }, h('span', null, lab(lo)), h('span', null, lab(Math.round((lo + hi) / 2))), h('span', null, lab(hi))),
+    h('div', { class: 'yr-nudge' }, nud(-10), nud(-1), nud(1), nud(10)), h('div', { class: 'actions' }, check)));
+  val.textContent = fy(v);
+};
+
+TASK.sort = (t, body, api) => {
+  const items = shuffle(t.items.map((it, k) => ({ text: it[0], g: it[1], why: it[2], k })));
+  let sel = null; const placed = t.groups.map(() => []); let left = items.length;
+  const pool = h('div', { class: 'chips' }), bx = h('div', { class: 'buckets b' + t.groups.length });
+  function draw() {
+    pool.replaceChildren(...items.filter(it => !placed.some(p => p.includes(it))).map(it => h('button', { type: 'button', class: 'chip' + (sel === it ? ' sel' : ''), 'aria-pressed': sel === it ? 'true' : 'false', onclick: () => { sel = sel === it ? null : it; api.clear(); draw(); } }, it.text)));
+    bx.replaceChildren(...t.groups.map((g, gi) => h('button', {
+      type: 'button', class: 'bucket', 'aria-label': 'Gruppe ' + g, onclick: () => {
+        if (!sel) { api.fb('Tippe zuerst eine Karte an. Dann tippe die passende Gruppe an.', 'info'); return; }
+        if (sel.g === gi) { placed[gi].push(sel); api.fb('✔ Richtig. ' + (sel.why || ''), 'ok'); sel = null; if (--left === 0) api.solve('Alles sortiert!'); }
+        else { api.fb(NOTYET + (sel.why ? 'Tipp: ' + sel.why : 'Überlege noch einmal, wohin die Karte gehört.'), 'bad'); }
+        draw();
+      }
+    }, h('strong', null, g), h('div', null, placed[gi].map(it => h('span', { class: 'chip' }, it.text))))));
+  }
+  body.append(h('p', { class: 'hint' }, 'Tippe eine Karte an. Tippe dann die Gruppe an, in die sie gehört.'), pool, bx);
+  draw();
+};
+
+TASK.map = (t, body, api) => {
+  const m = makeMap({ tools: false, legend: false });
+  m.set({ year: t.year, view: t.view || FULL, marks: t.marks || [], routes: t.routes || [], pulse: [], picks: t.picks }, false);
+  let done = false;
+  m.onPick = (i, g) => {
+    if (done) return;
+    if (i === t.a) { done = true; g.classList.add('right'); api.solve(t.why || ''); }
+    else { g.classList.add('wrong'); api.fb(NOTYET + (t.tip || 'Schau dir die Karte noch einmal genau an.'), 'bad'); }
+  };
+  body.append(m.root);
+};
+
+TASK.think = (t, body, api) => {
+  const ans = h('div', { class: 'ans', hidden: true }, h('b', null, 'Lösungsvorschlag: '), t.ans);
+  body.append(h('p', { class: 'hint' }, '💬 Sprich mit deiner Partnerin oder deinem Partner. Schreibe dann deine Antwort ins Heft.'), h('button', { type: 'button', class: 'btn', onclick: e => { ans.hidden = false; e.target.disabled = true; api.solve('Vergleiche deine Antwort mit dem Vorschlag.'); } }, 'Lösungsvorschlag zeigen'), ans);
+};
+
+function taskCard(ch, k, t) {
+  const id = ch.id + '-t' + (k + 1);
+  const star = h('span', { class: 't-star', role: 'img', 'aria-label': 'Stern' }, '⭐');
+  const fb = h('div', { class: 'fb', 'aria-live': 'polite' });
+  const body = h('div', { class: 't-body' }, h('div', { class: 'q', html: rich(t.q) }));
+  const card = h('article', { class: 'task', id: 'task-' + id, 'data-type': t.t }, h('div', { class: 't-head' }, h('span', { class: 't-num' }, 'Aufgabe ' + (k + 1)), h('span', { class: 't-type' }, TYPE_NAMES[t.t]), star), body, fb);
+  const mark = () => { card.classList.add('solved'); star.classList.add('on'); };
+  const api = {
+    fb(m, c) { fb.className = 'fb ' + c; fb.textContent = m; },
+    clear() { fb.className = 'fb'; fb.textContent = ''; },
+    solve(msg) { mark(); const first = !Store.solved(id); Store.setSolved(id); api.fb('⭐ Richtig! ' + (msg || ''), 'ok'); return first; }
+  };
+  TASK[t.t](t, body, api);
+  if (Store.solved(id)) { mark(); api.fb('⭐ Das hast du schon gelöst. Du kannst es zum Üben noch einmal machen.', 'info'); }
+  return card;
+}
+
+/* ===== Material ===== */
+function chainEl(m) {
+  const list = h('div', { class: 'chain-list', 'aria-live': 'polite' });
+  let n = 0;
+  const more = h('button', { type: 'button', class: 'btn gold' }, '');
+  const upd = () => { more.textContent = n >= m.items.length ? '↺ Noch einmal von vorn' : (n === 0 ? '▶ Los geht’s: zeige den ersten Schritt' : '▶ Was passiert dann?'); };
+  const add = () => {
+    const it = m.items[n++];
+    if (n > 1) list.append(h('div', { class: 'chain-arrow', 'aria-hidden': 'true' }, '⬇'));
+    list.append(h('div', { class: 'chain-item' }, h('span', { class: 'ic' }, it.ic), h('span', { html: rich(it.text) })));
+    upd();
+  };
+  more.onclick = () => { if (n >= m.items.length) { n = 0; list.replaceChildren(); } add(); };
+  upd();
+  return h('div', { class: 'chain' }, h('h4', null, m.title), h('p', { class: 'hint' }, m.intro || 'Tippe auf den Knopf. Die Kette baut sich Schritt für Schritt auf.'), list, h('div', { class: 'actions' }, more));
+}
+function materialEl(m) {
+  const T = m.title ? h('h4', null, m.title) : null;
+  switch (m.t) {
+    case 'info': return h('div', { class: 'info' }, T, (m.paras || []).map(p => h('p', { html: rich(p) })), m.list ? h('ul', null, m.list.map(x => h('li', { html: rich(x) }))) : null);
+    case 'quelle': return h('div', { class: 'source' }, T, h('p', { html: rich(m.text) }), h('cite', null, m.cite));
+    case 'vergleich': return h('div', { class: 'compare' }, [m.left, m.right].map(c => h('div', null, h('h4', null, c.h), h('ul', null, c.items.map(x => h('li', { html: rich(x) }))))));
+    case 'kette': return chainEl(m);
+    case 'story': return h('div', { class: 'story' }, T, m.paras.map(p => h('p', { html: rich(p) })));
+    case 'fig': return h('div', { class: 'figure', role: 'group', 'aria-label': m.title || 'Bild' }, m.items.map(f => h('div', { class: 'fig' }, h('span', { class: 'big', 'aria-hidden': 'true' }, f.big), f.text)));
+  }
+  return h('div');
+}
+
+/* ===== Seiten ===== */
+const main = () => $('#main');
+let page = '', pending = null;
+const allTasks = chs => chs.reduce((n, c) => n + c.tasks.length, 0);
+const doneTasks = chs => chs.reduce((n, c) => n + c.tasks.filter((t, k) => Store.solved(c.id + '-t' + (k + 1))).length, 0);
+
+function chapterEl(ch) {
+  const sec = h('section', { class: 'chapter', id: ch.id, style: '--c:' + ch.color, 'aria-labelledby': 'h-' + ch.id });
+  sec.append(h('div', { class: 'ch-head' }, h('div', { class: 'ch-ico', 'aria-hidden': 'true' }, ch.emoji), h('div', null, h('div', { class: 'k' }, ch.kicker || ''), h('h2', { id: 'h-' + ch.id }, ch.title))));
+  sec.append(h('div', { class: 'goals' }, h('b', null, '🎯 Das kannst du danach'), h('ul', null, ch.goals.map(g => h('li', null, g)))));
+  const pre = (ch.material || []).filter(m => m.pre), mat = (ch.material || []).filter(m => !m.pre);
+  if (pre.length) {
+    sec.append(h('h3', { class: 'sec-title' }, '⏳ Zuerst: ' + (pre[0].title || 'Einstieg')));
+    sec.append(h('div', { class: 'mat' }, pre.map(m => materialEl({ ...m, title: null }))));
+  }
+  if (ch.steps && ch.steps.length) {
+    sec.append(h('h3', { class: 'sec-title' }, '🗺️ Zeitreise'));
+    sec.append(Zeitreise(ch).root);
+  }
+  if (mat.length) {
+    sec.append(h('h3', { class: 'sec-title' }, '📚 Material'));
+    sec.append(h('div', { class: 'mat' + (mat.length === 2 ? ' two' : '') }, mat.map(materialEl)));
+  }
+  sec.append(h('h3', { class: 'sec-title' }, '💻 Aufgaben am Bildschirm'));
+  sec.append(h('div', { class: 'tasks' }, ch.tasks.map((t, k) => taskCard(ch, k, t))));
+  if (ch.finale) sec.append(ch.finale(ch));
+  if (ch.heft && ch.heft.length) {
+    sec.append(h('h3', { class: 'sec-title' }, '✏️ Heftaufgaben'));
+    ch.heft.forEach((hf, k) => {
+      const id = ch.id + '-h' + (k + 1);
+      const cb = h('input', { type: 'checkbox', id: 'cb-' + id });
+      cb.checked = Store.heft(id);
+      cb.addEventListener('change', () => Store.setHeft(id, cb.checked));
+      sec.append(h('div', { class: 'heft-card' }, h('span', { class: 'pen', 'aria-hidden': 'true' }, '✏️'), h('p', { html: rich(hf) }), h('label', { for: 'cb-' + id }, cb, 'Erledigt')));
+    });
+  }
+  if (ch.entry) {
+    sec.append(h('h3', { class: 'sec-title' }, '📒 Hefteintrag'));
+    sec.append(h('div', { class: 'entry' }, h('h4', null, ch.entry.title), h('p', { class: 'hint' }, 'Schreibe diesen Merkkasten ins Heft.'), h('ul', null, ch.entry.items.map(x => h('li', { html: rich(x) })))));
+  }
+  return sec;
+}
+
+function teacherEl(l) {
+  const d = h('details', { class: 'teacher' }, h('summary', null, '🧑‍🏫 Für Lehrkräfte'));
+  chaptersOf(l).forEach(c => {
+    if (!c.teacher) return;
+    d.append(h('h4', null, c.title + ' – Stundenverlauf'), h('ul', null, c.teacher.plan.map(p => h('li', null, h('b', null, p[0] + ': '), p[1]))));
+    if (c.teacher.sol && c.teacher.sol.length) d.append(h('h4', null, 'Lösungsvorschläge zu den Heftaufgaben'), h('ul', null, c.teacher.sol.map(x => h('li', { html: rich(x) }))));
+    if (c.teacher.diff && c.teacher.diff.length) d.append(h('h4', null, 'Differenzierung'), h('ul', null, c.teacher.diff.map(x => h('li', { html: rich(x) }))));
+  });
+  d.append(h('h4', null, 'Hinweise'), h('ul', null, h('li', null, 'Die Kartengrenzen sind vereinfacht. Sie zeigen Gebiete, keine genauen Grenzlinien.'), h('li', null, 'Bei unsicheren Jahren steht „um“ (z. B. Gründung Roms 753 v. Chr. = Sage).'), h('li', null, 'Der Fortschritt wird nur im Browser dieses Geräts gespeichert (kein Login, kein Tracking).')));
+  return d;
+}
+
+function lessonPage(n) {
+  const l = LESSONS[n - 1], chs = chaptersOf(l);
+  const frag = document.createDocumentFragment();
+  const stars = h('span', { class: 'stars' });
+  const upd = () => { stars.textContent = '⭐ ' + doneTasks(chs) + ' von ' + allTasks(chs) + ' Aufgaben'; };
+  upd();
+  const head = h('header', { class: 'lesson-head' }, h('div', { class: 'kicker' }, 'Stunde ' + n + ' · 45 Minuten · ', stars), h('h1', null, l.emoji + ' ' + l.title),
+    h('div', { class: 'jump', role: 'group', 'aria-label': 'Springe zum Kapitel' }, chs.map(c => h('button', { type: 'button', class: 'btn ghost sm', onclick: () => $('#' + c.id).scrollIntoView({ behavior: rmotion() ? 'auto' : 'smooth', block: 'start' }) }, c.emoji + ' ' + c.title))));
+  frag.append(head);
+  chs.forEach(c => frag.append(chapterEl(c)));
+  frag.append(h('div', { class: 'mosaic' }));
+  frag.append(teacherEl(l));
+  frag.append(h('nav', { class: 'foot', 'aria-label': 'Stunden wechseln' },
+    n > 1 ? h('a', { class: 'btn ghost', href: '#std' + (n - 1) }, '◀ Stunde ' + (n - 1) + ': ' + LESSONS[n - 2].title) : h('a', { class: 'btn ghost', href: '#start' }, '◀ Startseite'),
+    n < 6 ? h('a', { class: 'btn', href: '#std' + (n + 1) }, 'Stunde ' + (n + 1) + ': ' + LESSONS[n].title + ' ▶') : h('a', { class: 'btn', href: '#start' }, '🏠 Zur Startseite')));
+  page.upd.push(upd);
+  return frag;
+}
+
+const KEYS = [
+  [-753, 'Nach der Sage gründet Romulus die Stadt Rom am Tiber.'],
+  [-509, 'Die Könige sind weg. Rom wird eine Republik mit zwei Konsuln.'],
+  [-338, 'Rom besiegt die Latiner. Latium gehört nun zu Rom.'],
+  [-290, 'Nach langen Kriegen gegen die Samniten gehört Mittelitalien zu Rom.'],
+  [-272, 'Tarent fällt. Rom beherrscht jetzt Süditalien.'],
+  [-241, 'Rom gewinnt Sizilien. Das ist die erste Provinz außerhalb Italiens.'],
+  [-206, 'Rom vertreibt die Karthager aus Spanien.'],
+  [-146, 'Karthago wird zerstört. Auch Griechenland wird römisch.'],
+  [-121, 'Südgallien wird römisch. Der Weg nach Spanien ist nun sicher.'],
+  [-63, 'Pompeius ordnet den Osten. Syrien und Kleinasien kommen zu Rom.'],
+  [-30, 'Ägypten wird römisch. Octavian ist nun der Herr im Mittelmeer.'],
+  [117, 'Unter Kaiser Trajan ist das Reich am größten.'],
+  [395, 'Das Reich wird geteilt: Westrom (blau) und Ostrom (orange).'],
+  [476, 'Der letzte Kaiser im Westen wird abgesetzt. Westrom ist zu Ende.']
+];
+function startPage() {
+  const frag = document.createDocumentFragment();
+  const map = makeMap({ tools: false });
+  const txt = h('p', { class: 'mach-txt', 'aria-live': 'polite' });
+  const rng = h('input', { type: 'range', min: 0, max: KEYS.length - 1, step: 1, value: 0, 'aria-label': 'Schlüsseljahr wählen' });
+  const play = h('button', { type: 'button', class: 'btn gold', 'aria-label': 'Abspielen' }, '▶ Abspielen');
+  let idx = 0, timer = null;
+  const show = (k, animate) => {
+    idx = k; const [y, tx] = KEYS[k];
+    map.set({ year: y, view: FULL, marks: [], prev: k ? KEYS[k - 1][0] : y - 1 }, animate);
+    txt.innerHTML = '<b>' + fy(y) + ':</b> ' + esc(tx); rng.value = k;
+    setCurrent(null, 0, y, tx);
+  };
+  const stop = () => { clearInterval(timer); timer = null; play.textContent = '▶ Abspielen'; play.setAttribute('aria-label', 'Abspielen'); };
+  const go = () => { if (idx >= KEYS.length - 1) { stop(); return; } show(idx + 1, true); if (idx >= KEYS.length - 1) stop(); };
+  play.onclick = () => { if (timer) { stop(); return; } if (idx >= KEYS.length - 1) show(0, true); play.textContent = '⏸ Pause'; play.setAttribute('aria-label', 'Pause'); timer = setInterval(go, 3200); };
+  rng.oninput = () => { stop(); show(+rng.value, true); };
+  page.stopTimer = stop;
+  frag.append(h('section', { class: 'hero' }, h('div', { class: 'hero-grid' },
+    h('div', null, h('h1', null, 'Rom – vom Dorf zum Weltreich'), h('p', { class: 'lead' }, 'Wie wurde aus ein paar Hütten am Fluss die größte Macht der Antike? Reise in 6 Stunden durch über 1200 Jahre.'), h('p', { class: 'lead' }, 'Schau dir rechts die Zeitmaschine an. Drücke auf Abspielen!')),
+    h('div', { class: 'machine' }, h('h2', { class: 'sr' }, 'Zeitmaschine'), map.root, h('div', { class: 'mach-ctrl' }, play, rng), txt))));
+  show(0, false);
+  const all = ALL_CH();
+  frag.append(h('h2', { class: 'sec-title', style: '--c:var(--rot)' }, '📅 Die 6 Stunden'));
+  frag.append(h('div', { class: 'lessons' }, LESSONS.map(l => {
+    const chs = chaptersOf(l), i = h('i'), sm = h('small');
+    const upd = () => { const a = allTasks(chs), d = doneTasks(chs); i.style.width = (a ? d / a * 100 : 0) + '%'; sm.textContent = d + ' von ' + a + ' Aufgaben gelöst'; };
+    upd(); page.upd.push(upd);
+    return h('a', { class: 'lcard', href: '#std' + l.n, style: '--c:' + chs[0].color }, h('span', { class: 'em', 'aria-hidden': 'true' }, l.emoji), h('span', { class: 'n' }, 'Stunde ' + l.n), h('h3', null, l.title), h('p', null, l.blurb), h('div', { class: 'prog', role: 'presentation' }, i), sm);
+  })));
+  frag.append(h('h2', { class: 'sec-title', style: '--c:var(--mare2)' }, '🧭 So arbeitest du'));
+  frag.append(h('div', { class: 'how' },
+    h('div', null, h('b', null, '💻 Aufgabe am Bildschirm'), 'Tippe oder klicke. Du bekommst sofort eine Rückmeldung. Fehler sind okay – du kannst es immer neu versuchen. Für jede gelöste Aufgabe gibt es einen ⭐.'),
+    h('div', null, h('b', null, '✏️ Heftaufgabe'), 'Diese Aufgabe schreibst du in dein Heft. Setze danach das Häkchen bei „Erledigt“. Am Ende jedes Kapitels gibt es einen Hefteintrag zum Abschreiben.'),
+    h('div', null, h('b', null, '📖 Wort anklicken'), 'Unterstrichene Wörter mit roter Punktlinie kannst du anklicken. Dann siehst du eine Erklärung.'),
+    h('div', null, h('b', null, '🔊 Vorlesen'), 'In der Zeitreise kann dir der Computer die Station vorlesen (wenn dein Gerät das kann).')));
+  frag.append(h('p', { class: 'foot-note' }, h('button', { type: 'button', class: 'btn ghost sm', onclick: () => { if (confirm('Willst du deinen ganzen Fortschritt löschen?')) { Store.reset(); } } }, '🗑️ Fortschritt löschen')));
+  return frag;
+}
+
+function quizFinale(ch) {
+  const chs = ALL_CH().filter(c => c.tasks.length);
+  const b = h('div', { class: 'done-banner', role: 'status', 'aria-live': 'polite' });
+  const upd = () => {
+    const a = allTasks(chs), d = doneTasks(chs), q = ch.tasks.every((t, k) => Store.solved(ch.id + '-t' + (k + 1)));
+    b.textContent = (q ? '🏆 Du bist jetzt Rom-Profi! ' : 'Noch ein paar Quiz-Aufgaben bis zum Rom-Profi. ') + '⭐ ' + d + ' von ' + a + ' Sternen gesammelt.';
+    b.classList.toggle('won', q);
+  };
+  upd(); page.upd.push(upd);
+  return b;
+}
+
+/* ===== Router ===== */
+function setNav(cur) {
+  $$('.pills a').forEach(a => {
+    if (a.getAttribute('href') === '#' + cur) {
+      a.setAttribute('aria-current', 'page');
+      const box = a.parentNode; if (box && box.clientWidth) box.scrollLeft = a.offsetLeft - box.clientWidth / 2 + a.offsetWidth / 2;
+    } else a.removeAttribute('aria-current');
+  });
+}
+function route() {
+  if (page && page.stopTimer) page.stopTimer();
+  Speech.stop(); closePop();
+  const hsh = (location.hash || '#start').slice(1);
+  const m = /^std([1-6])$/.exec(hsh);
+  const name = m ? hsh : 'start';
+  page = { name, upd: [] };
+  Object.keys(ZR).forEach(k => delete ZR[k]);
+  const root = main(); root.replaceChildren();
+  if (m) { root.append(lessonPage(+m[1])); document.title = 'Stunde ' + m[1] + ': ' + LESSONS[+m[1] - 1].title + ' – Rom'; observeZR(); const first = Object.values(ZR)[0]; if (first) first.publish(); else setCurrent(null, 0, Cur.year, Cur.what, Cur.yl); }
+  else { root.append(startPage()); document.title = 'Rom – vom Dorf zum Weltreich'; if (IO) { IO.disconnect(); IO = null; } }
+  setNav(name);
+  try { window.scrollTo(0, 0); } catch (e) { /* ältere Umgebungen */ }
+  if (pending && ZR[pending.ch]) {
+    const p = pending; pending = null;
+    ZR[p.ch].show(p.step, false, true);
+    setTimeout(() => ZR[p.ch] && ZR[p.ch].root.scrollIntoView({ block: 'start' }), 30);
+  }
+  main().focus && main().focus({ preventScroll: true });
+}
+function goStation(chId, stepIdx) {
+  const l = lessonOf(chId);
+  if (page.name !== 'std' + l.n) { pending = { ch: chId, step: stepIdx }; location.hash = '#std' + l.n; return; }
+  const z = ZR[chId]; z.show(stepIdx, true, true);
+  z.root.scrollIntoView({ behavior: rmotion() ? 'auto' : 'smooth', block: 'start' });
+}
+
+function measureHdr() { const hd = $('.hdr'); if (hd) document.documentElement.style.setProperty('--hdr', hd.offsetHeight + 'px'); }
+function init() {
+  const app = $('#app');
+  const pills = h('nav', { class: 'pills', 'aria-label': 'Seiten' }, h('a', { href: '#start' }, '🏠 Start'), LESSONS.map(l => h('a', { href: '#std' + l.n, title: l.title }, l.emoji + ' Std. ' + l.n)));
+  const hdr = h('header', { class: 'hdr' }, h('div', { class: 'top' }, h('a', { class: 'brand', href: '#start' }, '🏛️ ', h('span', { class: 't' }, 'Rom – vom Dorf zum Weltreich')), pills), buildTimeline());
+  app.append(hdr, h('main', { id: 'main', tabindex: '-1', class: 'wrap' }), h('footer', { class: 'site' }, 'Lern-Website Gesellschaftslehre Klasse 6 · Kartengrenzen sind vereinfacht · Kein Login, kein Tracking'));
+  document.addEventListener('rom-progress', () => page && page.upd && page.upd.forEach(f => f()));
+  window.addEventListener('hashchange', route);
+  window.addEventListener('resize', measureHdr);
+  route(); measureHdr();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureHdr);
+  setTimeout(measureHdr, 300);
+}
+init();
+
+</script>
+</body>
+</html>
