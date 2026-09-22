@@ -1523,18 +1523,6 @@ function chapterEl(ch) {
   return sec;
 }
 
-function teacherEl(l) {
-  const d = h('details', { class: 'teacher' }, h('summary', null, '🧑‍🏫 Für Lehrkräfte'));
-  chaptersOf(l).forEach(c => {
-    if (!c.teacher) return;
-    d.append(h('h4', null, c.title + ' – Stundenverlauf'), h('ul', null, c.teacher.plan.map(p => h('li', null, h('b', null, p[0] + ': '), p[1]))));
-    if (c.teacher.sol && c.teacher.sol.length) d.append(h('h4', null, 'Lösungsvorschläge zu den Heftaufgaben'), h('ul', null, c.teacher.sol.map(x => h('li', { html: rich(x) }))));
-    if (c.teacher.diff && c.teacher.diff.length) d.append(h('h4', null, 'Differenzierung'), h('ul', null, c.teacher.diff.map(x => h('li', { html: rich(x) }))));
-  });
-  d.append(h('h4', null, 'Hinweise'), h('ul', null, h('li', null, 'Die Kartengrenzen sind vereinfacht. Sie zeigen Gebiete, keine genauen Grenzlinien.'), h('li', null, 'Bei unsicheren Jahren steht „um“ (z. B. Gründung Roms 753 v. Chr. = Sage).'), h('li', null, 'Der Fortschritt wird nur im Browser dieses Geräts gespeichert (kein Login, kein Tracking).')));
-  return d;
-}
-
 function lessonPage(n) {
   const l = LESSONS[n - 1], chs = chaptersOf(l);
   const frag = document.createDocumentFragment();
@@ -1546,7 +1534,6 @@ function lessonPage(n) {
   frag.append(head);
   chs.forEach(c => frag.append(chapterEl(c)));
   frag.append(h('div', { class: 'mosaic' }));
-  frag.append(teacherEl(l));
   frag.append(h('nav', { class: 'foot', 'aria-label': 'Stunden wechseln' },
     n > 1 ? h('a', { class: 'btn ghost', href: '#std' + (n - 1) }, '◀ Stunde ' + (n - 1) + ': ' + LESSONS[n - 2].title) : h('a', { class: 'btn ghost', href: '#start' }, '◀ Startseite'),
     n < 6 ? h('a', { class: 'btn', href: '#std' + (n + 1) }, 'Stunde ' + (n + 1) + ': ' + LESSONS[n].title + ' ▶') : h('a', { class: 'btn', href: '#start' }, '🏠 Zur Startseite')));
